@@ -1,0 +1,231 @@
+* ADG813 MACROMODEL
+* Description: Converter
+* Generic Desc: Low Voltage Quad SPST Switch
+* Developed by: Y.WONG 
+* Revision History: 08/10/2012 - Updated to new header style
+* 1.0 (05/2008)
+* Copyright 2012 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model 
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* BEGIN Notes:
+*
+* Not Modeled:
+*    
+* Parameters modeled include: 
+*
+* END Notes
+*
+* Connections
+*      1  = IN1
+*      2  = D1
+*      3  = S1
+*      4  = NC 
+*      5  = GND
+*      6  = S4
+*      7  = D4
+*      8  = IN4
+*      9  = IN3
+*      10 = D3
+*      11 = S3
+*      12 = NC
+*      13 = VDD
+*      14 = S2
+*      15 = D2
+*      16 = IN2 
+*****************
+.SUBCKT ADG813 1 2 3 5 6 7 8 9 10 11 13 14 15 16
+
+X1 3 2 1 13 5 HIGHONSWITCH
+X2 14 15 16 13 5 LOWONSWITCH
+X3 11 10 9 13 5 LOWONSWITCH
+X4 6 7 8 13 5 HIGHONSWITCH
+DINA1 1 13 DX
+DINB1 5 1 DX 
+DINA2 16 13 DX
+DINB2 5 16 DX 
+DINA3 9 13 DX
+DINB3 5 9 DX 
+DINA4 8 13 DX
+DINB4 5 8 DX
+CIN1 1 5 6p
+CIN2 16 5 6p
+CIN3 9 5 6p
+CIN4 8 5 6p
+RC1 3 14 7.944E5
+RC2 14 11 7.944E5
+RC3 11 6 7.944E5
+CC1 3 14 0.05p
+CC2 14 11 0.05p
+CC3 11 6 0.05p
+
+.MODEL DX D(IS=1E-12 N=0.5 RS=0.1)
+.ENDS
+
+****************
+* Logic High On Switch
+*
+* Connections
+*      101 = S
+*      102 = D
+*      103 = VIN
+*      104 = VDD 
+*      105 = GND
+*****************
+
+.SUBCKT HIGHONSWITCH  101 102 103 104 105
+x1 103 104 105 108 BUFF
+X2 108 109 104 105 VSENSE
+X3 109 105 110 ENABLEDELAY
+X4 101 102 110 104 105 SWITCH
+
+*MODELS USED
+.ENDS
+
+****************
+* Logic Low On Switch
+*
+* Connections
+*      101 = S
+*      102 = D
+*      103 = VIN
+*      104 = VDD 
+*      105 = GND
+*****************
+
+.SUBCKT LOWONSWITCH  101 102 103 104 105
+x1 103 104 105 108 NOTGATE
+X2 108 109 104 105 VSENSE
+X3 109 105 110 ENABLEDELAY
+X4 101 102 110 104 105 SWITCH
+
+*MODELS USED
+.ENDS
+
+*****************
+* BUFF LOGIC
+*
+* Connections
+*      201 = INPUT
+*      202 = VDD
+*      203 = GND
+*      204 = OUTPUT
+*****************
+.SUBCKT BUFF 201 202 203 204
+SBUFF 205 203 201 203 SMOD2
+RBUFF 205 202 5G
+EBUFFER 204 203 205 203 1
+
+*MODELS USED
+.MODEL SMOD2 VSWITCH(RON=1E-3 ROFF=1E11 VON=0.8 VOFF=2.0)
+.ENDS
+
+*****************
+* NOT LOGIC
+*
+* Connections
+*      201 = INPUT
+*      202 = VDD
+*      203 = GND
+*      204 = OUTPUT
+*****************
+.SUBCKT NOTGATE 201 202 203 204
+SNOT 205 203 201 203 SMOD2
+RNOT 205 202 5G
+EBUFFER 204 203 205 203 1
+
+*MODELS USED
+.MODEL SMOD2 VSWITCH(RON=1E-3 ROFF=1E11 VON=2.0 VOFF=0.8)
+.ENDS
+
+****************
+* Switch
+*
+* Connections
+*      201 = S
+*      202 = D
+*      203 = VIN
+*      204 = VDD 
+*      205 = GND
+*****************
+
+.SUBCKT SWITCH  201 202 203 204 205 
+
+*ANALOG SWITCH
+S1 201 208 203 205 SMOD1
+S2 204 207 203 205 SMOD2
+S3 204 207 201 205 SMOD3 
+S4 204 207 202 205 SMOD3
+RD 207 205 5G
+S5 208 202 207 205 SMOD4
+
+DS1 201 204 DX 
+DS2 205 201 DX
+DD1 202 204 DX
+DD2 205 202 DX
+
+*ON OFF ISOLATION*
+CSD 201 202 28.462p
+
+*BANDWIDTH  
+CSB 201 204 19.021p
+CDB 202 204 19.021p
+
+*CHARGE INJECTION
+CGS 201 203 15.202p
+CGD 202 203 15.202p
+
+*MODELS USED
+.MODEL SMOD1 VSWITCH(RON=0.5 ROFF=2.499E5 VON=2 VOFF=0.8)
+.MODEL SMOD2 VSWITCH(RON=1E-3 ROFF=1E11 VON=2 VOFF=0.8)
+.MODEL SMOD3 VSWITCH(RON=1E-3 ROFF=1E11 VON=0.4 VOFF=0.6)
+.MODEL SMOD4 VSWITCH(RON=1E-3 ROFF=1.35E10 VON=2 VOFF=0.8)
+.MODEL DX D(IS=1E-12 N=0.5 RS=0.1)
+.ENDS
+
+*****************
+* ENABLE DELAY
+*
+* Connections
+*      301 = INPUT
+*      302 = COM
+*      303 = OUTPUT
+*****************
+.SUBCKT ENABLEDELAY 301 302 303
+
+EENBUFFER 304 302 301 302 1
+RFEN 304 306 14k
+CFEN 306 302 2.0p
+DBREAKEN 306 305 DZ
+RBEN 305 304 4k
+EENBUFFEROUT 303 302 306 302 1 
+
+*MODELS USED
+.MODEL DZ D(IS=1E-14 N=0.04)
+.ENDS
+
+*****************
+* OPERATING VOLTAGE 
+*
+* Connections
+*      601 = INPUT
+*      602 = OUTPUT
+*      603 = VDD
+*      604 = GND
+*****************
+.SUBCKT VSENSE 601 602 603 604 
+SD1 601 606 603 604 SMOD3
+SD2 606 607 603 604 SMOD4
+RD0 607 604 5G
+EBUFFER 602 604 607 604 1
+
+
+*MODELS USED
+.MODEL SMOD3 VSWITCH(RON=1E-3 ROFF=1E11 VON=2.7 VOFF=2.6)
+.MODEL SMOD4 VSWITCH(RON=1E-3 ROFF=1E11 VON=3.6 VOFF=3.7)
+.ENDS
+
+
+
+

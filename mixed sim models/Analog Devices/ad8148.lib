@@ -1,0 +1,184 @@
+* AD8148 SPICE Macro-model        
+* Description: Amplifier
+* Generic Desc: Trpl Diff Out Driver for Video Over UTP
+* Developed by:
+* Revision History: 08/10/2012 - Updated to new header style
+* Copyright 2012 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model 
+* indicates your acceptance of the terms and provisions in the License Statement.
+* 
+* BEGIN Notes:
+*
+* Not Modeled:
+*    
+* Parameters modeled include: 
+* END Notes
+*
+* Node assignments
+.SUBCKT AD8148  INRp INRn INGp INGn INBp INBn OUTRp OUTRn OUTGp OUTGn OUTBp OUTBn Vsync Hsync Vcc Vee SL
+
+E_GAIN5         N10969 0 VALUE {-0.5 * V(N00403)}
+E_GAIN6         N10966 0 VALUE {0.5 * V(N00378)}
+X_G         INGP INGN VCC VEE OUTGN OUTGP N03234 AD8146 
+X_R         INRP INRN VCC VEE OUTRN OUTRP N08653 AD8146 
+X_B         INBP INBN VCC VEE OUTBN OUTBP N00243 AD8146 
+I_I3         VEE VCC DC 1.6m  
+V_V14         HSYNC N013590 3
+V_V15         NEG 0 -3
+V_V1         N00359 NEG 1.2
+V_V2         N00375 NEG 1.2
+E_GAIN9         N08212 0 VALUE {-1 * V(N01221)}
+V_V21         N08212 SLN -0.7
+E_E1         N08653 VMD N10976 0 1
+E_E2         N03234 VMD N00538 0 -2
+E_E3         N00243 VMD N00234 0 1
+R_R22         VCC N08812  10k  
+R_R23         N08812 VEE  10k  
+Q_Q2         N00378 N00359 N01241 QbreakN 
+Q_Q1         N01301 N011850 N01241 QbreakN 
+I_I1         N01241 NEG DC 10m  
+E_GAIN3         VMD 0 VALUE {1 * V(N08812)}
+R_R17         N01301 N01221  600  
+R_R18         N00378 N01221  600  
+Q_Q3         N01650 N013590 N01410 QbreakN 
+R_R19         N01650 N01221  600  
+R_R20         N00403 N01221  600  
+Q_Q4         N00403 N00375 N01410 QbreakN 
+I_I2         N01410 NEG DC 10m  
+V_V17         VSYNC N011850 3
+E_GAIN8         N01221 0 VALUE {1 * V(SL)}
+D_D1         SLN N00403 Dbreak 
+D_D2         SLN N00378 Dbreak 
+E_GAIN4         N00538 0 VALUE {0.5 * V(N00378)}
+E_GAIN7         N03092 0 VALUE {0.5 * V(N00403)}
+E_SUM1         N10976 0 VALUE {V(N10969)+V(N10966)}
+E_SUM2         N00234 0 VALUE {V(N00538)+V(N03092)}
+
+.MODEL Dbreak D()
+.MODEL QbreakN npn()
+.ENDS AD8148
+*$
+
+.SUBCKT AD8146  3a  9a 99 98 71  71b 110
+
+************************** input stage ****************************************
+Rf1 71 3 2k
+Rf2 71b 9 2k
+Rg1 3 3a 500
+Rg2 9 9a 500
+
+*****positive input left side********
+I1 99 5 4E-3
+Q1 98 2 5 QX
+vos 3 2 -9E-3
+
+**RAIL CLIPING****
+Dlim+ 75a 14b dx
+Vlim+ 99 14b 2.6
+Dlim 14c 75a dx
+Vlim 14c 98 2.8
+Dlim- 13b 76a DX
+Vlim- 13b 98 2.8
+Dlim-B 76a 13C dx
+Vlim-B 99 13C 2.6
+
+** VOCM INPUT RAIL CLIPING****
+DOCMa 100 100A dx
+VOCMa 99 100A 3
+DOCMb 100b 100 DX
+VOCMb 100b 98 3
+
+*****negative input right side*****
+I2 99 6 4E-3
+Q2 98 9 6 QX
+
+***********Input capacitance/impedance*******
+Cin1c 2 50 .24p
+Cind 2 9 .24p
+Cin2c 9 50 .24p
+
+************************** pole, zero pole stage *****************************
+****FIRST TRY**
+c1 14 13 300f
+c2 13 50 80f
+c3 14 50 80f
+G1 13 14  5 6  5E-3
+r11 13 50 250k
+r12 14 50 250k
+
+*********pole zero stage( POSITIVE SIDE)*******
+gp1 0 75 14 50 1
+RP1 75 0 1
+CP1 75 0 1f
+
+*********pole zero stage( NEGATIVE SIDE)*******
+gp2 0 76 13 50 1
+RP2 76 0 1
+CP2 76 0 1f
+
+***************************** Output Stage ********************************
+**********output stage Positive side*************
+D17 76 84 DX
+VO1  84 70 .177V
+VO2  70 85 .177V
+D16 85 76  DX
+G30 70 99c 99 76  91E-3
+G31 98c 70 76 98  91E-3
+RO30 70 99c 11
+RO31 98c 70 11
+VIOUT1 99 99c 0V
+VIOUT2 98 98c 0V
+VIOUT3 70 71 0V
+
+********* Output Stage Negative side ***********
+D17b 75 84b DX
+VO1b  84b 70b .177V
+VO2b  70b 85b .177V
+D16b 85b 75  DX
+G30b 70b 99d 99 75  91E-3
+G31b 98d 70b 75 98  91E-3
+RO30b 70b 99d 11
+RO31b 98d 70b 11
+VIOUTB1 99 99d 0V
+VIOUTB2 98d 98 0V
+VIOUTB3 70b 71b 0V
+
+*********VOCM STAGE*************************
+*Cocm 100 99 3.5E-3
+*R 100 99 1E3
+Gocm_a 0 75 110 0 1
+Gocm_b 0 76 110 0 1
+Rocm1 99 100 240k
+Rocm2 100 98 240k
+**Voffset 100 110 -1E-3
+Voffset 100 110 -10E-3
+
+********CURRENT MIRROR TO SUPPLIES POSITVIE SIDE*********
+FO1 0 99 poly(2) VIOUT1 VI1 -5.24E-3 1 -1
+FO2 0 98 poly(2) VIOUT2 VI2 -5.24E-3 1 -1
+FO3 0 400 VIOUT1 1
+VI1 401 0 0
+VI2 0 402 0
+DM1 400 401 DX
+DM2 402 400 DX 
+
+********CURRENT MIRROR TO SUPPLIES NEGATIVE SIDE*********
+FO1B 0 99 poly(2) VIOUTB1 VIB1 -5.24E-3 1 -1
+FO2B 0 98 poly(2) VIOUTB2 VIB2 -5.24E-3 1 -1
+FO3B 0 400B VIOUTB1 1
+VIB1 401B 0 0
+VIB2 0 402B 0
+DMB1 400B 401B DX
+DMB2 402B 400B DX 
+
+Eref 50 0 Poly(2) 99 0 98 0 0 0.5 0.5
+Vbf1 76 76a 0
+Vbf2 75 75a 0
+
+.MODEL QX PNP (BF=228.57 Is=1E-15)
+.MODEL DX D(IS=1E-15)
+.ENDS
+
+
+

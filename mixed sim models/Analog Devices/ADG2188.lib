@@ -1,0 +1,102 @@
+* ADG2188 SPICE Macro-model
+* Generic Desc: Single Channel Unbuffered Analog Switch
+* Developed by: MPorley / ANALOG
+* Revision History: 1.0 (7/2019)
+* Copyright 2019 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* Begin Notes:
+* The model will work on Vdd/Vss from 10.8V to 13.2V single supply and +/-4.5V to +/-5.5V dual supply.
+* The model provides parametric specifications at +/-5.5V only and is not variable with Vdd and Vss changes. Please see datasheet page 3.
+* The model is operational at RESET/VL level from 5V and +/-5V only.
+*
+* Not Modeled:
+* 8x8 array but the spice model is a single channel switch.
+*
+* Please see Connections Section below.
+*
+* Parameters modeled include:
+* 	On Resistance
+*	Ton and Toff
+*	Off Isolation
+*	Supply Currents: Iss/Idd
+*  	Bandwidth
+* 	Charge Injection
+* Connections
+*      1  = VDD
+*      2  = VSS
+*      3  = GND
+*      4  = RESET/VL
+*      5  = S1
+*      6  = D1
+*      7  = IN1
+*
+.SUBCKT ADG2188 1 2 3 4 5 6 7
+
+.MODEL VON VSWITCH(Von=5 Voff=0.8 Ron=0.001 Roff=1000000000000)
+.MODEL VEN VSWITCH(Von=5 Voff=0.8 Ron=180000 Roff=485000)
+*.MODEL VRESET VSWITCH(Von=5 Voff=0.8 Ron=2700000 Roff=10000)
+.MODEL DCLAMP D(IS=1E-15 IBV=1E-13)
+
+* RESET/VL
+*S30 4 187 4 3 VRESET
+*C80 187 3 1.5e-011
+
+* IDD/ISS
+I1 1 3 0.05e-006
+
+* Configuration: SPST 1:1
+
+
+** SWITCH 1 **
+*
+* ESD PROTECTION DIODES
+D11 2 6 DCLAMP
+D12 6 1 DCLAMP
+D13 2 5 DCLAMP
+D14 5 1 DCLAMP
+*
+* OFF ISOLATION
+C11 5 6 0.1e-012
+*
+* CHARGE INJECTION
+C12 6 140 0.13e-011
+C13 5 140 0.13e-011
+*
+* CD/CS OFF AND BANDWIDTH
+C14 5 3 40e-012
+C15 6 3 40e-012
+*
+* ON RESISTANCE
+Ech155 1555 3 VALUE = { IF ((ABS(V(5)))>(ABS(V(184))),V(5),V(6)) }
+R155 1555 3 1G
+R11 137 6 0.001
+S111 136 141 1141 3 VON
+Ech111 1141 3 VALUE = { IF (V(1555)<-5,5,0) }
+Ech11 141 3 VALUE = { IF (V(1555)<-5,0*(V(1555)--5)+25,0) }
+S112 136 146 1146 3 VON
+Ech112 1146 3 VALUE = { IF ((V(1555)>=-5) & (V(1555)<=5.5),5,0) }
+Ech12 146 3 VALUE = { IF ((V(1555)>=-5) & (V(1555)<=5),(exp(V(1555)--0.25)) + 25,0) }
+RIN1	136 3	1G
+EOUT1 137 181	POLY(2) (136,3) (180,3) 0 0 0 0 0.999/1000
+FCOPY1	3 180 VSENSE1 1
+RSENSOR1 180 3	1K
+VSENSE1 181 184	0
+*
+* TON/ TOFF/ BBM
+S11 182 184 140 3 VON
+S12 143 138 143 3 VEN
+Ech14 143 3 VALUE = { IF(V(7)>=2.0 , 5 , 0.8 ) }
+eV1 140 3 138 3 1
+C16 138 3 1e-012
+*
+* VOLTAGE SUPPLY REQUIREMENT
+S13 5 182 185 3 VON
+S14 142 185 142 3 VON
+Ech15 142 3 VALUE = { IF((V(2)<=-0.5 & V(2)>=-5.5) & (V(1)<=5.5 & V(1)>=4.5) & V(4)>=5, 5 , 0.01 ) }
+S15 139 185 139 3 VON
+Ech16 139 3 VALUE = { IF((V(2)>=-0.5 & (V(1)<=13.2 & V(1)>=10.8)) & V(4)>=5, 5 , 0.01 ) }
+
+.ENDS ADG2188

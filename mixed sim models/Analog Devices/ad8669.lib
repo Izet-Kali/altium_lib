@@ -1,0 +1,112 @@
+* AD8669 SPICE Macro-model
+* Description: Amplifier
+* Generic Desc: 5/16V, CMOS, OP, Low Noise, S SPLY, 4X
+* Developed by: HH/ADI-SJ
+* Revision History: 08/10/2012 - Updated to new header style
+* 1.0 (10/2007)
+* Copyright 2007, 2012 by Analog Devices
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement.  Use of this model
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* BEGIN Notes:
+*
+* Not Modeled:
+*    
+* Parameters modeled include: 
+*
+* END Notes
+*
+* Node Assignments
+*                       noninverting input
+*                       |   inverting input
+*                       |   |    positive supply
+*                       |   |    |   negative supply
+*                       |   |    |   |   output
+*                       |   |    |   |   |
+*                       |   |    |   |   |
+.SUBCKT AD8669          1   2   99  50  45
+*
+* INPUT STAGE
+*
+M1  14  7  8  8 PIX L=1E-6 W=2.525E-03
+M2  16  2  8  8 PIX L=1E-6 W=2.525E-03
+RC5 14 50 2.00E+03
+RC6 16 50 2.00E+03
+C1  14 16 3.220E-11
+I1  99  8 2.000E-04
+V1  99  9 2.097E+00
+D1   8  9 DX
+EOS  7  1 POLY(4) (22,98) (73,98) (81,98) (70,98) 3.00E-05 1 1 1 1
+IOS  1  2 1.00E-13
+*
+* CMRR=114B, POLE AT 800 Hz
+*
+E1  21 98 POLY(2) (1,98) (2,98) 8.199E-03 8.199E-03
+R10 21 22 1.326E+02
+R20 22 98 3.183E-02
+C10 21 22 1.000E-06
+*
+* PSRR=100dB, POLE AT 10 Hz
+*
+EPSY 72 98 POLY(1) (99,50) -111.596E+00 6.975E+00
+RPS3 72 73 2.468E+04
+RPS4 73 98 1.989E-02
+CPS3 72 73 1.000E-06
+*
+* VOLTAGE NOISE REFERENCE OF 20.7nV/rt(Hz)
+*
+VN1 80 98 0
+RN1 80 98 17.04E-3
+HN  81 98 VN1 2.07E+01
+RN2 81 98 1
+*
+* FLICKER NOISE CORNER = 90 Hz
+*
+D5  69 98 DNOISE
+VSN 69 98 DC 0.6551
+H1  70 98 POLY(1) VSN 1.00E-03 1.00E+00
+RN  70 98 1
+*
+* INTERNAL VOLTAGE REFERENCE
+*
+EREF 98  0 POLY(2) (99,0) (50,0) 0 0.5 0.5
+GSY  99 50 POLY(1) (99,50) -0.1298E-03 9.0E-07
+EVP  97 98 POLY(1) (99,50) 0 0.5E-09
+EVN  51 98 POLY(1) (50,99) 0 0.5E-09
+*
+* GAIN STAGE
+*
+G1 98 30 POLY(1) (14,16)  0 1.286E-02
+R1 30 98 1.00E+06
+V3 32 30 -4.108E+00
+V4 30 33 -6.421E+00
+EZ (145 0) (45 0) 1
+CF 145 31 1.270E-08
+RZ  30 31 0.100E+00
+D3 32 97 DX
+D4 51 33 DX
+*
+* OUTPUT STAGE
+*
+M5  45 46 99 99 POX L=1E-6 W=1.673E-04
+M6  45 47 50 50 NOX L=1E-6 W=3.762E-04
+EG1 99 46 POLY(1) (98,30) 7.233E-01 1
+EG2 47 50 POLY(1) (30,98) 5.916E-01 1
+*
+* MODELS
+*
+.MODEL POX PMOS (LEVEL=2,KP=1.00E-05,VTO=-0.328,LAMBDA=0.01,RD=0.1)
+.MODEL NOX NMOS (LEVEL=2,KP=1.00E-05,VTO=+0.328,LAMBDA=0.01,RD=0.1)
+.MODEL PIX PMOS (LEVEL=2,KP=1.00E-05,VTO=-5.00E-01,LAMBDA=0.01)
+.MODEL DX D(IS=1E-14,RS=5)
+.MODEL DNOISE D(IS=1E-14,RS=0,KF=3.53E-11)
+*
+*
+.ENDS AD8669
+*
+*$
+
+
+
+

@@ -1,0 +1,10 @@
+.SUBCKT ZENER a c
+d1 (a c) ZENER
+**.model ZENER zener (v_breakdown=11.4 i_breakdown=0.01 r_breakdown=20 i_rev=1e-6 i_sat=1e-12 ) 
+.model ZENER D (IBV=0.027 EG=1.11 BV=11.4 BV_MAX=12.7 BR=20) 
+.ENDS ZENER
+
+
+**r_breakdown=20 i_rev=1e-6 i_sat=1e-12
+**IBV=0.0025 EG=1.11 BV=11.4
+**

@@ -1,0 +1,140 @@
+* AD8479--Typical values  SPICE Macro-model
+* Description: Amplifier
+* Generic Desc: Bipolar,  Diff Amp, Hi CMV to +/-600V
+* Developed by: AN/ADI, ML/ADI, DC/ADI
+* 1.0 (4/2013)
+* 2.0 (8/2019) - D.C. GT
+* 3.0 (6/2020) - E.A. GT
+* Copyright 2000, 2012 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model
+* indicates your acceptance with the terms and provisions in the License Statement.
+*
+*
+* BEGIN Notes:
+*
+* Not Modeled:
+*     Cap load
+*     temperature
+*
+* Parameters modeled include:
+*	  Gain Error
+*     CMRR vs. Frequency
+*	  Output Volatge Swing vs. Resistive Load
+*     Quiescent Current
+*     Gain Bandwidth
+*     Offset Voltage
+*     Slew Rate
+*	  Spectral Noise
+*
+* END Notes
+*
+* Node assignments
+*                REF(-)
+*                |  inverting input
+*                |  |  non-inverting input
+*                |  |  |  negative supply
+*                |  |  |  |  REF(+)
+*                |  |  |  |  |  output
+*                |  |  |  |  |  |   positive supply
+*                |  |  |  |  |  |   |
+.SUBCKT ad8479   1  10 20 98 5  70  99
+
+***EXTERNAL RESISTORS( INTERNAL TO DEVICE)***
+
+RG1 2a 10 530155.305
+RG2 9a 20 530155.305
+RG3 9 9a 530155.305
+C2 2a mid 11.4e-13
+C1 9a mid 11.4e-13
+RG4 2 2a 530155.305
+RF1 70 2b 118694
+Rneg 2b 1 2011.7645
+Rpos 5 9 17671.43509
+RF2 2 2b 15693.6
+
+***input Stage***
+
+Ccmrr 2 mid 7.5e-14
+
+***negative input right side***
+
+Rc1 99 5a 1.8e3
+Q1 5a 2 7 0 QX
+
+***positive input left side***
+
+Rrc2 99 6a 1.8e3
+Q2 6a 9b 7 0 QX
+
+***BIAS CURRENT SOURCE***
+
+IB 7 98 20e-6
+
+***SUPPLY CURRENT COMPENSATION***
+
+IS 98 99 350e-6
+
+***GAIN STAGE***
+
+GM1 1ref 76 5a 6a 14.7E-4
+
+***ZERO/POLE***
+
+RG 1ref 76 8.52273e11
+CPZ 1ref 76 6e-12
+
+***ZERO/POLE ENDS***
+
+***rail_to_rail clamps***
+
+I1 13 99x 0.51
+R1 99x 13 1
+D1 76 13 DX
+I2 98x 12 0.51
+R2 12 98x 1
+D2 12 76 DX
+
+***rail_to_rail clamps ENDS***
+
+***MID POINT REFERENCE RESISTORS***
+
+Rref1 99 1mid 17e3
+Rref2 1mid 98 17e3
+G1 0 1ref 1mid 0 1
+R3 1ref 0 1
+
+***MID POINT REFERENCE RESISTORS ENDS***
+
+***INPUT OFFSET VOLTAGE***
+
+Vos 9b 9 8e-6
+
+*** END OF INPUT OFFSET VOLTAGE***
+
+***OUTPUT STAGE***
+
+D17 76 84 DX
+IO1 70 84 0.20300
+RO1 84 70 4.5
+IO2 85 70 0.20300
+RO2 85 70 4.5
+D16 85 76 DX
+G30 70 99x 99x 76 20e-3
+RO30 99x 70 50
+G31 98x 70 76 98x 20e-3
+RO31 70 98x 50
+
+***Isupply vs Rload***
+E1 99x 0 99 0 1
+B2 99 0 I=if(V(70)>0,((I(RO30)-I(G30))*2),0)
+E2 98x 0 98 0 1
+B3 0 98 I=if(V(70)<0,(I(RO31)-I(G31))*2,0)
+
+***MID POINT VOLTAGE***
+B1 0 mid I=(V(99) + V(98))/2
+R4 mid 0 1
+
+.MODEL QX NPN ( VA=10000,BF=5000,KF=18e-17)
+.MODEL DX D(IS=1E-12)
+.ENDS

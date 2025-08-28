@@ -1,0 +1,147 @@
+* AD8205 SPICE Macro-model        
+* Description: Single Supply Difference Amplifier
+* Generic Desc: 5V typical single supply, 12.5V Max supply, HVCB3
+* Developed by: DK
+* Revision History: 
+* 1.0 (7/2011) � DK � initial release
+* Copyright 2012 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html 
+* for License Statement. Use of this model indicates your acceptance
+* of the terms and provisions in the License Statement.
+* 
+*
+* BEGIN Notes:
+*      
+* Not Modeled:
+*�Temperature effects
+* 
+* Parameters modeled include:  
+* Closed loop gain and phase vs bandwidth
+* Output voltage limiting
+* Offset voltage (vout/gain)-vin
+* Slew Rate = 0.4V/us
+* Supply current
+* Voltage spectral noise (RTI)
+* CMRR vs Frequency
+* Gain error 
+* END Notes
+*
+* Node Assignments
+*                  inverting input 
+*                  |   ground
+*                  |   |    reference 2
+*                  |   |    |    noninverting input
+*                  |   |    |    |    reference 1 
+*                  |   |    |    |    |    positive supply
+*                  |   |    |    |    |    |   output
+*                  |   |    |    |    |    |   |
+.SUBCKT AD8205    NIN GND VREF2 PIN VREF1 VCC VOUT
+
+RA1 NIN 4 200K
+RA2 PIN 5 200K
+
+RB1 4 6 12.7K
+RB2 5 3 12.7K
+
+RC1 6 7 1K
+RC2 3 7 1.0006K
+
+RF1 8 6 35K
+RF2 1 3 35K
+
+RD1 1 11 2K
+RD2 8 12 2K
+RE 11 VOUT 64.3K
+RF 12 13 48K
+X4 11 12 COMP VCC 17 OPAMP1
+RREF1 VREF1 13 32K
+RREF2 13 VREF2 32K
+V1 7 GND DC=250MV
+V3 17 GND DC=-5
+E1 8 0 5 4 18.5
+I_LIM 28 24 DC=105U
+X5 8 1 RGain
+QOUT 28 24 25 _Q1_MOD
+.MODEL _Q1_MOD NPN BF=60 TR=0
+ISINK VOUT GND DC=300U
+RO 25 VOUT 2
+D1 27 VOUT _DMOD
+
+*Output voltage limit
+Dclamp VOUT 200 _DMOD
+Vclamp 200 VCC -.9
+
+.MODEL _DMOD D
+VLO 27 GND DC=0.7
+D3 24 20 _D3_MOD
+.MODEL _D3_MOD D
+V9 20 26 DC=1
+*R_ICC VCC 0 5.56K
+R_ICC VCC 0 9.56K
+EB1 26 GND Value={IF (V(MAX) > 65, V(VCC)-0.8, IF(V(MIN) < -2.0, V(VCC)-0.8, V(COMP)))}
+V10 28 VCC DC=2
+X2 PIN NIN MAX MAX11
+X3 PIN NIN MIN MIN22
+.ENDS
+*$
+.SUBCKT MAX11  1   2   3
+*CONNECTIONS IN1 IN2 OUT
+EBMAX 3 0 Value={IF(V(1) > V(2), V(1), V(2))}
+.ENDS
+*$
+.SUBCKT MIN22  1   2   3
+*CONNECTIONS IN1 IN2 OUT
+EBMIN 3 0 Value={IF(V(1) < V(2), V(1), V(2))}
+.ENDS
+*$
+.SUBCKT RGAIN  1  2
+*E1 2 0 1 0 -1.0000
+E1 2 0 1 0 -2.50000
+.ENDS
+*$
+.SUBCKT OPAMP1 2    3  6   7  4
+* NODES:      - IN + OUT VCC VEE
+QNI1 10 2 13 QNI1
+QNI2 12 300 13 QNI1
+IOFST 2 3 1n
+*VOFST 300 3 200u
+VOFST 300 3 3e-3
+.MODEL QNI1 NPN(NF=0.391 BF=3162 IS=8E-16 CJE=3PF)
+Q3 13 14 4 QN741
+IEE 4 14 158.1E-9
+CCM 13 4 2.5PF
+RCM 13 4 10MEG
+RC1 11 10 1K
+RC2 11 12 1K
+CHF 10 12 1.71875E-11
+D1 7 11 D741
+RP 7 4 10K
+GA 0 15 12 10 .9MMHO
+GCM 0 15 13 0 6.3NMHOS
+R2 15 0 100K
+D2 15 0 D741 ; OFF
+D3 0 15 D741 ; OFF
+*C2 15 16 74PF
+C2 15 16 40PF
+GB 16 0 15 0 31.364
+RO2 16 0 1000
+D4 16 17 D741P ; OFF
+EP 17 0 Value={V(7)-1.8}
+D5 18 16 D741P ; OFF
+EN 0 18 Value={-V(4)+2.3}
+.MODEL D741P D(RS=1M)
+D6 19 16 D741
+D7 16 20 D741
+IRO 20 19 170UA
+RR0 16 21 .1MEG
+Q4 7 19 21 QNO
+Q5 4 20 21 QPO
+.MODEL QNO NPN(BF=150 CJC=3P IS=1E-14)
+.MODEL QPO PNP(BF=150 CJC=3P IS=1E-14)
+L1 21 6 9.091E-6
+RL1 21 6 1K
+.MODEL D741 D(CJO=3PF)
+.MODEL QN741 NPN
+.ENDS
+

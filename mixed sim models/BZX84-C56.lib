@@ -1,0 +1,41 @@
+***********************************************************
+*
+* BZX84-C56
+*
+* Nexperia
+*
+* Voltage regulator diodes
+* VFmax = 0,9V    @ IF = 10mA
+* IRmax = 50nA    @ VR = 39,2V
+* VZmax = 60V     @ IZ = 2mA
+* IZSM  = 0,3A    @ tp = 100µs
+*
+*
+*
+* Package pinning does not match Spice model pinning.
+* Package: SOT23
+*
+* Package Pin 1: Anode
+* Package Pin 2: Not Connected
+* Package Pin 3: Cathode
+*
+*
+* Extraction date (week/year): #
+* Simulator: PSPICE
+*
+***********************************************************
+*
+.MODEL BZX84-C56 D
++ IS=2.6665E-18
++ N=.82284
++ RS=.51617
++ IKF=11.760E-3
++ CJO=12.024E-12
++ M=.34443
++ VJ=.60675
++ ISR=53.794E-12
++ BV=56.116
++ IBV=.18612
++ TT=2.3083E-6
+.ENDS
+*

@@ -1,0 +1,157 @@
+* AD8651 SPICE Macro-model Typical Values
+* Description: Amplifier
+* Generic Desc: 2.7/5V, CMOS, OP, Fast, RRIO, 1X
+* Developed by: RM / ADSiv
+* Revision History: 02/15/2023 - Corrected voltage noise density
+* 08/10/2012 - Updated to new header style
+* 1.0 (2003)
+* Copyright 2003, 2012, 2023 by Analog Devices
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement.  Use of this model
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* BEGIN Notes:
+*
+* Not Modeled:
+*    
+* Parameters modeled include:
+*
+* END Notes
+*
+* Node Assignments
+*			noninverting input
+*			|	inverting input
+*			|	|	 positive supply
+*			|	|	 |	 negative supply
+*			|	|	 |	 |	 output
+*			|	|	 |	 |	 |
+*			|	|	 |	 |	 |
+.SUBCKT AD8651		1	2	99	50	45
+* 
+* INPUT STAGE
+*
+M1   4  7  8  8 PIX L=1E-6 W=1290E-6
+M2   6  2  8  8 PIX L=1E-6 W=1290E-6
+M3  11  7 10 10 NIX L=1E-6 W=1290E-6
+M4  12  2 10 10 NIX L=1E-6 W=1290E-6
+RC1  4 14 R_NOISELESS 0.001E+3 
+RC2  6 16 R_NOISELESS 0.001E+3 
+RC3 17 11 R_NOISELESS 0.001E+3
+RC4 18 12 R_NOISELESS 0.001E+3
+RC5 14 50 R_NOISELESS 3E+2
+RC6 16 50 R_NOISELESS 3E+2
+RC7 99 17 R_NOISELESS 3E+2
+RC8 99 18 R_NOISELESS 3E+2
+C1  14 16 2.110E-12
+C2  17 18 2.110E-12
+I1  99  8 2E-3
+I2  10 50 2E-3
+V1  99  9 0.3
+V2  13 50 0.3
+D1   8  9 DX
+D2  13 10 DX
+EOS  7  1 POLY(3) (22,98) (73,98) (81,98) 100E-6 1 1 1
+IOS  1  2 1E-12
+*
+* CMRR 90dB, ZERO AT 10kHz
+*
+ECM1 21 98 POLY(2) (1,98) (2,98) 0 .5 .5
+RCM1 21 22 R_NOISELESS 950.0E+3
+CCM1 21 22 1.67E-11
+RCM2 22 98 R_NOISELESS 30
+*
+* PSRR=85dB, ZERO AT 200Hz
+*
+RPS1 70  0 R_NOISELESS 1E+6
+RPS2 71  0 R_NOISELESS 1E+6
+CPS1 99 70 1E-5
+CPS2 50 71 1E-5
+EPSY 98 72 POLY(2) (70,0) (0,71) 0 1 1
+RPS3 72 73 R_NOISELESS 795.774E+3
+CPS3 72 73 10.0E-9
+RPS4 73 98 R_NOISELESS 44.74
+*
+* VOLTAGE NOISE REFERENCE
+*
+XU1 81 98 98 OTA_Vnoise params: En=4.5n Enk=2.5k
+*
+* INTERNAL VOLTAGE REFERENCE
+*
+EREF 98  0 POLY(2) (99,0) (50,0) 0 .5 .5
+GSY  99 50 (99,50) 9.5E-5 
+EVP  97 98 (99,50) 0.5
+EVN  51 98 (50,99) 0.5
+*
+* LHP ZERO AT 180MHz
+*
+E1 32 98 POLY(2) (4,6) (11,12) 0 .8035 .8035
+R2 32 33 R_NOISELESS 5.684E+2
+R3 33 98 R_NOISELESS 9.362E+2
+C3 32 33 1E-12
+*
+* GAIN STAGE
+*
+G1 98 30 (33,98) 3.58E-3
+R1 30 98 R_NOISELESS 1.28E+6
+CF 45 30 50E-12
+D3 30 97 DX
+D4 51 30 DX
+*
+* OUTPUT STAGE
+*
+M5  45 46 99 99 POX L=1E-6 W=5.83E-3 
+M6  45 47 50 50 NOX L=1E-6 W=11.7E-3
+EG1 99 46 POLY(1) (98,30) 0.7197 1
+EG2 47 50 POLY(1) (30,98) 0.6050 1
+*
+* MODELS
+*
+.MODEL R_NOISELESS RES(T_ABS=-273.15)
+.MODEL POX PMOS (LEVEL=2,KP=10E-6,VTO=-0.328,LAMBDA=0.01,RD=0)
+.MODEL NOX NMOS (LEVEL=2,KP=10E-6,VTO=+0.328,LAMBDA=0.01,RD=0)
+.MODEL PIX PMOS (LEVEL=2,KP=100E-6,VTO=-1,LAMBDA=0.01)
+.MODEL NIX NMOS (LEVEL=2,KP=100E-6,VTO=+1,LAMBDA=0.01)
+.MODEL DX D(IS=1E-14,RS=5 Noiseless)
+*
+* OTA_Vnoise
+.subckt OTA_Vnoise 1 2 G
++ params: EN=1N ENK=1U
+.MODEL R_NOISE RES(T_ABS=-273.15)
+.MODEL VN D(KF={KF} IS={IS})
+.PARAM EN_INT={EN*1K}
+.PARAM M=0.5 VD=0.65
+.PARAM Q=1.60217657E-19 K=1.38064880E-23
+.PARAM KTS=1.657E-2
+.PARAM FMIN=1U FMAX=1G
+.PARAM FA={{EN_INT}*PWR({ENK},{M})}
+.PARAM EN_MIN={({FA}/PWR({FMIN},{M}))*1G}
+.PARAM EN_MAX={{EN_INT}*1G}
+.PARAM RATIO2={(PWR({EN_MAX},2)-{KTS})/(PWR({EN_MIN},2)-{KTS})}
+.PARAM KF={2*{Q}*({RATIO2}-1)/(1/{FMAX}-({RATIO2}*1/{FMIN}))}
+.PARAM T_K = {TEMP + 273.15}
+.PARAM VTK={{K}*({T_K}/{Q})}
+.PARAM ID={1E-24*PWR({EN_MIN},2)/(2*{Q}+{KF}/({FMIN}))}
+.PARAM IS={{ID}/(EXP({VD}/{VTK})-1)}
+D_D1         NV1 ND1 VN 
+D_D3         NV2 ND2 VN 
+G_G1         1 2 VNP VNN -1
+X_H1    ND1 G G VNN OTA_Vnoise_H1 
+R_R1         2 1 R_NOISE 1m
+V_V1         NV1 G 0.65
+X_H2    ND2 G VNP G OTA_Vnoise_H2 
+V_V2         NV2 G 0.65
+.ends OTA_Vnoise
+*
+.subckt OTA_Vnoise_H1 1 2 3 4  
+H_H1         3 4 VH_H1 707.1067812
+VH_H1         1 2 0V
+.ends OTA_Vnoise_H1
+*
+.subckt OTA_Vnoise_H2 1 2 3 4  
+H_H2         3 4 VH_H2 -707.1067812
+VH_H2         1 2 0V
+.ends OTA_Vnoise_H2
+*
+.ENDS AD8651
+*
+*$

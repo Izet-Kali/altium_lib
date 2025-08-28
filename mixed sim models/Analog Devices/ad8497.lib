@@ -1,0 +1,131 @@
+*****************************************************************************************************************
+* AD8497 SPICE Macro-model  
+* Revision History:            
+* OI:	12/10
+*       FB IAP ADI
+*
+.SUBCKT AD8497  IN-  REF  -Vs  VCJC  VOUT  +Vs  IN+     
+* Node assignments
+*                 inverting input
+*                 |   Ref
+*                 |   |    negative supply
+*                 |   |    |   No connect
+*                 |   |    |    |    Cold Compensation Junction Voltage
+*                 |   |    |    |    |    output voltage
+*                 |   |    |    |    |    |   positive supply
+*                 |   |    |    |    |    |    |     positive input
+*                 |   |    |    |    |    |    |     |
+*       AD8497  IN-  REF  -Vs  NC1  VCJC  VOUT  +Vs  IN+          
+*************************************************************************
+****************   IMPORTANT APPLICATION NOTE    ************************
+* The CJC pin is a voltage input pin (only on the SPICE model, not on the actual part). It has been included in the model to demonstrate the AD849x's 
+* intergrated temperature sensor functionatly and capability.
+* The CJC pin can be driven by a voltage source to simulate ambient temperature conditions. The CJC input has a 1V:1C relationship, so for example, 
+* a 25V input at CJC simulates ambient conditions of 25C, and 100V simulates ambient temperature of 100C.
+* The user will need to attach a voltage source to CJC pin,to assign or vary an ambient temperature.
+*
+* If the user wants to sweep multiple sources simultaneously (i.e. sweep the input voltage and ambient temperature at the same time), one 
+* methodology is described here:
+* 1. Attach a voltage source to the CJC pin and assign a variable name, for example: {Therm} -->Dont forget the brackets<--
+* 2. Copy and paste the following text commands onto your schematic page :Then they will need to do a step command as following:
+*   .op
+*   .step param temp -40 125 10  -> this will step up the parameter "temp" from -40 to 125 in increments of 10
+*   .PARAM Therm=(temp)          -> this defines the variable Therm in terms of parameter "temp".
+* 3. Perform your required sweep on any other source using the Simulation Profile settings.
+*************************************************************************
+     
+*************************************************************************
+**** IN-AMP *************************************************************
+*************************************************************************
+R1 sub_out sub_neg 49.97E3
+R2 sub_neg Inverting_Out 10.07E3
+R3 sub_pos noninverting_out 10090
+R4 REF sub_pos 49.97k
+R5 RG- N004 24700
+R6 RG+ N010 24700
+D3 N004 P001 D
+D4 P002 N004 D
+V3 P002 VNEGx 0.94
+V4 VPOSx P001 .71
+D5 N010 P003 D
+D6 P004 N010 D
+V5 P004 VNEGx 0.94
+V6 VPOSx P003 .71
+D7 N005 N002 D
+D8 N007 N005 D
+V7 N007 VNEGx 0.6
+V8 VPOSx N002 2.45
+D9 N021 N017 D
+D10 N023 N021 D
+V9 N023 VNEGx 0.6
+V10 VPOSx N017 2.45
+D11 sub_out N009 D
+D12 N012 sub_out D
+V11 N012 N016 0.85
+V12 N008 N009 0.89
+D13 REF N025 D
+D14 N024 REF D
+V13 N024 VNEGx 0.3
+V14 VPOSx N025 0.3
+D15 sub_pos N019 D
+D16 N018 sub_pos D
+V15 N018 VNEGx 0.9
+V16 VPOSx N019 0.9
+E4 Inverting_Out 0 N004 0 1
+E5 noninverting_out 0 N010 0 1
+Q1 Inv_Fdbk N003 RG- 0 PNP
+Q2 Pos_Fdbk N013 RG+ 0 PNP
+V1 VBIAS -Vs -3
+I1 Pos_Fdbk VBIAS 2E-6
+I2 Inv_Fdbk VBIAS 2E-6
+R12 RG- RG+ 2.078k
+C1 N004 Inv_Fdbk 19E-12
+C2 N010 Pos_Fdbk 19E-12
+E8 N003 0 N005 0 1
+E9 N013 0 N021 0 1
+VOSO VOUT1 sub_out 0.0503E-3
+C3 RG- 0 2.4e-12
+I23 IN- 0 -24.5E-9
+I24 IN+ 0 -25E-9
+G1 0 IN+ N022 N026 .7e-9
+R13 IN+ N022 10e9
+R14 N022 IN- 10e9
+R15 +Vs N026 10e9
+R16 N026 -Vs 10e9
+G2 0 IN- N022 N026 .7e-9
+E10 VPOSx 0 +Vs 0 1
+I3 +Vs -Vs 180E-6
+G3 +Vs -Vs +Vs -Vs 1e-6
+E11 VNEGx 0 -Vs 0 1
+H1 VPOSx N008 VOSO 1
+H2 N016 VNEGx VOSO 1
+R17 VBIAS Inv_Fdbk 10e9
+R18 Pos_Fdbk VBIAS 10e9
+H3 N006 IN- V24 19.6
+V24 N001 0 0
+R19 N001 0 .0166
+H5 N020 IN+ V26 19.6
+V26 N011 0 0
+R21 N011 0 .0166
+G4 0 N005 N006 N005 1
+G5 0 N021 N020 N021 1
+G6 0 N004 VBIAS Inv_Fdbk 1
+G7 0 N010 VBIAS Pos_Fdbk 1
+G8 0 sub_out sub_pos sub_neg 1
+R10 N005 0 10e9
+R7 N004 0 10E9
+R11 N021 0 10E9
+R8 N010 0 10E9
+R9 sub_out 0 10E9
+******************************************************
+**** Cold Junction Compensation **********************
+******************************************************
+E2 VOUT2 0 0 VCJC 5E-3
+**************************************************************************
+********* Output as the sum of IN-AMP output and CJC output **************
+**************************************************************************
+E1 VOUT 0 VOUT1 VOUT2 1
+**************************************************************************
+.model D D
+.model PNP PNP (BF=10E5 VAF=20000)
+.ENDS AD8497

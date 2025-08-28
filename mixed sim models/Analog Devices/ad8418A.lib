@@ -1,0 +1,132 @@
+* AD8418A MACROMODEL
+* Description: Current Sense Amplifier
+* Generic Desc: G=20, BiDir, ZeroDrift
+* Developed by: KF, PB 
+* Revision History: 11/01/2013 - Rev.1 
+* 9/22/2015 - Rev.2
+* Copyright 2013 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model 
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* BEGIN Notes:
+*
+* Not Modeled: 
+*	Temperature
+*	PSRR
+* Parameters modeled include: 
+*	Offset Voltage
+*	Bias Current vs. Common Mode Voltage
+*	DC Transfer Characteristic
+*	DC CMRR
+*	Gain vs. Frequency
+*	CMRR vs. Frequency
+*	Spectral Noise
+*	Slew Rate	
+*	Pulse Response
+*	Capacitive Loading Effects
+*	Common-Mode Step Response
+* END Notes
+*
+************************
+.SUBCKT AD8418A  VIN- GND REF2 VOUT VS REF1 VIN+
+
+D24 36 37 DIODE
+V14 0 38 dc 2.35
+D26 38 2 DIODE
+D25 2 VIN- DIODE
+V12 0 36 dc 2.35
+D23 37 VIN+ DIODE
+R9 35 REF2x 100000
+R8 35 REF1x 100000
+RRef2 5 REF2 100000
+RRef1 5 REF1 100000
+I6 4 0 dc 8e-005
+V9 34 0 dc 1.5
+D22 34 4 DIODE
+D21 VIN+ 4 DIODE
+R6 VIN+ 35 720000
+R5 VIN- 0 1575000
+Lcm 18 33 0.0027
+D19 29 6 DIODE
+D13 28 29 DIODE
+D18 25 20 DIODE
+D17 20 27 DIODE
+D16 27 26 DIODE
+D15 26 12 DIODE
+D14 12 28 DIODE
+D12 8 25 DIODE
+D6 9 8 DIODE
+D5 10 9 DIODE
+D4 11 10 DIODE
+D3 6 11 DIODE
+R14 0 20 1
+GI11 0 20 VIN+ 0 1
+V13 V85 22 dc 1.5
+D10 20 22 DIODE
+V7 21 VNEG4 dc 1.5
+D9 21 20 DIODE
+R13 0 6 1
+GI10 0 6 VIN- 0 1
+V4 19 VNEG4 dc 1.5
+D8 19 6 DIODE
+V2 V85 17 dc 1.5
+D7 6 17 DIODE
+EV8 Vsl+in 0 20 0 1
+EV6 7 0 6 0 1
+Vos 3 7 dc 0.0002
+R7 Vo1 0 1000000000
+R4 1 5 1450000  
+R3 Vsl+out 1 75000
+R2 33 Vo1 1500000 
+Rcm 3 18 75007.5
+GI1 0 Vo1 1 33 1
+
+* Noise
+
+V11 15 0 dc 0
+Rn 16 15 0.00166
+Vn 16 0 dc 0
+Hn 32 Vo1 Vn 620
+
+V10 0 30 dc 100
+D20 30 14 DIODE
+V19 0 24 dc -100
+D11 14 24 DIODE
+V5 VS 13 dc 0.85
+D1 VOUT 13 DIODE
+V1 23 GND dc 0.85
+D2 23 VOUT DIODE
+
+* Gain stage
+
+Rg2 VOUT 0 454.5
+Cg2 VOUT 0 1.4e-009
+GIg2 0 VOUT 14 0 0.0022
+Cg1 0 14 6.37e-007
+Rg1 0 14 1000000 
+GIg1 0 14 31 VOUT 1
+
+* Slew Rate
+
+GIsl 0 31 VALUE={LIMIT(1*V(32,31),0.1,-0.1)}
+Rsl 31 0 1000000000
+Csl 31 0 1e-007
+
+* Supplies
+
+EV20 REF2x 0 REF2 0 1
+EV18 REF1x 0 REF1 0 1
+V16 0 VNEG4 dc 4
+V15 V85 0 dc 85
+I4 VS GND dc 0.002
+
+* Common-Mode Step Response
+
+R1 Vsl+out 0 1000000000
+C1 Vsl+out 0 1e-009
+GI2 0 Vsl+out VALUE={LIMIT(1*V(Vsl+in,Vsl+out),15,-15)}
+
+.model DIODE D(Is=1E-14)
+
+.ENDS AD8418A

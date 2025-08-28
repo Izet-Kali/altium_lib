@@ -1,0 +1,197 @@
+* ADG1208 SPICE MAcro-model
+* Description: 8:1 Fault Protected Analog Multiplexer
+* Generic Desc:
+* Developed by: MPorley / ADGT
+* Revision History: 1.0 (05/2016)
+* Copyright 2016 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model 
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* Begin Notes:
+* The model will work on Vdd/Vss supply range from +/-5V to +/-16.5V.
+* The model will give specifications at +/-15V only. Please see datasheet page 3.
+* 
+* Not Modeled:
+*
+* Parameters modeled include:
+*	On Resistance
+*	Ton/Toff
+*	Transition Time and BBM Time Delay
+*	Charge Injection
+*	Off Isolation
+*	Crosstalk
+*	Bandwidth
+*	Supply Currents: Iss/Idd
+*	
+* End Notes
+*
+* Node Assignments
+*				A0
+*				| EN
+*				| | VSS
+*				| | | S1
+*				| | | | S2
+*				| | | | | S3
+*				| | | | | | S4
+*				| | | | | | | D
+*				| | | | | | | | S8
+*				| | | | | | | | | S7
+*				| | | | | | | | | |  S6
+*				| | | | | | | | | |  |  S5
+*				| | | | | | | | | |  |  |  Vdd
+*				| | | | | | | | | |  |  |  |  GND
+*				| | | | | | | | | |  |  |  |  |  A2
+*				| | | | | | | | | |  |  |  |  |  |  A1
+*				| | | | | | | | | |  |  |  |  |  |  |
+*				| | | | | | | | | |  |  |  |  |  |  |
+*				| | | | | | | | | |  |  |  |  |  |  |
+*				| | | | | | | | | |  |  |  |  |  |  |
+*				| | | | | | | | | |  |  |  |  |  |  |
+*				| | | | | | | | | |  |  |  |  |  |  |
+.SUBCKT ADG1208 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+* Models
+.model DClamp D(IS=1E-15 IBV=1E-13)
+.model von vswitch(Von = 2 Voff = 0.8 ron =1 roff = 1T)
+.model ven vswitch(Von = 3 Voff = 2.9 ron = 50k roff = 15k)
+.model strans vswitch(Von = 3 Voff = 2.9 ron =807k roff = 180k)
+
+* Charge Injection
+C_qinj 2 8 0.1e-012
+
+* Crosstalk and Off Isolation
+R17 69 14 1000000000000
+C18 12 69 0.6e-012
+C17 11 69 0.6e-012
+C16 10 69 0.6e-012
+C15 9 69 0.6e-012
+C14 7 69 0.6e-012
+C13 6 69 0.6e-012
+C12 5 69 0.6e-012
+C11 4 69 0.6e-012
+
+* Transition Time and BBM
+EV9 48 14 VALUE = { IF(V(1)<=1.99 & V(15)<=1.99 & V(16)<=1.99, 5 , 0 ) }
+S1 17 4 39 14 von
+C2 39 14 2e-013
+R9 79 39 100 
+S15 48 79 48 14 strans
+
+Ech1 50 14 VALUE = { IF(V(1)>1.99 & V(15)<=1.99 & V(16)<=1.99, 5 , 0 ) }
+S5 17 5 21 14 von
+C1 21 14 2.1e-009
+R8 80 21 100
+S14 50 80 50 14 strans
+
+Ech2 52 14 VALUE = { IF(V(1)<=1.99 & V(16)>1.99 & V(15)<=1.99, 5 , 0 ) }
+S2 17 6 59 14 von
+C3 59 14 2.1e-009
+R10 81 59 100
+S13 52 81 52 14 strans
+ 
+Ech3 55 14 VALUE = { IF(V(1)>1.99 & V(16)>1.99 & V(15)<=1.99, 5 , 0 ) }
+S6 17 7 68 14 von
+C4 68 14 2.1e-009
+R11 86 68 100
+S12 55 86 55 14 strans
+
+Ech7 54 14 VALUE = { IF(V(15)>1.99 & V(1)<=1.99 & V(16)<=1.99, 5 , 0 ) }
+S10 17 12 155 14 von
+C8 155 14 2.1e-009
+R15 85 155 100
+S11 54 85 54 14 strans
+
+Ech6 53 14 VALUE = { IF(V(1)>1.99 & V(15)>1.99 & V(16)<=1.99, 5 , 0 ) }
+S9 17 11 58 14 von
+C7 58 14 2.1e-009
+R14 84 58 100
+S4 53 84 53 14 strans
+
+Ech5 49 14 VALUE = { IF(V(1)<=1.99 & V(15)>1.99 & V(16)>1.99, 5 , 0 ) }
+S8 17 10 56 14 von
+C6 56 14 2.1e-009
+R13 83 56 100
+S16 49 83 49 14 strans
+
+Ech4 51 14 VALUE = { IF(V(1)>1.99 & V(15)>1.99 & V(16)>1.99, 5 , 0 ) }
+S7 17 9 47 14 von
+C5 47 14 2e-013
+R12 82 47 1000
+S3 51 82 51 14 strans
+
+* Ton/Toff
+S19 35 41 35 14 ven
+S18 18 19 46 14 von
+EV8 35 14 VALUE = { IF((V(2)>=2)  & (V(2)<=V(13)),5, 0) }
+C10 46 14 3e-012
+R16 41 46 100
+
+* Idd/Iss
+iI2 13 14 dc 2e-009
+iI1 3 14 dc 2e-009
+
+*Overvoltage Pull to Rails
+V13 13 73a 1.28
+V12 72a 3 0.67
+D2 19 73a DClamp
+D1 72a 19 DClamp
+
+* Digital Input Pins
+V22 70 3 1.28
+V21 71 3 0.67
+V20 72 3 0.67
+V19 73 3 0.67
+V10 13 65 1.28
+V18 13 67 1.28
+V17 13 68a 1.28
+V11 13 66a 1.28
+D14 70 2 DClamp
+D13 2 65 DClamp
+iI6 2 14 5e-009
+iI3 1 14 5e-009
+iI5 16 14 5e-009
+iI4 15 14 5e-009
+D10 73 16 DClamp
+D9 16 68a DClamp
+D8 72 15 DClamp
+D7 15 67 DClamp
+D6 71 1 DClamp
+D5 1 66a DClamp
+
+* Bandwidth
+C9 8 14 5e-012
+
+* Voltage Supply
+S17 18 17 90 14 von
+EV7 90 14 VALUE = { IF((V(13)>=5 & V(13)<=16.5) & (V(3)<=0 & V(3)>=-16.5),3,0) }
+
+* On Resistance
+R5 19 24 20 
+EV6 60 14 VALUE = { IF(((V(19)-V(8))>0 & V(19)<-9),(0.03*(16 + V(19)))+1 , 0 ) }
+R7 22 60 0.001
+R6 22 61 0.001 
+EV5 61 14 VALUE = { IF(((V(19)-V(8))<0 & V(8)<-9),(0.03*(16 + V(8)))+1, 0 ) }
+RINb	22 14	1G
+EOUTb	25 6b	POLY(2) (22,14) (3b,14) 0 0 0 0 230/1000
+FCOPYb	14 3b	VSENSEb 1
+RSENSORb 3b 14	1K
+VSENSEb	6b 24	0
+R4 23 1aa 0.001 
+R3 23 74 0.001 
+EV4 1aa 14 VALUE = { IF(((V(19)-V(8))<0 & V(8)>-9 & V(8)<6),  (0.1*((1.5*(V(8)+0.5)*(V(8)+2.5)))+20), 0 ) }
+EV3 74 14 VALUE = { IF(((V(19)-V(8))>0 & V(19)>-9 & V(19)<6),  (0.1*((1.5*(V(19)+0.5)*(V(19)+2.5)))+20), 0 ) }
+RINa	23 14	1G
+EOUTa	34 6a	POLY(2) (23,14) (3a,14) 0 0 0 0 9.8/1000
+FCOPYa	14 3a	VSENSEa 1
+RSENSORa 3a 14	1K
+VSENSEa	6a 25	0
+EV2 38 14 VALUE = { IF(((V(19)-V(8))>0 & V(19)>6), (0.099*(15 - V(19))+3)+1, 0 ) }
+R2 33 38 0.001
+R1 33 36 0.001
+EV1 36 14 VALUE = { IF(((V(19)-V(8))<0 & V(8)>6), (0.099*(15 - V(8))+3)+1, 0 ) }
+RINc	33 14 1G
+EOUTc	8 6c	POLY(2) (33,14) (3c,14) 0 0 0 0 58/1000
+FCOPYc	14 3c	VSENSEc 1
+RSENSORc 3c 14	1K
+VSENSEc	6c 34	0
+.ENDS ADG1208

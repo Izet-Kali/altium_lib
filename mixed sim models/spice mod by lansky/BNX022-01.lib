@@ -1,0 +1,9 @@
+* Don't work correkt
+.SUBCKT BNX022-01 In Out 3 4 5 6
+.PARAMS top=159.131071u bot=1.591788p
+l1 In Out {top}
+c2 In Out {bot}
+r1 3 4 {1u}
+r2 3 5 {1u}
+r3 3 6 {1u}
+.ENDS BNX022-01

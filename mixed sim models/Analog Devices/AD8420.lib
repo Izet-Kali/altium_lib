@@ -1,0 +1,195 @@
+* AD8420 SPICE Macro-model
+* Description: Amplifier
+* Generic Desc: Wide Supply Range, Rail-to-rail output Indirect Current-Feedback instrumentation amplifier
+* Developed by: ADI - LPG
+*
+* Revision History:
+* 1.0 03/2012 - FB (initial release)
+* 2.0 08/2012  - FB (1. needed to remove 2 clamps that were affecting the performance of part at single 5V supply.
+*                    (2. R28 was helping clamp the Vin_diff=1.8V, but current fro D8 was flowing in it and creating large offset when Vps=+5V/0V. Reduced value of R28 to fix prob)
+* 3.0 11/2014 - SH (Bug fixes. Improved clamping performance. Added 1/f noise and current noise. 
+*					Improved supply current modeling including load currents and adaptive biasing. Reorganized netlist.)
+* Copyright 2012, 2014 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html
+* for License Statement. Use of this model indicates your acceptance
+* of the terms and provisions in the License Statement.
+*
+* BEGIN Notes:
+*
+*  Typical Values at 25°C used in model. Values taken from ±15V table and Typical Performance Characteristics.
+*
+*  Not Modeled:
+*   Temperature effects
+*
+* Parameters Modeled Include:
+*   Gain error, Vos vs Vsy, Ibias & Ios vs Vsy
+*   Bandwidth
+*   Voltage and current noise with 1/f noise
+*   CMRR vs frequency and Vdiff
+*   PSRR vs frequency
+*   Supply current vs Vsy incl load current and adaptive gm biasing
+*   Output clamp vs load
+*   Input range and FB, REF voltage range
+*   Differential input voltage range
+*   Input impedance
+*
+* Node assignments
+*                 No connect
+*                 |   non-inverting input
+*                 |   |    inverting input
+*                 |   |    |    negative supply
+*                 |   |    |    |    positive supply
+*                 |   |    |    |    |    REF
+*                 |   |    |    |    |    |    FB
+*                 |   |    |    |    |    |    |    output
+*                 |   |    |    |    |    |    |     |
+*                 |   |    |    |    |    |    |     |
+*                 |   |    |    |    |    |    |     |
+.SUBCKT AD8420    NC  IN+  IN-  -Vs  +Vs  REF  FB  VOUT
+*** Input Stage ***
+FIBIAS1 IN+ 0 POLY(1) VN3 -19E-9 80E-6
+G11 IN+ IN- IN+ IN- 6E-9
+VOS 6 IN+ 124.824E-6
+EPSRR+ 7 6 61 62 1
+ECMRR 8 7 cmrr_out 0 1
+G7 0 9 8 9 1
+R4 9 0 10E9
+FIBIAS2 IN- 0 POLY(1) VN5 -20E-9 80E-6
+H3 3 IN- VN1 53.2
+EPSRR- 4 3 64 65 1
+G8 0 5 4 5 1
+R5 5 0 10E9
+R28 V+ 9 10
+R24 V- 5 10
+D7 V+ 17 D
+D8 16 V+ D
+V3 VPOSx 17 2.2
+V4 16 VNEGx -0.1
+D9 V- 15 D
+D10 14 V- D
+V5 VPOSx 15 2.2
+V6 14 VNEGx -0.1
+D1 26 FB D
+V7 26 VNEGx -0.1
+D2 FB 27 D
+V8 VPOSx 27 2.2
+D3 REF 29 D
+V11 VPOSx 29 2.2
+D4 28 REF D
+V12 28 VNEGx -0.1
+* max Input Differential voltage = ±1.8V at room temp
+D15 V- 13 D
+D17 12 V- D
+V9 V+ 12 1.8
+V10 13 V+ 1.8
+G4 0 20 V- V+ 28E-6
+G5 0 20 FB 21 28E-6
+R10 20 0 200E3
+R11 20 0 200E3
+FIBIAS3 FB 0 POLY(1) VN5 -20E-9 80E-6
+FIBIAS4 REF 0 POLY(1) VN7 -19E-9 80E-6
+VOS1 21 REF 125e-6
+*
+*** TIA and Output Stage ***
+* Dominant Pole. BW = gm/2PiC1
+G6 0 23 0 20 1
+R20 22 20 7E3
+C1 23 22 17.8E-12
+R1 23 0 360E3
+D30 23 VPOSx D
+D31 VNEGx 23 D
+*Secondary Poles and Cap Response
+G10 0 24 25 0 1.25E-3
+R21 24 0 800
+C7 24 0 1.875E-10
+G12 0 25 23 0 1E-3
+R2 25 0 1000
+C2 25 0 3E-11
+*Output Clamp vs Source/Sink Current
+D16 24 31 D
+D18 33 24 D
+H1 VPOSx 31 POLY(1) VSRC 0.25 0 25000
+H2 33 VNEGx POLY(1) VSINK 0.18 0 25000
+V_current 24 VOUT 0
+*
+*** Voltage and Current Noise with 1/f ***
+VN1 70 0 0
+RN1 70 0 .0166
+DN1 71 70 DN
+VN2 71 0 0.2
+VN3 72 0 0
+RN2 72 0 .0166
+DN2 73 72 DIN
+VN4 73 0 0.2
+VN5 74 0 0
+RN3 74 0 .0166
+DN3 75 74 DIN
+VN6 75 0 0.2
+VN7 76 0 0
+RN4 76 0 .0166
+DN4 77 76 DIN
+VN8 77 0 0.2
+VN9 78 0 0
+RN5 78 0 .0166
+DN5 79 78 DIN
+VN10 79 0 0.2
+*
+*** CMRR ***
+R15 +Vs 85 10E9
+R16 85 -Vs 10E9
+G1 0 IN+ VCM 85 -.148E-9
+G2 0 IN- VCM 85 -.148E-9
+E3 Vdiff 0 IN+ IN- 1
+R8 IN+ VCM 10E9
+R22 VCM IN- 10E9
+L1 cmrr_out 80 50E-6
+R23 80 0 1
+G9 0 cmrr_out vout2 0 1
+* Vary CMRR with Vin_diff
+* abs(Vin_diff)
+GABS 0 201 Vdiff 0 1
+DABS1 201 202 D
+VISP 202 0 0
+DABS2 203 201 D
+VISN 0 203 0
+HABS vi 0 POLY(2) VISP VISN 0 1 1
+* error = VCM*Gain_CM
+EB2 vout2 0 POLY(2) (VCM, 0) (Gain_CM, 0) 0 0 0 0 1
+* Poly derived from datasheet plot
+EB3 Gain_CM 0 POLY(1) (vi,0) 3.7e-6 0.00078 -0.003785 0.009 -0.011 0.0068 -0.00172
+*
+*** PSRR ***
+E1 61 0 60 0 1
+R6 62 61 4.5
+R7 0 62 1Meg
+C3 62 0 0.11e-6
+R9 60 0 1e6
+C4 +Vs 60 100e-6
+E2 64 0 63 0 1
+R12 65 64 4.5
+R17 0 65 1Meg
+C5 65 0 0.0035e-6
+R18 63 0 1e6
+C6 -Vs 63 100e-6
+*
+*** Biasing and Supply Current ***
+GSY +Vs -Vs POLY(2) (+Vs, -Vs) (Vi, 0) 77E-6 766E-9 100E-6
+E10 VPOSx 0 +Vs 0 1
+E11 VNEGx 0 -Vs 0 1
+FSUP 56 0 V_current 1
+D24 90 +Vs DZ
+VSRC 90 91 0
+D20 91 56 D
+D25 -Vs 52 DZ
+VSINK 53 52 0
+D23 56 53 D
+*
+*** Models Used ***
+.MODEL D D(IS=1e-15 N=0.1)
+.MODEL DN D(IS=1e-15 KF=3.111E-6)
+.MODEL DIN D(IS=1e-15 KF=3.318E-6)
+.MODEL DZ D(IS=1e-15 BV=50 RS=1)
+*
+.ends AD8420
+*$

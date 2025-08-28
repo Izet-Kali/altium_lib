@@ -1,0 +1,17 @@
+*------------------------------------------------------------
+*Crystal
+.SUBCKT Crystal plus minus PARAMS: F0=1MEG R=500 Q=50K 
+.PARAM W={(2*PI*F0)}
+CPAR plus minus 7P
+CSER minus n1 {1/ (R*Q*W)}
+L1 n1 n2 {R*Q/ W}
+R1 n2 plus {R}
+.ENDS 
+*--------------------------------------------------
+* Resonator
+.SUBCKT Resonator  plus minus PARAMS: Lin=1m F0=1meg Q0=20 
+C1 Plus Minus {1/(Lin*4*PI*PI*F0*F0)}
+R1 Plus n1  {2*PI*F0*Lin/Q0}
+L1 n1 Minus {Lin}
+.ENDS
+

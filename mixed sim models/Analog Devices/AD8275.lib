@@ -1,0 +1,203 @@
+* AD8275 SPICE Macro-model
+* Description: Amplifier
+* Generic Desc: Gain of 0.2 Difference Amp, Level Translator, and ADC Driver
+* Developed by: Scott Hunt
+* 
+* Revision History:
+* 1.0(12/2013) - SH
+* 
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+*
+* BEGIN Notes:
+*
+* Not Modeled:
+*   Temperature effects
+*
+* Parameters modeled include:
+*   Vos
+*   Gain error
+*   Noise
+*   CMRR
+*   PSRR
+*   Output range
+*   Input range 
+*   Supply current
+*   Slew rate
+*   Gain/phase
+*   Bandwidth
+*   Output current limit
+*   Output current reflected in supplies
+*
+* Supply voltage range: 3.3V to 15V
+*
+* Absolute max voltage range at input pins: +Vs - 40V to -Vs + 40V
+* Vcm_max = 13.14*(+Vs) - 7.14*(-Vs) - 5*((REF1 + REF2)/2) - 29.69
+* Vcm_min = 6*(-Vs) = 5*((REF1+REF2)/2) - 0.11
+*
+* Typical Specifications used in Model
+*
+* END Notes
+*
+* Node Assignments
+*                Reference voltage input 1
+*                 |   Inverting input
+*                 |    |   Non-inverting input
+*                 |    |    |   Negative supply
+*                 |    |    |    |   Output sense pin (tie to OUT)
+*                 |    |    |    |    |     Amplifier output
+*                 |    |    |    |    |     |    Positive supply
+*                 |    |    |    |    |     |    |    Reference voltage input 2
+*                 |    |    |    |    |     |    |    |
+.subckt AD8275  REF1  -IN  +IN  -VS  SENSE  OUT  +VS  REF2
+
+***Diff Amp Resistors
+R62 -IN 2 RNoise 50.01e3
+R63 +IN 1 RNoise 50.01e3
+R65 2 SENSE RNoise 10e3
+R61 1 REF1 RNoise 20e3
+R66 1 REF2 RNoise 20e3
+Vbias 3 51 2.5
+R67 3 2 7e3
+R68 3 1 7e3
+
+***Differential Stage
+Q1 13 12 14 0 npn
+Q2 17 2 16 0 npn
+RC1 98 13 Rideal 3E+03
+RC2 98 17 Rideal 3E+03
+RE1 15 14 Rideal 2.948E+03
+RE2 16 15 Rideal 2.948E+03
+Dcmlim1 18 15 DQuiet
+Vcmlim1 18 51 1.376
+Dcmlim2 19 98 DQuiet
+Vcmlim2 19 2 1.5
+Dcmlim3 20 98 DQuiet
+Vcmlim3 20 12 1.5
+Ibias 15 51 1.00E-03
+Ios 1 2 0
+Vos 1 7 1e-4
+Cinv 2 0 3e-12
+Cninv 1 0 3e-12
+
+***Noise
+VVnoise 501 0 0
+RVNoise 501 0 RNoise 1.6e-4
+DVNoise 511 0 DVNoise
+VDNoise 511 501 0.1
+HVnoise 9 7 Vvnoise 1
+VInoise1 502 0 0
+RINoise1 502 0 RNoise 165600000
+DINoise1 502 0 DINoise1
+FINoise1 12 0 VINoise1 1
+VInoise2 503 0 0
+RINoise2 503 0 RNoise 165600000
+DINoise2 503 0 DINoise2
+FINoise2 2 0 VINoise2 1
+
+***Common Mode Rejection
+Rcm1 +IN 601 RIdeal 100E+06
+Rcm2 601 -IN RIdeal 100E+06
+Gcmr 0 602 601 0 1.00E-06
+Rcmr1 602 603 RIdeal 1E+06
+Rcmr2 603 604 RIdeal 1.585e1
+Lcmr 604 0 6.5e-6
+Ecmr 10 9 603 0 1.0E+00
+
+***Power Supply Rejection
+Epsr1 700 0 98 0 1
+Rpsr1 700 701 RIdeal 1.00E+02
+Rpsr2 701 702 RIdeal 5.012E-04
+Lpsr1 702 0 3.988E-09
+Epsr2 11 10 701 0 1
+Epsr3 703 0 51 0 1
+Rpsr3 703 704 RIdeal 1.00E+02
+Rpsr4 704 705 RIdeal 5.012E-04
+Lpsr2 705 0 3.988E-09
+Epsr4 12 11 704 0 1
+
+***First Gain and Slew Rate
+GSlew 0 101 17 13 1.00E+00
+RSlew 101 0 RIdeal 2.5e+02
+DSlew1 101 102 DZener
+DSlew2 0 102 DZener
+
+***Second Gain with Dominant Pole and Output Voltage Limiting
+Gp1 51 201 101 0 7.9168E-07
+Rp1 201 51 RIdeal 5.0525E+11
+Cp1 201 51 1.50e-12
+Vlim1 97 206 0.73
+Dlim1 201 206 DQuiet
+Vlim2 207 52 0.68
+Dlim2 207 201 DQuiet
+Esupref1 97 98 51 0 1
+Esupref2 52 51 51 0 1
+
+***Additional Poles
+Gp2 0 202 201 51 1.00e-03
+Rp2 202 0 RIdeal 1.00e+03
+Cp2 202 0 3.97888E-12
+Gp3 0 203 202 0 1.00e-03
+Rp3 203 0 RIdeal 1.00e+03
+Cp3 203 0 1.76839E-12
+Gp4 0 204 203 0 1.00e-03
+Rp4 204 0 RIdeal 1.00e+03
+Cp4 204 0 1.59155e-16
+Gp5 0 205 204 0 1.00e-03
+Rp5 205 0 RIdeal 1.00e+03
+Cp5 205 0 1.592e-16
+
+***Zeros
+Gz1 0 301 205 0 1.00e-03
+Rz1 301 302 RIdeal 1.00e+03
+Lz1 302 0 1.592E-10
+Gz2 0 303 301 0 1.00e-03
+Rz2 303 304 RIdeal 1.00e+03
+Lz2 304 0 1.592e-10
+Gz3 0 305 303 0 1.00e-03
+Rz3 305 306 RIdeal 1.00e+03
+Lz3 306 0 1.592e-10
+
+***Output with Current Limiting
+Gbuf 0 401 305 0 1.00e-04
+Rbuf 401 0 RIdeal 1.00e+04
+Eout 404 0 401 0 1.0E+00
+Rout 405 404 RIdeal 2E-01
+Lout 406 405 1.0e-19
+Cout 406 0 1E-22
+Voutmon 406 OUT 0
+Dout1 401 407 DQuiet
+Vout1 407 406 -6.240E-01	
+Dout2 408 401 DQuiet
+Vout2 406 408 -6.240E-01
+
+***Reference Supply Generator
+Eref1 98 0 +VS 0 1
+Eref2 51 0 -VS 0 1
+
+***Total Supply Current
+Iq +VS -VS 0.0019
+Fsup1 803 0 Voutmon 1
+Dsup1 +VS 802 DQuiet
+DZsup1 803 802 DZener2
+Dsup2 804 -VS DQuiet
+DZsup2 804 803 DZener2
+Fsup2 823 0 Vbias -1
+Dsup3 +VS 822 DQuiet
+DZsup3 823 822 DZener2
+Dsup4 824 -VS DQuiet
+DZsup4 824 823 DZener2
+
+*Models Used
+.model Rideal   Res(T_ABS=-273)
+.model Rnoise   Res(T_ABS=27)
+.model npn      npn(BF=499999)
+.model DQuiet   D(IS=1E-16)
+.model DZener   D(BV=46.677)
+.model DZener2  D(BV=50)
+.model DVNoise  D(IS=1E-15 KF=0.05)
+.model DINoise1 D(KF=0.000001)
+.model DINoise2 D(KF=0.000001)
+
+.ends AD8275

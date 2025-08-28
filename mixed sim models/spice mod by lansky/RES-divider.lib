@@ -1,0 +1,5 @@
+.SUBCKT RESdiv p1 p2 p3
+.PARAMS top=1k bot=1k
+r1 p1 p2 {top}
+r2 p2 p3 {bot}
+.ENDS RESdiv

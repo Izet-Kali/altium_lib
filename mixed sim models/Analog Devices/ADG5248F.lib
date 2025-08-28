@@ -1,0 +1,223 @@
+* ADG5248F SPICE MAcro-model
+* Description: 8:1 Fault Protected Analog Multiplexer
+* Generic Desc:
+* Developed by: MPorley / ADGT
+* Revision History: 1.0 (01/2016)
+* Copyright 2016 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model 
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* Begin Notes:
+* The model will work on Dual Supply operation only.
+* The model will work on Vdd/Vss supply range from +/-5V to +/-22V.
+* The model will give specifications at +/-15V only. Please see datasheet page 3.
+* To achieve specified overvoltage timing parameters, use Maximum Step Size of 1e-008 in Transient analysis.
+* 
+* Not Modeled:
+*
+* Parameters modeled include:
+*	On Resistance
+*	Ton/Toff
+*	Transition Time
+*	Charge Injection
+*	Off Isolation
+*	Crosstalk
+*	Bandwidth
+*	Supply Currents: Iss/Idd
+*	Overvoltage Recovery/Response Time 
+*	Interrupt Flage Response/Recovery Time
+*	
+* End Notes
+*
+* Node Assignments
+*				 A0/F0
+*				 | EN/F2
+*				 | | VSS
+*				 | | | S1
+*				 | | | | S2
+*				 | | | | | S3
+*				 | | | | | | S4
+*				 | | | | | | | D
+*				 | | | | | | | | NEGFV
+*				 | | | | | | | | | SF
+*				 | | | | | | | | | |  FF
+*				 | | | | | | | | | |  |  POSFV
+*				 | | | | | | | | | |  |  |  S8
+*				 | | | | | | | | | |  |  |  |  S7
+*				 | | | | | | | | | |  |  |  |  |  S6
+*				 | | | | | | | | | |  |  |  |  |  |  S5
+*				 | | | | | | | | | |  |  |  |  |  |  |  VDD
+*				 | | | | | | | | | |  |  |  |  |  |  |  |  GND
+*				 | | | | | | | | | |  |  |  |  |  |  |  |  |  A2
+*				 | | | | | | | | | |  |  |  |  |  |  |  |  |  |  A1/F1
+*				 | | | | | | | | | |  |  |  |  |  |  |  |  |  |  |
+*				 | | | | | | | | | |  |  |  |  |  |  |  |  |  |  |
+.SUBCKT ADG5248F 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+* Models
+.model DClamp D(IS=1E-15 IBV=1E-13)
+.model von vswitch(Von = 2 Voff = 0.8 ron =1 roff = 1T)
+.model ven vswitch(Von = 3 Voff = 2.9 ron = 20k roff = 180k)
+.model strans vswitch(Von = 3 Voff = 2.9 ron =600k roff = 150k)
+.model vpoff vswitch(Von = 3 Voff = 2.9 ron =1 roff = 1.3k)
+.model voff vswitch(Von = 3 Voff = 0.8 ron =1 roff = 1T)
+.model vsf vswitch(Von = 3 Voff = 0.8 ron =1 roff = 1.3k)
+.model vvpos vswitch(Von = 3 Voff = 0 ron =40000 roff = 1T)
+.model vovoff vswitch(Von = 3 Voff = 0 ron =1450 roff =1 )
+* Charge Injection
+Ech9 87c 18 VALUE = { IF(V(65)>0,(V(65)/2), 0) }
+Ech9b 87b 18 VALUE = { IF(V(65)==0,(V(65))+1, 0) }
+Ech9a 87a 18 VALUE = { IF(V(65)<0,  (V(65)/1.9), 0) }
+Rqinj 87 87a 0.001
+Rqinja 87 87b 0.001
+Rqinjb 87 87c 0.001
+R1 87 1aa  1e6
+Vsns 1aa 18 0
+Gcap 8 2 value={9.3e-13*ddt(V(87,18)*V(8,2))}
+* Overvoltage Recovery/Response Time 
+C10 43 18 1.1e-009
+R28 45 43 70
+S13 32 45 32 18 vovoff
+S10 64a 65 43 18 von
+EV14 32 18 VALUE = { IF(V(66)>V(12) | V(66)<V(9),0.8,3) }
+* Overvoltage Pull to Rails 
+V13 12 73 0.76
+V12 72 9 0.76
+D2 8 73 DClamp
+D1 72 8 DClamp
+S26 12 8 71 18 vvpos
+RV7 71a 71 0.001
+EV7 71a 18 VALUE = { IF((V(48)>=2.8 | V(50)>=2.8 | V(52)>=2.8 | V(55)>=2.8) & V(66)>=V(12), 3, 0.1) }
+RV7a 71b 71 0.001
+EV7a 71b 18 VALUE = { IF((V(51)>=2.8 | V(49)>=2.8 | V(53)>=2.8 | V(54)>=2.8)  & V(66)>=V(12), 3, 0.1) }
+S25 9 8 70 18 vvpos
+RV6 70 70a 0.001
+EV6 70a 18 VALUE = { IF((V(48)>=2.8 | V(50)>=2.8 | V(52)>=2.8 | V(55)>=2.8) & V(66)<=V(9), 3, 0.1) }
+RV6a 70 70b 0.001
+EV6a 70b 18 VALUE = { IF((V(51)>=2.8 | V(49)>=2.8 | V(53)>=2.8 | V(54)>=2.8) & V(66)<=V(9), 3, 0.1) }
+* SF pin Interrupt Flage Response/Recovery Time Delay
+EV19 63 18 VALUE = { IF(((V(4)>V(12)) | V(4)<V(9)) & V(1)<2 & V(20)<2 & V(2)<2, 3, 0) }
+EV20 23 18 VALUE = { IF(((V(5)>V(12)) | V(5)<V(9)) & V(1)>=2 & V(20)<2 & V(2)<2, 3, 0) }
+EV21 24 18 VALUE = { IF(((V(6)>V(12)) | V(6)<V(9)) & V(1)<2 & V(20)>=2 & V(2)<2, 3, 0) }
+EV22 25 18 VALUE = { IF(((V(7)>V(12)) | V(7)<V(9)) & V(1)<2 & V(20)>=2 & V(2)>=2, 3, 0) }
+EV23 26 18 VALUE = { IF(((V(16)>V(12)) | V(16)<V(9)) & V(1)<2 & V(20)<2 & V(2)>=2, 3, 0) }
+EV24 28 18 VALUE = { IF(((V(15)>V(12)) | V(15)<V(9)) & V(1)>=2 & V(20)<2 & V(2)>=2, 3, 0) }
+EV25 29 18 VALUE = { IF(((V(14)>V(12)) | V(14)<V(9)) & V(1)<2 & V(20)>=2 & V(2)>=2, 3, 0) }
+EV26 30 18 VALUE = { IF(((V(13)>V(12)) | V(13)<V(9)) & V(1)>=2 & V(20)>=2 & V(2)>=2, 3, 0) }
+EV15 57 18 VALUE = { IF(V(44)>=2.8, 3, 0) }
+S24 44 30 30 18 von
+S23 44 29 29 18 von
+S22 44 28 28 18 von
+S21 44 26 26 18 von
+S20 44 25 25 18 von
+S19 44 24 24 18 von
+S18 44 23 23 18 von
+S17 44 63 63 18 von
+S16 57 20a 57 18 vsf
+R7 20a 62 94
+C13 62 18 1.07e-009
+R43 42 18 1000000
+R41 10 18 2100000
+iI5 42 10 dc 1.4e-006
+S12 10 18 62 18 von
+* FF pin Interrupt Flage Response/Recovery Time
+S11 11 18 37 18 von
+S14 67 22 67 18 vpoff
+R40 11 18 2100000
+C12 37 18 1.07e-009
+R42 40 18 1000000
+iI4 40 11 1.4e-006
+R38 37 22 94
+EV18 67 18 VALUE = { IF(V(2)>=2 & V(66)>=V(12),3,0) }
+* Voltage Supply
+S39 64 64a 90 18 von
+EV27 90 18 VALUE = { IF((V(17)>=5 & V(17)<=22) & (V(3)<=-5 & V(3)>=-22),3,0) }
+* Supply Currents
+iI7 17 3 dc 0.00045
+iI6 17 9 dc 0.0002
+iI3 12 18 dc 0.00015
+iI2 17 18 dc 0.0006
+* Ton/Toff Time Delay
+S15 35 41 35 18 ven
+EV3 35 18 VALUE = { IF((V(2)>=2) & (V(2)<=48), 5, 0) }
+S9 66 64 46 18 von
+C2 46 18 3e-013
+R12 41 46 100
+* Bandwidth
+C11 8 18 15e-012
+* On Resistance
+R2 65 34 175
+EV11 60 18 VALUE = { IF((((V(66)*V(66)*0.1)>0)&(V(66)<-13)&(V(66)>-15)),130,0) }
+EV10 61 18 VALUE = { IF((((V(8)*V(8)*0.1)>0)&(V(8)<-13)&(V(66)>-15)),130,0) }
+R11 33 60 0.001
+R10 33 61 0.001
+EV9 1a 18 VALUE = { IF((((V(8)*V(8)*0.1)>0)&(V(8)>=-10 & V(8)<=10)),55,0) }
+EV8 2a 18 VALUE = { IF((((V(66)*V(66)*0.1)>0)&(V(66)>=-10 & V(66)<=10)),55,0) }
+R9 33 1a 0.001
+R8 33 2a 0.001
+EV4 36 18 VALUE = { IF((((V(8)*V(8)*0.1)>0)&(V(8)>10) & V(8)<15),0.001*exp(V(8))+50,0) }
+EV5 38 18 VALUE = { IF((((V(66)*V(66)*0.1)>0)&V(66)>10) & V(66)<15,0.001*exp(V(66))+50,0) }
+R6 33 38 0.001
+R5 33 36 0.001
+EV2 31 18 VALUE = { IF((((V(66)*V(66)*0.1)>0)&(V(66)<=-10)&V(66)>=-13),(0.001*exp(-V(66)-2))+50,0 ) }
+EV1 27 18 VALUE = { IF((((V(8)*V(8)*0.1)>0)&(V(8)<=-10)&V(8)>=-13), (0.001*exp(-V(8)-2))+50,0) }
+R3 33 31 0.001
+R1b 33 27 0.001
+RIN	33 18	1G
+EOUT	8 116	POLY(2) (33,18) (113,18) 0 0 0 0 4/1000
+FCOPY	18 113	VSENSE 1
+RSENSOR 113 18	1K
+VSENSE	116 34	0
+
+* Crosstalk and Off Isolation
+C21 16 69 4.3e-012
+C20 15 69 4.3e-012
+C19 14 69 4.3e-012
+C18 13 69 4.3e-012
+C17 7 69 4.3e-012
+C16 6 69 4.3e-012
+C15 5 69 4.3e-012
+C14 4 69 4.3e-012
+Rxtalk 69 18 1e012
+* Transition and BBM Time Delay
+Ech8 54 18 VALUE = { IF((V(2)>=2 & V(2)<=48) & V(1)>=2 & V(20)>=2 & V(19)>=2, 5 , 0 ) }
+S8 66 13 19a 18 von
+S33 54 76 54 18 strans
+C9 19a 18 9e-013
+R26 76 19a 100
+Ech7 53 18 VALUE = { IF((V(2)>=2 & V(2)<=48) & V(1)<2 & V(20)>=2 & V(19)>=2, 5 , 0 ) }
+S7 66 14 58 18 von
+S32 53 77 53 18 strans
+C8 58 18 2.6e-009
+R24 77 58 100
+Ech6 49 18 VALUE = { IF((V(2)>=2 & V(2)<=48) & V(1)>=2 & V(20)<2 & V(19)>=2, 5 , 0 ) }
+S6 66 15 56 18 von
+S31 49 78 49 18 strans
+C7 56 18 2.1e-009
+R22 78 56 100
+Ech5 51 18 VALUE = { IF((V(2)>=2 & V(2)<=48) & V(1)<2 & V(20)<2 & V(19)>=2, 5 , 0 ) }
+S5 66 16 47 18 von
+S30 51 81 51 18 strans
+C6 47 18 2.1e-009
+R20 81 47 100
+Ech4 55 18 VALUE = { IF((V(2)>=2 & V(2)<=48) & V(1)>=2 & V(20)>=2 & V(19)<2, 5 , 0 ) }
+S4 66 7 68 18 von
+S34 55 74 55 18 strans
+C5 68 18 2.1e-009
+R18 74 68 100
+Ech3 52 18 VALUE = { IF((V(2)>=2 & V(2)<=48) & V(1)<2 & V(20)>=2 & V(19)<2, 5 , 0 ) }
+S3 66 6 59 18 von
+S29 52 75 52 18 strans
+C4 59 18 2.1e-009
+R16 75 59 100
+Ech2 50 18 VALUE = { IF((V(2)>=2 & V(2)<=48) & V(1)>=2 & V(20)<2 & V(19)<2, 5 , 0 ) }
+S2 66 5 21 18 von
+S28 50 79 50 18 strans
+C3 21 18 2.1e-009
+R14 79 21 100
+Ech1 48 18 VALUE = { IF((V(2)>=2 & V(2)<=48) & V(1)<2 & V(20)<2 & V(19)<2, 5 , 0 ) }
+S1 66 4 39 18 von
+S27 48 80 48 18 strans
+C1 39 18 9e-013
+R4 80 39 100
+.ends ADG5248F

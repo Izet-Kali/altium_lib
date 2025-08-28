@@ -1,0 +1,127 @@
+* AD8642 SPICE Macro-model 
+* Description: Amplifier
+* Generic Desc: 5/26V, JFET, OP, RRO, S SPLY, 2X
+* Developed by: ADSJ-HH, Soufiane Bendaoud, ADSiV 
+* Revision History: 08/10/2012 - Updated to new header style
+* 2.0 (12/2010) - Switched to NFETs, Corrected Zout, Vdo, GBW, Ibias    
+* 1.0 (12/2004) - Soufiane Bendaoud, ADSiV apps 
+* Copyright 2004, 2008, 2010, 2012 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement.  Use of this model
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* BEGIN Notes: 
+*  CAUTION!!  To aid in convergence, most Spice simulators add a
+*  conductance on every node to insure that no node is floating.
+*  This is GMIN, and the default value is usually 1E-12.  To properly 
+*  simulate the low input bias current and low current noise, the 
+*  Spice simulator options have to be set to the following:
+*  .OPTIONS GMIN=0.01p
+*  .OPTIONS ABSTOL=0.01pA
+*
+* Not Modeled:
+*    
+* Parameters modeled include: 
+* This model simulates typical values at Vs=±13V
+*
+* END Notes
+*
+* Node assignments
+*                non-inverting input
+*                |   inverting input
+*                |   | positive supply
+*                |   |    |  negative supply
+*                |   |    |    |  output
+*                |   |    |    |    |
+.SUBCKT AD8642   1   2   99   50   30
+*
+* INPUT STAGE
+*
+CIN  1   2    4.5E-12
+CCM1  1 50    3E-12
+CCM2  2 50    3E-12
+J1   5   7   4  JX;  DGS
+J2   6   2   4  JX;
+R3   99  5    1.500E+04
+R4   99  6    1.500E+04
+CCOMP 5 6     6.35E-13
+I1   4  50    4.000E-05
+Vclamp 99 101 3.8
+Dclamp 4 101 DY
+IOS  1   2     0.25E-12
+EOS  7  1    POLY(3) (142,0) (73,98) (22,98) 70E-6  1  1  1
+GB1  2  50    POLY(3) (4,2) (5,2) (50,2) -0.2E-12 2E-14 2E-14 2E-14
+GB2  7  50    POLY(3) (4,7) (6,7) (50,7) -0.3E-12 1E-14 1E-14 -0.2E-14
+*
+EREF 98 0 24 0   1
+R14  24 99     500E3
+R15  24 50     500E3
+*
+* SECOND STAGE 
+G1   9  98    (6,5)  5.022E-04
+R105 9  98     1.0E+06
+D1   9   8    DX
+V2   8  98    0.085;  
+D2   10  9    DX
+V3   10 98    -0.065;
+RZ  451 453  1.95E+02
+CZ  453   9  1.33E-10
+*
+* POLE AT 15 MHZ
+*
+R13  18 98   1E3
+C9   18 98   1.75E-16; -11
+G105   (18,98) (98,9)  1E-3
+*
+* COMMON-MODE GAIN NETWORK 
+*
+E1   72 98     POLY(2) (1 98) (2 98)  0  3.132E-03 3.132E-03
+R10  72 73     7.958E+01
+R20  73 98     6.366E-02
+C10  72 73     1.000E-06
+*
+* PSRR
+*
+EPSY 98 21 POLY(1) (99,50) 3.646  1.402E-01
+RPS1 21 22 4.421E+05
+RPS2 22 98 1.989E+01
+CPS1 21 22 1.000E-09
+*
+* VOLTAGE NOISE GENERATOR
+*
+VN1  141 0    DC 2
+DN1  141 142  DEN
+DN2  142 143  DEN
+VN2  0 143    DC 2
+*
+* OUTPUT STAGE
+*
+Q3   451 41 99 POUT
+RB1  40 41 1.5E+3
+EB1  99 40 POLY(1) (98, 18) 6.173E-01  1E-0;  
+Q4   451 43 50 NOUT
+RB2  42 43 2.0E+3
+EB2  42 50 POLY(1) (18, 98) 6.08E-01  1E-0; 
+Lout 30 451  10E-14
+*
+GSY  99 50 POLY(1) (99 50) 81.13E-6 1.632E-06
+*
+* MODELS
+*
+.MODEL QP PNP(BF=80, IS=1.00E-16, VA=130)
+.MODEL POUT PNP (BF=70,IS=2.8E-15,VA=130);
+.MODEL NOUT NPN (BF=120,IS=3.2E-15,VA=200); 
+.MODEL JX NJF(BETA=1.400E-03  VTO=-1.00  IS=2E-18 RD=1
++ RS=1 CGD=3E-12 CGS=3E-12 lambda=7.0E-03)
+.MODEL DX   D(IS=1E-15 RS=0 CJO=1E-12)
+.MODEL DY   D(IS=1E-15 BV=50 RS=10 CJO=1E-12)
+.MODEL DEN  D(IS=1E-12 RS=7.63E4, KF=9.665E-15 AF=1)
+.MODEL DIN  D(IS=1E-12 RS=12090 KF=0 AF=1)
+*
+.ENDS AD8642
+*
+$
+
+
+
+

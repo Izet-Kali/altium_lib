@@ -1,0 +1,175 @@
+* ADA4075-2 SPICE DMod model Typical values
+* Description: Amplifier
+* Generic Desc: 9/30V, BIP, OP, Low Noise, Low THD, 2X
+* Developed by: DB, VW ADSJ
+* Revision History: 08/10/2012 - Updated to new header style
+* 1.0 (10/2008)
+* Copyright 2008, 2012 by Analog Devices
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement.  Use of this model
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* BEGIN Notes:
+*
+* Not Modeled:
+*    
+* Parameters modeled include: VSY = +/-15V, T=25°C
+*
+* END Notes
+*
+* Node assignments
+
+* X1 7 4 6 3 2 ADA4075
+*   | | | | |
+*   | | | | Inverting Input
+*   | | | Non-Inverting Input
+*   | | Output
+*   | Negative Supply
+*   Positive Supply
+
+.SUBCKT ADA4075 3 2 7 4 6 
+
+* Input Impedances
+
+I1 0 3 -2.700E-008
+I2 0 2 -2.700E-008
+G3 3 2 3 2 2.041E-005
+R1 3 0 6.200E+008
+R2 2 0 6.200E+008
+C1 3 0 2.500E-012
+C2 2 0 2.500E-012
+C3 3 2 2.400E-012
+
+* Input Clamping
+
+V5 3 12 7.000E-001
+V6 13 3 7.000E-001
+D1 12 2 DH
+D2 2 13 DH
+
+*Vos 
+
+EOS  100 3 POLY(2) (73,98) (102,98) 0 1 1 
+
+*CMRR
+
+Eint 98 0 POLY(2) (7,0) (4,0) 0 0.5 0.5
+E1  72 98 POLY(2) (3,98) (2,98) 0 1.58E-04 1.58E-04
+R10 72 73 1.59E+00
+R20 73 98 1.59E-02
+C10 72 73 4E-9
+
+*PSRR
+
+EPSY 101 98 POLY(1) (7,4) -47.76 2.9850 
+RPS1 101 102 1.06E+03
+RPS2 102 98 7.96E-03
+CPS1 101 102 6.00E-7
+
+
+.MODEL DH D IS=2.09E-16
+
+* Preconditioning Gain Stage and Sum Node for
+* Transconductance Control and Noise Insertion
+
+*
+G4 0 41 POLY(2) 100 2 60 63 2.334E-007 3.335E-003 6.602E-004
+
+* Limiting Section for Slew-Rate Control
+
+D5 41 43 DL
+V1 43 0 1.732E+002
+D6 42 41 DL
+V2 0 42 1.732E+002
+G5 41 0 41 0 1.0E-5
+E6 20 0 POLY(1) 41 0 0 1
++0 -1.207823E-004 0 1.147468E-008
++0 -4.639124E-013 0 6.662675E-018
+
+.MODEL DL D IS=1E-18 EG=0.1 N=0.2
+
+* Second-Order Frequency Shaping
+
+R50 20 21 5
+C50 21 0 9.947E-010
+R52 21 23 35
+C51 23 0 1.421E-010
+R54 23 25 245
+C52 25 0 1.933E-011
+R56 25 27 1715
+C53 27 0 3.946E-013
+R58 27 40 12005
+C54 40 0 5.637E-014
+
+* Primary Gain Block and Dominant Pole/Zero
+
+G6 0 44 POLY(3) 45 6 40 0 0 54 0 -1.667E-004 1E-5 5E-4
++-1.809528E+000
++0 0 0 0 0
++2.239963E-006
++0 0 0 0 0 0 0 0 0
++4.861948E+006
++0 0 0 0 0 0 0 0 0 0 0 0 0 0
++3.621108E+000
++0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
++-6.594173E+012
++0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
++1.228579E+006
++0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
++3.060864E+018
++0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
++0 0 0 0 0 0 0 0 0
++2.655914E+011
+G7 44 0 44 0 4.710E-009
+C4 44 48 7.692E-011
+R4 48 7 1.379E+002
+
+* Output Stage and Swing Limiting Network
+
+E2 46 0 POLY(1) 7 0 -1.778E+000 1
+D7 44 46 DL
+E3 47 0 POLY(1) 4 0 6.780E-001 1
+D8 47 44 DL
+G10 45 6 45 6 100
+E4 53 0 45 6 2.505E+005
+V7 53 56 100.2
+D9 56 54 DL
+V8 57 53 100.2
+D10 54 57 DL
+G8 54 0 54 0 9.1E-6
+M1 7 44 45 4 MN L=1U W=5000U
+M2 4 44 45 7 MP L=1U W=5000U
+
+.MODEL MN NMOS LEVEL=1 KP=1.890E-005 PHI=9.764E-001
++VTO=-1.079E-001 GAMMA=0 LAMBDA=0 TOX=0.9
+.MODEL MP PMOS LEVEL=1 KP=8.651E-006 PHI=8.216E-001
++VTO=1.595E-001 GAMMA=0 LAMBDA=0 TOX=0.9
+
+* Quiescent Supply Current
+
+G9 7 4 POLY(1) 7 4 1.140E-003 7.143E-006
+
+* Noise Modeling
+
+D60 60 0 DN1 1000
+I60 0 60 1E-3
+D61 61 0 DN3
+I61 0 61 1E-6
+G60 3 0 61 60 7.850E-005
+G61 2 0 61 60 7.850E-005
+D62 62 0 DN4
+I62 0 62 1E-6
+G62 3 2 62 60 2.730E-005
+D63 63 0 DN2
+I63 0 63 1E-6
+
+.MODEL DN1 D IS=1E-16
+.MODEL DN2 D IS=1E-16 AF=1 KF=2.777E-018
+.MODEL DN3 D IS=1E-16 AF=1 KF=5.555E-018
+.MODEL DN4 D IS=1E-16 AF=1 KF=1.975E-017
+
+.ENDS ADA4075
+
+
+
+

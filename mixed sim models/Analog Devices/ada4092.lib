@@ -1,0 +1,151 @@
+* ADA4092 SPICE Macro-model       
+* Description: Amplifier
+* Generic Desc: 2.7/30V, BIP, OP, Low Pwr, RRIO, 4X
+* Developed by: HH / AD-SJ
+* Revision History: 08/10/2012 - Updated to new header style
+* 0.0 (12/2010)
+* Copyright 2010, 2012 by Analog Devices
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement.  Use of this model
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* BEGIN Notes:
+*
+* Not Modeled:
+*    
+* Parameters modeled include: 
+*
+* END Notes
+*
+* Node assignments
+*                non-inverting input
+*                |  inverting input
+*                |  |  positive supply
+*                |  |  |  negative supply
+*                |  |  |  |  output
+*                |  |  |  |  |
+.SUBCKT ADA4092  1  2  99 50 45
+*
+* INPUT STAGE
+*
+Q1   6    4    7A    QP
+Q2   5    3    7B    QP
+RE1  7A   7   5.656E+02
+RE2  7B   7   5.656E+02
+I1   99   7    8.00E-06
+D1   3    99   DX
+D2   4    99   DX
+D3   50   3    DX
+D4   50   4    DX
+D5   3    4    DX
+D6   4    3    DX
+R1   3    8    5E+03
+R2   4    2    5E+03
+R3   5    50   7.500E4;
+R4   6    50   7.500E4;  
+Cph  5    5A   0.23E-12
+Rph  5A   6    300
+EOS  8    1    POLY(4) (73,98) (22,98) (81,98) (83,98) -1.4E-03 1 1 1 1
+IOS  3    4     -2.0E-09
+CDiff  1    2    2.5E-12
+Cin1   1   50    2E-12
+Cin2   2   50    2E-12
+*
+* INPUT PROTECTION NETWORK
+*
+X_in1 1 50 Diac1
+X_in2 2 50 Diac1
+X_in3 1 99 Diac1
+X_in4 2 99 Diac1
+*
+*
+RS1  99   39   400.0E3
+RS2  39   50   400.0E3
+EREF 98   0    (39,0) 1
+*
+* 1ST GAIN STAGE
+*
+R7    9  98    3.266E+08
+G1    9  98  (6,5) 4.303E-06
+D7    9  13   DX
+D8   14   9   DX
+V1   13  98   0.37; sink
+V2   14  98   +0.017; source
+*
+* 2ND GAIN STAGE AND DOMINANT POLE 
+*
+R8   12   98   1.0E+06
+G2   12   98  (98,9) 1.0E-06
+*
+* Provision for second pole
+*
+G3   18   98   (98,12) 1E-05
+R11  18   98   1E5
+*
+* CMRR
+*
+ECM  21   98   POLY(2) (1,98) (2,98) 0 7.813E-02 7.813E-02
+R10  21   22   2.487E+04
+R20  22   98   1.592E+01
+C10  21   22   1E-9
+*
+* PSRR
+*
+EPSY 72 98 POLY(1) (99,50) +0.1E-6 1.485E+01
+RPS1 72 73 5.305E+02
+RPS2 73 98 3.183E-03
+CPS1 72 73 1.00E-06
+*
+* VOLTAGE NOISE REFERENCE OF 30nV/rt(Hz)
+*
+VN1 80 98 0
+RN1 80 98 25.5E-3
+HN  81 98 VN1 3.0E+01
+RN2 81 98 1
+*
+* FLICKER NOISE CORNER 
+*
+DFN 82 98 DNOISE
+VFN 82 98 DC 0.6551
+HFN 83 98 POLY(1) VFN 1.00E-03 1.00E+00
+RFN 83 98 1
+*
+* OUTPUT STAGE
+*
+Q3   451 41 99 POUT
+RB1  40 41 1.5E+03
+EB1  99 40 POLY(1) (98,18) 6.190E-01  1E-0;  
+Q4   451 43 50 NOUT
+RB2  42 43 2.0E+03
+EB2  42 50 POLY(1) (18,98) 6.155E-01  1E-0; 
+Lout 45 451  6.2E-12
+RZ  451 453  100
+CZ  453  9  4.6E-12
+*
+GSY  99 50 POLY(1) (99 50) 79.9E-6 -1.04E-06
+*
+* MODELS
+*
+.MODEL QP PNP(BF=80, IS=1.00E-16, VA=130)
+.MODEL POUT PNP (BF=80,IS=2.8E-15,VA=130, BR=3,VAR=15, RC=38);
+.MODEL NOUT NPN (BF=120,IS=3.2E-15,VA=250, BR=7, VAR=20, RC=8);
+.MODEL DW D(IS=1E-18)
+.MODEL DX D()
+.MODEL DY D(IS=1E-9)
+.MODEL DZ D(IS=1E-6)
+.MODEL DNOISE D(IS=1E-14,RS=0,KF=1.15E-12)
+.ENDS  ADA4092  
+*
+.SUBCKT Diac1 1 2
+Done 1 3 DZ42hh 
+Dtwo 2 3 DZ42hh
+.ENDS Diac1 
+*
+.MODEL DZ42hh D
++ IS=3.3179E-6 N=2.0 RS=1.0000E-3 CJO=10.00E-12 M=.31349 VJ=.3905
++ ISR=2.9061E-9 BV=42.0 IBV=5.0E-03 TT=300.0E-9
+*
+
+
+
+

@@ -1,0 +1,120 @@
+* AD8565 SPICE Macro-model Typical Values
+* Description: Amplifier
+* Generic Desc: Single LCD driver amp - 16V rail-rail
+* Developed by: RM / ADSJ
+* Revision History: 08/10/2012 - Updated to new header style
+* 1.0 (06/2007)
+* Copyright 2004, 2012 by Analog Devices
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model 
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* BEGIN Notes:
+*
+* Not Modeled:
+*    
+* Parameters modeled include: 
+*
+* END Notes
+*
+* Node Assignments
+*		noninverting input
+*		|	inverting input
+*		|	|	 positive supply
+*		|	|	 |	 negative supply
+*		|	|	 |	 |	 output
+*		|	|	 |	 |	 |
+*		|	|	 |	 |	 |
+.SUBCKT AD8565	1	2	99	50	45
+* 
+* INPUT STAGE
+*
+Q1   4  7 18 PIX
+Q2   6  2 17 PIX
+Q3  11  7 15 NIX
+Q4  12  2 16 NIX
+RC1  4 50 2000
+RC2  6 50 2000
+RC3 99 11 2000
+RC4 99 12 2000
+C1   4  6 3.3E-12
+C2  11 12 3.3E-12
+RE1  8 18 1.2E3
+RE2  8 17 1.2E3
+RE3 15 10 1.2E3
+RE4 16 10 1.2E3
+I1  99  8 100E-6
+I2  10 50 100E-6
+V1   9  8 1
+V2  13 50 1
+D1   9 99 DX
+D2  13 10 DX
+EOS  7  1 POLY(3) (22,98) (73,98) (81,98) 2E-3 1 1 1
+IOS  1  2 5E-9
+*
+* CMRR 95dB, ZERO AT 20kHz
+*
+ECM1 21 98 POLY(2) (1,98) (2,98) 0 .5 .5
+RCM1 21 22 500E3
+CCM1 21 22 15.9E-12
+RCM2 22 98 8.9
+*
+* PSRR=100dB, ZERO AT 100Hz
+*
+* RPS1 70  0 1E6
+* RPS2 71  0 1E6
+* CPS1 99 70 1E-5
+* CPS2 50 71 1E-5
+* EPSY 98 72 POLY(2) (70,0) (0,71) 0 1 1
+EPSY 98 72 POLY(2) (99,0) (0,50) 0 1 1
+RPS1 72 73 1.59E6
+CPS1 72 73 1E-9
+RPS2 73 98 50
+*
+* VOLTAGE NOISE REFERENCE OF 24nV/rt(Hz)
+*
+VN1 80 98 0
+RN1 80 98 16.45E-3
+HN  81 98 VN1 24
+RN2 81 98 1
+*
+* INTERNAL VOLTAGE REFERENCE
+*
+EREF 98  0 POLY(2) (99,0) (50,0) 0 .5 .5
+GSY  99 50 (99,50) 12.5E-6 
+EVP  97 98 (99,50) 0.5
+EVN  51 98 (50,99) 0.5
+*
+* LHP ZERO AT 7MHz, POLE AT 50MHz
+*
+E1 32 98 POLY(2) (4,6) (11,12) 0 .5814 .5814
+R2 32 33 3.7E3
+R3 33 98 22.74E3
+C3 32 33 1E-12
+*
+* GAIN STAGE
+*
+G1 98 30 POLY(2) (4,6) (11,12) 0 150E-6 150E-6
+R1 30 98 542E3
+CF 45 30 10E-12
+D3 30 97 DX
+D4 51 30 DX
+*
+* OUTPUT STAGE
+*
+M5  45 46 99 99 POX L=1u W=1610u
+M6  45 47 50 50 NOX L=1u W=1610u
+EG1 99 46 POLY(1) (98,30) 0.5209 1
+EG2 47 50 POLY(1) (30,98) 0.5209 1
+*
+* MODELS
+*
+.MODEL POX PMOS (LEVEL=2,KP=10E-6,VTO=-0.328,LAMBDA=0.01,RD=0)
+.MODEL NOX NMOS (LEVEL=2,KP=10E-6,VTO=+0.328,LAMBDA=0.01,RD=0)
+.MODEL PIX PNP (BF=103,IS=1E-14,VA=100,KF=4.3E-14)
+.MODEL NIX NPN (BF=124,IS=1E-14,VA=100,KF=4.3E-14)
+.MODEL DX D(IS=1E-14,RS=5)
+.ENDS AD8565
+
+
+

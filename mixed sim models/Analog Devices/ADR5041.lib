@@ -1,0 +1,31 @@
+* ADR5041 SPICE Macro-model               
+* Function: Voltage Reference - 2.5 V 
+* Revision History: 
+* Rev. 1.0 (May 2015) ADGT-EA  
+* Copyright 2015 by Analog Devices
+*
+* 
+*              				          cathode
+*                			               | anode
+*                			               | | 
+*                			               | | 
+*               			               | | 
+.SUBCKT ADR5041__VOLTAGE_REFERENCE__1__2   1 8  
+
+Q1 7 3 8 Qn1 
+Q2 4 5 8 Qn2
+Q3 8 6 1 Qp
+R1 1 2 69.77k
+R2 2 3 21.4k
+R3 2 4 140k 
+R4 3 5 2.715k
+c1 4 6 10e-12
+vinc 5 7 0
+F1 1 8 vinc 1.64
+G1 6 8 4 3 2e-4
+
+.model Qn1 npn(bf=100 vaf=100)
+.model Qn2 npn(bf=100 vaf=100)
+.model Qp pnp(bf=20000 vaf=100)
+
+.ends ADR5041

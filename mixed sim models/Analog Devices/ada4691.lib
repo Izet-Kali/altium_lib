@@ -1,0 +1,138 @@
+* ADA4691 SPICE Macro-model Typical Values
+* Description: Amplifier
+* Generic Desc: 2.7/5V, CMOS, OP, Low Noise, SD, 2X
+* Developed by: HH / ADSJ
+* Revision History: 08/10/2012 - Updated to new header style
+* 1.0 (08/2009)
+* Copyright 2009, 2012 by Analog Devices
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement.  Use of this model
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* BEGIN Notes:
+* Not Modeled:
+*    
+* Parameters modeled include: 
+*   VSY=5V, T=25°C, CMOS inverter stagae shutdown, risetime dependent
+*
+* END Notes
+*
+* Node Assignments
+*                       noninverting input
+*                       |   inverting input
+*                       |   |    positive supply
+*                       |   |    |   negative supply
+*                       |   |    |   |   output
+*                       |   |    |   |   |  
+*                       |   |    |   |   |   SD
+*                       |   |    |   |   |   |
+.SUBCKT ADA4691         1   2   99  50  45   180
+*
+* INPUT STAGE
+*
+M1   4  7  8 99 PIX L=1E-6 W=2.805E-04
+M2   6  2  8 99 PIX L=1E-6 W=2.805E-04
+RD1  4 50 1.333E+04
+RD2  6 50 1.333E+04
+C1   4  6 6.100E-13
+I1  99 88 3.000E-05
+S1   8 88 (98, 181) SOPEN 
+S2  99 88 (181, 98) SCLOSE
+S5   4  6 (181, 98) SCLOSE
+V1  99  9 1.098E-00
+D1   8  9 DX
+EOS  7  1 POLY(4) (73,98) (22,98) (81,98) (83,98) 5.00E-04 1 1 1 1
+IOS  1  2 5.00E-13
+*
+
+* INTERNAL VOLTAGE REFERENCE
+*
+EREF 98  0 POLY(2) (99,0) (50,0) 0 0.5 0.5
+EVP  97 98 (99,50) 0.5
+EVN  51 98 (50,99) 0.5
+*
+* GAIN STAGE
+*
+G1 98 30 POLY(1) (4,6) 0 5.009E-04 
+S3 98 30 (181, 98) SOPEN 
+R1 30 98 1.000E+06
+RZ 45 31 3.421E+02
+CF 30 31 1.260E-10
+V3 32 30 0.3552E+00
+V4 30 33 0.4919E+00
+D3 32 97 DX
+D4 51 33 DX
+*
+*CMRR section
+*
+E1  72 98 POLY(2) (1,98) (2,98) 0 6.344E-02 6.344E-02
+R10 72 73 2.015E+03
+R20 73 98 7.958E-03
+C10 72 73 1.000E-06
+*
+* PSRR
+*
+EPSY 21 98 POLY(1) (99,50) -10.231E-00 2.046E-00 
+RPS1 21 22 9.362E+01
+RPS2 22 98 1.447E-03
+CPS1 21 22 1.000E-06
+*
+* VOLTAGE NOISE 
+*
+VN1 80 98 0
+RN1 80 98 21.67E-03
+HN  81 98 VN1 1.201E+01
+RN2 81 98 1
+*
+* FLICKER NOISE 
+*
+DFN 82 98 DNOISE
+VFN 82 98 DC 0.6551
+HFN 83 98 POLY(1) VFN 1.00E-03 1.00E+00
+RFN 83 98 1
+*
+* OUTPUT STAGE
+*
+M5  45 46 99 99 POX L=1.00E-6 W=1.276E-03
+M6  45 47 50 50 NOX L=1.00E-6 W=4.088E-04
+EG1 99 48 POLY(1) (98,30) 7.919E-01 1; p
+EG2 49 50 POLY(1) (30,98) 6.812E-01 1; n
+RG1 48 46 1E+02
+RG2 49 47 1E+02
+S6  46 99 (181, 98) SCLOSE
+S7  47 50 (181, 98) SCLOSE
+*
+GSY  991 50  POLY(1) (99,50) 62.5E-06 5.937E-06
+S11   99 991 (98, 181) SCLOSE
+S12  991 50  (181, 98) SOPEN
+*
+* SHUTDOWN SECTION
+*   ---  99 is plus, 50 is minus
+M7 181 180 99  99 PLX  L=3.0E-06 W=2.0E-06 
+M8a 181 180 181b 50 NLX  L=0.6E-06 W=2.0E-06
+M8b 181b 180 50  50 NLX  L=0.6E-06 W=3.0E-06
+Rpup 181 97 1E+08
+Rpdn 181 51 1E+08
+Rpdn2 180 50 1E+07
+R80 181 182 5E+03
+C80 182 98 1E-10;9
+*
+* MODELS
+*
+.MODEL POX PMOS (LEVEL=2,KP=1.00E-05,VTO=-0.7,LAMBDA=0.05, RB=1E+00)
+.MODEL NOX NMOS (LEVEL=2,KP=4.00E-05,VTO=+0.6,LAMBDA=0.035, RB=1E+00)
+.MODEL PIX PMOS (LEVEL=2,KP=4.00E-05,VTO=-0.5,LAMBDA=0.03,RB=1E-02)
+.MODEL PLX PMOS (LEVEL=2,KP=12.00E-05,VTO=-1.10, LAMBDA=0.05,RB=1E+00)
+.MODEL NLX NMOS (LEVEL=2,KP=20.00E-05,VTO=+0.50, LAMBDA=0.05,RB=1E+00)
+.MODEL DX D(IS=1E-14,RS=0.1)
+.MODEL DNOISE D(IS=1E-14,RS=0,KF=2.677E-11); 5.2E-11
+.MODEL SOPEN  VSWITCH (VON=2.0, VOFF=0.8, RON=1e-01, ROFF=1E+09)
+.MODEL SCLOSE VSWITCH (VON=-1.0, VOFF=-1.8, RON=1E-01, ROFF=1E+09)
+*
+.ENDS ADA4691
+*
+*$
+
+
+
+

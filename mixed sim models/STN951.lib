@@ -1,0 +1,54 @@
+*****************************************************************
+******STMicroelectronics MOSFET, IGBT and Bipolar Library *******
+*****************************************************************
+*								                *
+* Models provided by STMicroelectronics are not guaranteed to   *
+* fully represent all the specifications and operating	    *
+* characteristics of the product behavior that they reproduce.  *
+* The model describes the characteristics of a typical device.  *
+* In all cases, the current product data sheet contains all     *
+* information to be used like final design guidelines and the   *
+* only actual performance specification.                        *
+* Altough models can be a useful tool in evaluating device      *
+* performance, they cannot model exact device performance under *
+* all conditions.						                *
+* STMicroelectronics therefore does not assume any              *
+* responsibility arising from their use.                        *
+* STMicroelectronics reserves the right to change models 	    *
+* without prior notice.                                         *
+*                                                               *
+*****************************************************************
+.MODEL STN951 PNP
++Is    = 0.317E-13
++Bf    = 293.257
++Vaf   = 55.277
++Ikf   = 2.249
++Ise   = 0.635E-14
++Ne    = 1.677
++Br    = 15.462
++Var   = 48.584
++Ikr   = 1.981
++Isc   = 0.586E-12
++Nc    = 1.533
++Nk    = 0.292
++Rb    = 9.416
++Rbm   = 0.908E-01
++Nf    = 0.981
++Re    = 0.491E-01
++Rc    = 0.346E-01
++Qco   = 0.303E-09
++Rco   = 0.263
++Vo    = 15.034
++Gamma = 0.151E-09
++Cjc   = 0.779E-11
++Vjc   = 0.759
++Mjc   = 0.441
++Cje   = 0.315E-09
++Vje   = 0.937
++Mje   = 0.249
++Fc    = 0.496
++Tr    = 0.117E-07
++Tf    = 0.281E-08
++Itf   = 0.677
++Vtf   = 1.522
++Xtf   = 0.849

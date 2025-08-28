@@ -1,0 +1,295 @@
+<?xml version="1.0"?>
+<Primitives xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Arcs>
+    <Arc Cx="29522850" Cy="7587626" Radius="12.95589" SAngle="275.79185947634943" EAngle="280.32830999963682" Layer="68" Width="50000" />
+    <Arc Cx="29625644" Cy="7022772" Radius="11.49759" SAngle="280.3301293120137" EAngle="285.24255112260238" Layer="68" Width="50000" />
+    <Arc Cx="29895387" Cy="6175693" Radius="9.24207" SAngle="284.65122996168236" EAngle="313.20734735987537" Layer="68" Width="50000" />
+    <Arc Cx="29667033" Cy="6367633" Radius="9.99492" SAngle="313.71745106408116" EAngle="329.92325761754262" Layer="68" Width="50000" />
+    <Arc Cx="47501010" Cy="6367633" Radius="9.99492" SAngle="210.07674238245579" EAngle="226.28254893592057" Layer="68" Width="50000" />
+    <Arc Cx="47272657" Cy="6175693" Radius="9.24207" SAngle="226.79265264012579" EAngle="255.34877003831781" Layer="68" Width="50000" />
+    <Arc Cx="47542400" Cy="7022772" Radius="11.49759" SAngle="254.75744887740171" EAngle="259.66987068799114" Layer="68" Width="50000" />
+    <Arc Cx="47645193" Cy="7587626" Radius="12.95589" SAngle="259.671690000365" EAngle="264.20814052364938" Layer="68" Width="50000" />
+    <Arc Cx="56419449" Cy="28381184" Radius="2" SAngle="71.489229722202765" EAngle="251.48922972220277" Layer="65" Width="236220" />
+    <Arc Cx="59017874" Cy="13090830" Radius="2" SAngle="124.5365612552298" EAngle="304.5365612552298" Layer="65" Width="236220" />
+    <Arc Cx="58205867" Cy="42288665" Radius="2" SAngle="103.29080141128588" EAngle="283.29080141128588" Layer="65" Width="236220" />
+    <Arc Cx="58205867" Cy="44454019" Radius="2" SAngle="93.6044205391757" EAngle="273.60442053917569" Layer="65" Width="236220" />
+    <Arc Cx="58107441" Cy="46127247" Radius="2" SAngle="85.978009822979885" EAngle="265.97800982297991" Layer="65" Width="236220" />
+    <Arc Cx="55351536" Cy="48292602" Radius="2" SAngle="78.760715800302322" EAngle="258.76071580030231" Layer="65" Width="236220" />
+    <Arc Cx="24544449" Cy="10891027" Radius="2" SAngle="225" EAngle="45" Layer="65" Width="236220" />
+    <Arc Cx="36552323" Cy="10891027" Radius="2" SAngle="197.40270413135627" EAngle="17.402704131356245" Layer="65" Width="236220" />
+    <Arc Cx="18245236" Cy="38548507" Radius="2" SAngle="266.60866058020366" EAngle="86.608660580203662" Layer="65" Width="236220" />
+    <Arc Cx="18245236" Cy="40418586" Radius="2" SAngle="274.65825410967562" EAngle="94.658254109675624" Layer="65" Width="236220" />
+    <Arc Cx="18343662" Cy="42583940" Radius="2" SAngle="283.63905205237205" EAngle="103.63905205237205" Layer="65" Width="236220" />
+  </Arcs>
+  <Tracks>
+    <Track X1="27560400" Y1="6637" X2="27560400" Y2="2513668" Layer="68" Width="50000" />
+    <Track X1="33072210" Y1="2510349" X2="33072210" Y2="7383887" Layer="68" Width="50000" />
+    <Track X1="37177805" Y1="2510349" X2="37177805" Y2="4395567" Layer="68" Width="50000" />
+    <Track X1="33072210" Y1="2510349" X2="44095834" Y2="2510349" Layer="68" Width="50000" />
+    <Track X1="37177805" Y1="4395567" X2="39990239" Y2="4395567" Layer="68" Width="50000" />
+    <Track X1="33072210" Y1="7383887" X2="44095834" Y2="7383887" Layer="68" Width="50000" />
+    <Track X1="27560400" Y1="6637" X2="49607644" Y2="0" Layer="68" Width="50000" />
+    <Track X1="27560400" Y1="2513668" X2="49607644" Y2="2507031" Layer="68" Width="50000" />
+    <Track X1="39990239" Y1="2509926" X2="39990239" Y2="4395567" Layer="68" Width="50000" />
+    <Track X1="44095834" Y1="2510349" X2="44095834" Y2="7383887" Layer="68" Width="50000" />
+    <Track X1="49607644" Y1="0" X2="49607644" Y2="2507031" Layer="68" Width="50000" />
+    <Track X1="27560400" Y1="30765792" X2="49607644" Y2="30765792" Layer="68" Width="50000" />
+    <Track X1="27560400" Y1="30765792" X2="27560400" Y2="54491106" Layer="68" Width="50000" />
+    <Track X1="31497407" Y1="37904039" X2="31497407" Y2="39478843" Layer="68" Width="50000" />
+    <Track X1="31497407" Y1="41222232" X2="31497407" Y2="44034666" Layer="68" Width="50000" />
+    <Track X1="31497407" Y1="41222232" X2="33072210" Y2="41222232" Layer="68" Width="50000" />
+    <Track X1="31497407" Y1="39478843" X2="33072210" Y2="39478843" Layer="68" Width="50000" />
+    <Track X1="31497407" Y1="37904039" X2="33072210" Y2="37904039" Layer="68" Width="50000" />
+    <Track X1="31497407" Y1="45778055" X2="33072210" Y2="45778055" Layer="68" Width="50000" />
+    <Track X1="31497407" Y1="44034666" X2="33072210" Y2="44034666" Layer="68" Width="50000" />
+    <Track X1="33072210" Y1="37904039" X2="33072210" Y2="39478843" Layer="68" Width="50000" />
+    <Track X1="33072210" Y1="41222232" X2="33072210" Y2="44034666" Layer="68" Width="50000" />
+    <Track X1="33072210" Y1="35541835" X2="33072210" Y2="49715063" Layer="68" Width="50000" />
+    <Track X1="37177805" Y1="33967032" X2="37177805" Y2="35541835" Layer="68" Width="50000" />
+    <Track X1="33072210" Y1="35541835" X2="44095834" Y2="35541835" Layer="68" Width="50000" />
+    <Track X1="37177805" Y1="35541835" X2="39990239" Y2="35541835" Layer="68" Width="50000" />
+    <Track X1="37177805" Y1="33967032" X2="39990239" Y2="33967032" Layer="68" Width="50000" />
+    <Track X1="39990239" Y1="33967032" X2="39990239" Y2="35541835" Layer="68" Width="50000" />
+    <Track X1="44095834" Y1="37904039" X2="44095834" Y2="39478843" Layer="68" Width="50000" />
+    <Track X1="44095834" Y1="41222232" X2="44095834" Y2="44034666" Layer="68" Width="50000" />
+    <Track X1="44095834" Y1="35541835" X2="44095834" Y2="49715063" Layer="68" Width="50000" />
+    <Track X1="44095834" Y1="39478843" X2="45670637" Y2="39478843" Layer="68" Width="50000" />
+    <Track X1="44095834" Y1="41222232" X2="45670637" Y2="41222232" Layer="68" Width="50000" />
+    <Track X1="44095834" Y1="37904039" X2="45670637" Y2="37904039" Layer="68" Width="50000" />
+    <Track X1="44095834" Y1="44034666" X2="45670637" Y2="44034666" Layer="68" Width="50000" />
+    <Track X1="44095834" Y1="45778055" X2="45670637" Y2="45778055" Layer="68" Width="50000" />
+    <Track X1="45670637" Y1="37904039" X2="45670637" Y2="39478843" Layer="68" Width="50000" />
+    <Track X1="45670637" Y1="41222232" X2="45670637" Y2="44034666" Layer="68" Width="50000" />
+    <Track X1="49607644" Y1="30765792" X2="49607644" Y2="54491106" Layer="68" Width="50000" />
+    <Track X1="31497407" Y1="45778055" X2="31497407" Y2="47352858" Layer="68" Width="50000" />
+    <Track X1="31497407" Y1="47352858" X2="33072210" Y2="47352858" Layer="68" Width="50000" />
+    <Track X1="33072210" Y1="45778055" X2="33072210" Y2="47352858" Layer="68" Width="50000" />
+    <Track X1="37177805" Y1="49715063" X2="37177805" Y2="51289866" Layer="68" Width="50000" />
+    <Track X1="27560400" Y1="54491106" X2="49607644" Y2="54491106" Layer="68" Width="50000" />
+    <Track X1="37177805" Y1="51289866" X2="39990239" Y2="51289866" Layer="68" Width="50000" />
+    <Track X1="33072210" Y1="49715063" X2="44095834" Y2="49715063" Layer="68" Width="50000" />
+    <Track X1="37177805" Y1="49715063" X2="39990239" Y2="49715063" Layer="68" Width="50000" />
+    <Track X1="39990239" Y1="49715063" X2="39990239" Y2="51289866" Layer="68" Width="50000" />
+    <Track X1="44095834" Y1="45778055" X2="44095834" Y2="47352858" Layer="68" Width="50000" />
+    <Track X1="44095834" Y1="47352858" X2="45670637" Y2="47352858" Layer="68" Width="50000" />
+    <Track X1="45670637" Y1="45778055" X2="45670637" Y2="47352858" Layer="68" Width="50000" />
+    <Track X1="73097599" Y1="22780791" X2="78055434" Y2="22780791" Layer="65" Width="70866" />
+    <Track X1="44938150" Y1="3400870" X2="73097599" Y2="22780791" Layer="65" Width="70866" />
+    <Track X1="39692087" Y1="33981578" X2="73146811" Y2="22780791" Layer="65" Width="70866" />
+    <Track X1="73146811" Y1="22780791" X2="78104646" Y2="22780791" Layer="65" Width="70866" />
+    <Track X1="70705867" Y1="45241421" X2="75663702" Y2="45241421" Layer="65" Width="70866" />
+    <Track X1="70705867" Y1="45241421" X2="75663702" Y2="45241421" Layer="65" Width="70866" />
+    <Track X1="70705867" Y1="45241421" X2="75663702" Y2="45241421" Layer="65" Width="70866" />
+    <Track X1="70705867" Y1="45241421" X2="75663702" Y2="45241421" Layer="65" Width="70866" />
+    <Track X1="45509016" Y1="47013074" X2="70705867" Y2="45241421" Layer="65" Width="70866" />
+    <Track X1="45705867" Y1="39335909" X2="70705867" Y2="45241421" Layer="65" Width="70866" />
+    <Track X1="45705867" Y1="43666618" X2="70705867" Y2="45241421" Layer="65" Width="70866" />
+    <Track X1="39997205" Y1="51343783" X2="70705867" Y2="45241421" Layer="65" Width="70866" />
+    <Track X1="12007874" Y1="18469767" X2="16965709" Y2="18469767" Layer="65" Width="70866" />
+    <Track X1="16965709" Y1="18469767" X2="32123189" Y2="3312287" Layer="65" Width="70866" />
+    <Track X1="34485394" Y1="17485515" X2="38619252" Y2="4296539" Layer="65" Width="70866" />
+    <Track X1="29527559" Y1="17485515" X2="34485394" Y2="17485515" Layer="65" Width="70866" />
+    <Track X1="0" Y1="39335909" X2="4957835" Y2="39335909" Layer="65" Width="70866" />
+    <Track X1="0" Y1="39335909" X2="4957835" Y2="39335909" Layer="65" Width="70866" />
+    <Track X1="4957835" Y1="39335909" X2="31532638" Y2="37761106" Layer="65" Width="70866" />
+    <Track X1="0" Y1="39335909" X2="4957835" Y2="39335909" Layer="65" Width="70866" />
+    <Track X1="4957835" Y1="39335909" X2="31729489" Y2="45831972" Layer="65" Width="70866" />
+    <Track X1="4957835" Y1="39335909" X2="31532638" Y2="41501263" Layer="65" Width="70866" />
+  </Tracks>
+  <Texts>
+    <Text X="74131062" Y="20024886" Italic="true" Size="7.68049" Rot="0" Mir="false" TrueType="true" Font="GlavkonGOST Type A" Layer="65" />
+    <Text X="74081850" Y="20024886" Italic="true" Size="7.68049" Rot="0" Mir="false" TrueType="true" Font="GlavkonGOST Type A" Layer="65" />
+    <Text X="71690118" Y="42485516" Italic="true" Size="7.68049" Rot="0" Mir="false" TrueType="true" Font="GlavkonGOST Type A" Layer="65" />
+    <Text X="71690118" Y="42485516" Italic="true" Size="7.68049" Rot="0" Mir="false" TrueType="true" Font="GlavkonGOST Type A" Layer="65" />
+    <Text X="71690118" Y="42485516" Italic="true" Size="7.68049" Rot="0" Mir="false" TrueType="true" Font="GlavkonGOST Type A" Layer="65" />
+    <Text X="71690118" Y="42485516" Italic="true" Size="7.68049" Rot="0" Mir="false" TrueType="true" Font="GOST type A" Layer="65" />
+    <Text X="12992126" Y="15713862" Italic="true" Size="7.68049" Rot="0" Mir="false" TrueType="true" Font="GlavkonGOST Type A" Layer="65" />
+    <Text X="30511811" Y="14729610" Italic="true" Size="7.68049" Rot="0" Mir="false" TrueType="true" Font="GlavkonGOST Type A" Layer="65" />
+    <Text X="984252" Y="36580004" Italic="true" Size="7.68049" Rot="0" Mir="false" TrueType="true" Font="GlavkonGOST Type A" Layer="65" />
+    <Text X="984252" Y="36580004" Italic="true" Size="7.68049" Rot="0" Mir="false" TrueType="true" Font="GlavkonGOST Type A" Layer="65" />
+    <Text X="984252" Y="36580004" Italic="true" Size="7.68049" Rot="0" Mir="false" TrueType="true" Font="GlavkonGOST Type A" Layer="65" />
+  </Texts>
+  <Regions>
+    <Region Layer="68">
+      <Points>
+        <RegionPoint X="33072210" Y="2512009" />
+        <RegionPoint X="30037592" Y="2512922" />
+        <RegionPoint X="31286910" Y="2815399" />
+        <RegionPoint X="32298450" Y="3442947" />
+        <RegionPoint X="33072210" Y="4395567" />
+      </Points>
+    </Region>
+    <Region Layer="68">
+      <Points>
+        <RegionPoint X="39990239" Y="2510349" />
+        <RegionPoint X="38584022" Y="2510349" />
+        <RegionPoint X="37177805" Y="2510773" />
+        <RegionPoint X="37177805" Y="4395567" />
+        <RegionPoint X="39990239" Y="4395567" />
+      </Points>
+    </Region>
+    <Region Layer="68">
+      <Points>
+        <RegionPoint X="44869594" Y="3442947" />
+        <RegionPoint X="45881133" Y="2815399" />
+        <RegionPoint X="47130452" Y="2512922" />
+        <RegionPoint X="44095834" Y="2512009" />
+        <RegionPoint X="44095834" Y="4395567" />
+      </Points>
+    </Region>
+    <Region Layer="68">
+      <Points>
+        <RegionPoint X="33072210" Y="37904039" />
+        <RegionPoint X="31497407" Y="37904039" />
+        <RegionPoint X="31497407" Y="39478843" />
+        <RegionPoint X="33072210" Y="39478843" />
+      </Points>
+    </Region>
+    <Region Layer="68">
+      <Points>
+        <RegionPoint X="33072210" Y="41222232" />
+        <RegionPoint X="31497407" Y="41222232" />
+        <RegionPoint X="31497407" Y="44034666" />
+        <RegionPoint X="33072210" Y="44034666" />
+      </Points>
+    </Region>
+    <Region Layer="68">
+      <Points>
+        <RegionPoint X="39990239" Y="33967032" />
+        <RegionPoint X="37177805" Y="33967032" />
+        <RegionPoint X="37177805" Y="35541835" />
+        <RegionPoint X="39990239" Y="35541835" />
+      </Points>
+    </Region>
+    <Region Layer="68">
+      <Points>
+        <RegionPoint X="45670637" Y="37904039" />
+        <RegionPoint X="44095834" Y="37904039" />
+        <RegionPoint X="44095834" Y="39478843" />
+        <RegionPoint X="45670637" Y="39478843" />
+      </Points>
+    </Region>
+    <Region Layer="68">
+      <Points>
+        <RegionPoint X="45670637" Y="41222232" />
+        <RegionPoint X="44095834" Y="41222232" />
+        <RegionPoint X="44095834" Y="44034666" />
+        <RegionPoint X="45670637" Y="44034666" />
+      </Points>
+    </Region>
+    <Region Layer="68">
+      <Points>
+        <RegionPoint X="33072210" Y="45778055" />
+        <RegionPoint X="31497407" Y="45778055" />
+        <RegionPoint X="31497407" Y="47352858" />
+        <RegionPoint X="33072210" Y="47352858" />
+      </Points>
+    </Region>
+    <Region Layer="68">
+      <Points>
+        <RegionPoint X="39990239" Y="49715063" />
+        <RegionPoint X="37177805" Y="49715063" />
+        <RegionPoint X="37177805" Y="51289866" />
+        <RegionPoint X="39990239" Y="51289866" />
+      </Points>
+    </Region>
+    <Region Layer="68">
+      <Points>
+        <RegionPoint X="45670637" Y="45778055" />
+        <RegionPoint X="44095834" Y="45778055" />
+        <RegionPoint X="44095834" Y="47352858" />
+        <RegionPoint X="45670637" Y="47352858" />
+      </Points>
+    </Region>
+    <Region Layer="65">
+      <Points>
+        <RegionPoint X="39692087" Y="33981578" />
+        <RegionPoint X="41641028" Y="33602361" />
+        <RegionPoint X="41372081" Y="33419108" />
+        <RegionPoint X="41476471" Y="33110860" />
+      </Points>
+    </Region>
+    <Region Layer="65">
+      <Points>
+        <RegionPoint X="44938150" Y="3400870" />
+        <RegionPoint X="46412810" Y="4730364" />
+        <RegionPoint X="46397575" Y="4405276" />
+        <RegionPoint X="46706660" Y="4303393" />
+      </Points>
+    </Region>
+    <Region Layer="65">
+      <Points>
+        <RegionPoint X="45705867" Y="39335909" />
+        <RegionPoint X="47562069" Y="40040673" />
+        <RegionPoint X="47430067" Y="39743200" />
+        <RegionPoint X="47681226" Y="39536238" />
+      </Points>
+    </Region>
+    <Region Layer="65">
+      <Points>
+        <RegionPoint X="45705867" Y="43666618" />
+        <RegionPoint X="47654186" Y="44049019" />
+        <RegionPoint X="47474015" Y="43777997" />
+        <RegionPoint X="47686771" Y="43531727" />
+      </Points>
+    </Region>
+    <Region Layer="65">
+      <Points>
+        <RegionPoint X="45509016" Y="47013074" />
+        <RegionPoint X="47490851" Y="47133524" />
+        <RegionPoint X="47276305" Y="46888811" />
+        <RegionPoint X="47454496" Y="46616483" />
+      </Points>
+    </Region>
+    <Region Layer="65">
+      <Points>
+        <RegionPoint X="32123189" Y="3312287" />
+        <RegionPoint X="30547992" Y="4520977" />
+        <RegionPoint X="30870441" Y="4565034" />
+        <RegionPoint X="30914498" Y="4887483" />
+      </Points>
+    </Region>
+    <Region Layer="65">
+      <Points>
+        <RegionPoint X="38619252" Y="4296539" />
+        <RegionPoint X="37783203" Y="6097428" />
+        <RegionPoint X="38089375" Y="5987096" />
+        <RegionPoint X="38277795" Y="6252449" />
+      </Points>
+    </Region>
+    <Region Layer="65">
+      <Points>
+        <RegionPoint X="39997205" Y="51343783" />
+        <RegionPoint X="41978470" Y="51214296" />
+        <RegionPoint X="41734880" Y="50998475" />
+        <RegionPoint X="41877446" Y="50705919" />
+      </Points>
+    </Region>
+    <Region Layer="65">
+      <Points>
+        <RegionPoint X="31532638" Y="41501263" />
+        <RegionPoint X="29591681" Y="41083093" />
+        <RegionPoint X="29766837" Y="41357382" />
+        <RegionPoint X="29549587" Y="41599698" />
+      </Points>
+    </Region>
+    <Region Layer="65">
+      <Points>
+        <RegionPoint X="31532638" Y="37761106" />
+        <RegionPoint X="29552248" Y="37618849" />
+        <RegionPoint X="29764087" Y="37865908" />
+        <RegionPoint X="29582910" Y="38136258" />
+      </Points>
+    </Region>
+    <Region Layer="65">
+      <Points>
+        <RegionPoint X="31729489" Y="45831972" />
+        <RegionPoint X="29877604" Y="45115938" />
+        <RegionPoint X="30007795" Y="45414208" />
+        <RegionPoint X="29755383" Y="45619639" />
+      </Points>
+    </Region>
+  </Regions>
+  <Width>78104646</Width>
+  <Height>54491106</Height>
+</Primitives>

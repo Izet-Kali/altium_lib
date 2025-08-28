@@ -1,0 +1,125 @@
+* ADG5401F SPICE Macro-model
+* Generic Desc: Fault Protection,10 Ohm Ron, SPST Switch with 1k Ohm Feedback Channel
+* Developed by: MPorley / ADGT
+* Revision History: 1.0 (9/2020)
+* Copyright 2020 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* Begin Notes:
+* The model will work on Vdd/Vss from 8V to 44V single supply and +/-5V to +/-22V dual supply.
+* The model provides parametric specifications at +/-15V only and is not variable with Vdd and Vss changes. Please see datasheet page 3.
+*
+* Not Modeled:
+* IDD during fault conditions.
+* Fault leakage.
+*
+* Please see Connections Section below.
+*
+* Parameters modeled include:
+*	On Resistance
+*	Ton and Toff
+*	Break-Before-Make
+*	Off Isolation
+*	Crosstalk
+*	Supply Currents: Iss/Idd
+*	Bandwidth
+*	Charge Injection
+*	Interrupt Flag Response and Recovery Time
+*	Overvoltage Resposne and Recovery Time
+*	Power On Condition
+*	Open Loop Prevention
+*
+* Connections
+*      1  = S1
+*      2  = SFB
+*      3  = FF
+*      4  = GND
+*      5  = VDD
+*      6  = VSS
+*      7  = POC
+*      8  = IN1
+*      9  = DFB
+*      10  = D1
+*
+.SUBCKT ADG5401F 1 2 3 4 5 6 7 8 9 10
+
+.MODEL VOFF VSWITCH(Von=2 Voff=0.8 Ron=1000000000 Roff=0.001)
+.MODEL VEN VSWITCH(Von=5 Voff=0.8 Ron=650000 Roff=5900)
+.MODEL VFF VSWITCH(Von=5 Voff=0.8 Ron=65000 Roff=4200)
+.MODEL VPOC VSWITCH(Von=5 Voff=0.8 Ron=30000 Roff=1000000000)
+.MODEL VFB VSWITCH(Von=5 Voff=0.1 Ron=1000 Roff=1000000000)
+.MODEL VOLP VSWITCH(Von=5 Voff=0.1 Ron=1000000000 Roff=600)
+.MODEL VOVPLEAK VSWITCH(Von=5 Voff=0.1 Ron=5700000 Roff=1000000000)
+.MODEL VOVNLEAK VSWITCH(Von=5 Voff=0.1 Ron=1190000 Roff=1000000000)
+.MODEL VFAULT VSWITCH(Von=5 Voff=0.8 Ron=1930000 Roff=33000)
+.MODEL VON VSWITCH(Von=5 Voff=0.8 Ron=0.001 Roff=1000000000)
+
+*FAULT FLAG
+EVFF12 993 4 VALUE = { IF((V(1)<=V(5) & V(1)>=V(6)), 5, 0.1) }
+CF10 102_2 4 10e-012
+SVFF11 993 102_2 993 4 VFF
+EVF11 3 4 102_2 4 1
+
+*FAULT SOURCE LEAKAGE
+EVLEAK1 994 4 VALUE = { IF((V(1)>=V(5)), 5, 0.1) }
+SOVLEAK1 1 4 994 4 VOVPLEAK
+EVLEAK2 995 4 VALUE = { IF((V(1)<=V(6)), 5, 0.1) }
+SOVLEAK2 1 4 995 4 VOVNLEAK
+
+* IDD/ISS
+I1 5 4 165E-006
+I2 6 4 80E-006
+
+* OFF ISOLATION
+C11 1 10 1.2E-012
+
+* CHARGE INJECTION
+C12 10 140_1 0.1E-012
+EVCH1 140_1 4 140 4 1
+C13 1 140_1 0.1E-012
+
+* CD/CS OFF AND BANDWIDTH
+C14 1 4 9E-012
+C15 10 4 1e-012
+
+* ON RESISTANCE
+Ech155 155 4 VALUE = { IF ((ABS(V(10)))>(ABS(V(184))),V(10),V(1)) }
+R155 155 4 1G
+R11 137 10 1
+Ech113 136 4 VALUE = { IF (V(155)<10,4.35, (0.1*(V(155)-10)*(V(155)-10))+4.35) }
+RIN1	136 4	1G
+EOUT1 137 181	POLY(2) (136,4) (180,4) 0 0 0 0 0.999/1000
+FCOPY1	4 180 VSENSE1 1
+RSENSOR1 180 4	1K
+VSENSE1 181 184	0
+
+* TON/ TOFF/ BBM
+S11 182 184 140 4 VON
+S12 143 138 143 4 VEN
+Ech14 143 4 VALUE = { IF(V(8)>=1.3 & V(993)>=5, 5 , 0.1 ) }
+eV1 140 4 138 4 1
+C16 138 4 30e-012
+
+* VOLTAGE SUPPLY REQUIREMENT
+S13 44 182 185 4 VON
+S14 142 185 142 4 VON
+Ech15 142 4 VALUE = { IF((V(6)<=-0.5 & V(6)>=-22) & (V(5)<=22 & V(5)>=5), 5 , 0.01 ) }
+S15 139 185 139 4 VON
+Ech16 139 4 VALUE = { IF((V(6)>=-0.5 & (V(5)<=44 & V(5)>=8)), 5 , 0.01 ) }
+
+* POS/NEG FAULT PROTECTION
+SOVC1 993 1084 993 4 VFAULT
+COVP1 1084 4 10e-012
+SOVP10 1 44 1084 4 VON
+
+* FEEDBACK CHANNEL AND OLP CHANNEL
+SFB1 2 9 143 4 VFB
+SOLP1 10 9 143 4 VOLP
+
+* POWER ON CONDITION
+EchPOC1 186 4 VALUE = { IF(V(8)<1.3 & V(7)<0.8, 5 , 0.1 ) }
+SPOC3 1 4 186 4 VPOC
+
+.ENDS ADG5401F

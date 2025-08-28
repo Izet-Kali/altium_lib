@@ -1,0 +1,320 @@
+*ADA4627 SPICE Macromodel
+*Function: 30 V, High Speed, Low Noise, Low Bias Current, JFET Operational Amplifier
+*
+*Revision History:
+*Rev.0.0 08/2021-AR
+*Copyright 2021 by Analog Devices
+*
+*Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spicemodels/license
+*for License Statement. Use of this model indicates your acceptance
+*of the terms and provisions in the License Staement.
+*
+*Tested on LTSpice and PSpice compatible new op amp architecture
+*
+*Parameters modeled include:
+*   Vos, Ibias, Ios, Input Impedance, Input CM limits, CMRR, 
+*   Open Loop Gain & Phase, GBWP, UGC, Output current limits, Output voltage swing, Dropout Voltage vs Iout
+*   Voltage & Current Noise, Quiescent supply currents,Output Impedance (Closed and Open)
+*   Slew Rate, Large and Small signal transient response
+*
+*Not modeled: Distortion, Overload Recovery (no data), over temperature characteristics (model only on 25degC)
+*
+*Node Assignments
+*                 Non-Inverting Input
+*                 |   Inverting Input
+*                 |   |   Positive supply
+*                 |   |   |   Negative supply
+*                 |   |   |   |   Output
+*                 |   |   |   |   |
+.subckt ADA4627   1   2   3   4   5
+G13 Vmid X2 N009 Vmid 1m
+G14 Vmid IscCLMP X Vmid 1m
+G16 Vmid N010 IscCLMP Vmid 1
+C18 N010 Vmid 10p
+E2 Aol_out Vmid N010 Vmid 1
+G28 Aol_out Zo_Out Vmid VM 6.73265335E-03
+Vol1 Mclmpn Aol_outF -6.152600E-01
+Vol2 Mclmpp Aol_outF 1.182400E+00
+S1 Mclmpp MGclmp MGclmp Mclmpp TGSW
+S2 MGclmp Mclmpn Mclmpn MGclmp TGSW
+E1 Aol_outF Vmid Aol_outFX Vmid 0.1
+G25 Vmid Aol_outFX Aol_out Vmid 1
+C11 Aol_outFX Vmid 10n
+V§Gclmp1 Gclmpn Vmid -2.6
+V§Gclmp2 Gclmpp Vmid 2.6
+S3 Gclmpp MGclmp MGclmp Gclmpp TGSW
+S4 MGclmp Gclmpn Gclmpn MGclmp TGSW
+F1 Vmid Vimon Vimon 1
+V1 VT_minus_Isc Vmid -55m
+V2 VT_plus_Isc Vmid 70m
+C12 VimonF Vmid 1n
+C13 Vimon Vmid 1E-15
+G11 Vmid VimonF Vimon Vmid 1
+C14 VimonF2 Vmid 10n
+G12 Vmid VimonF2 Vimon Vmid 1
+G15 Vmid OUT_F 5 Vmid 1
+C17 OUT_F Vmid 1n
+G29 Vmid X X2 Vmid 1m
+Vimon N020 5 0
+C50 N024 Vmid 10p
+G49 Vmid N024 PSVp_Vos Vmid 1
+C51 N025 N024 8.33271953E-11
+C52 N030 Vmid 10p
+G50 Vmid N030 PSVm_Vos Vmid 1
+C53 N031 N030 8.33271953E-11
+G51 Vmid N028 PSVp_Vos PSVm_Vos 1
+C54 N028 Vmid 10p
+E4 PSRp PSRm N028 Vmid 1
+E5 PSR_Outp N029 N025 N031 1
+C55 5 Vmid 1E-15
+C56 N016 N017 6.366198E-12
+G52 Vmid N016 N022 Vmid 6.324681E-04
+G53 Vmid N015 IVRp Vmid 1
+G54 Vmid N023 IVRm Vmid 1
+C57 Vmid N015 10p
+C58 Vmid N023 10p
+C59 N018 CMR 8.841941E-11
+G55 Vmid N018 N017 Vmid 1.693193E+00
+E6 CMRp CMRm N019 Vmid 1
+C60 N019 Vmid 1n
+Vos_adj1 PSRm Vnp 0
+C61 INFm INFp 8p
+C62 INFm Vmid 7p
+C63 INFp Vmid 7p
+I1 INFm Vmid 0.5p
+I2 INFp Vmid 1p
+VT1 VTp Vcc_B -4
+VT2 VTm Vee_B 4
+VT3 VT1p Vcc_B -4
+VT4 VT1m Vee_B 4
+C64 IVRm Vmid 1e-15
+C65 IVRp Vmid 1e-15
+C15 OL_T Vmid 1n
+C9 N026 PSVp 1.989437E-11
+G21 Vmid N026 Vcc_B Vmid 7.478531E-03
+C30 PSVp_Vos Vmid 10p
+C35 PSVm_Vos Vmid 10p
+C36 N034 PSVm 1.326291E-11
+G37 Vmid N034 Vee_B Vmid 3.320326E-03
+C23 VM Vmid 1E-15
+Iq1 3 4 7e-3
+E3 Vmid 0 N027 0 1
+G22 4 Vmid Vcntlm Vmid 1
+G23 3 Vmid Vcntlp Vmid 1
+E7 Vcc_B 0 3 0 1
+E8 Vee_B 0 4 0 1
+C24 N027 0 0.1m
+C25 Aol_out Zo_Out 1p
+C4 N012 N011 9.094568E-08
+G8 Vmid N011 Zo_Out Aol_out 3.143531E-01
+S5 N012 N011 OL_T Vmid TGSW1
+C1 MGclmp Vmid 9.094568E-13
+G3 Vmid N005 10xMclmp Vmid 6.666667E-05
+C3 N005 Vmid 2.306593E-14
+G4 Vmid N006 N005 Vmid 6.666667E-05
+C5 N006 Vmid 2.306593E-14
+G5 Vmid N007 N006 Vmid 6.666667E-05
+C6 N007 Vmid 2.306593E-14
+G6 Vmid N008 N007 Vmid 6.666667E-05
+C7 N008 Vmid 2.306593E-14
+G7 Vmid N009 N008 Vmid 6.666667E-05
+C8 N009 Vmid 2.306593E-14
+C2 Zo_deux N013 7.578807E-12
+G9 Vmid N013 N012 Vmid 1.142873E-01
+G24 Vmid 1 N003 Vmid 2.51580768E-06
+G17 Vmid 2 N004 Vmid 2.51580768E-06
+Vpscmrr CMRm PSRp 0
+S6 VCC PSR_Outp PSR_Outp VCC TGSW3
+S7 PSR_Outp VEE VEE PSR_Outp TGSW3
+I3 CMRp IVRm 1E-15
+G1 Vmid MGclmp Value={LIMIT(Gain*V(CMRp,IVRm),IPOS,INEG)}
+I4 MGclmp Vmid 1E-15
+G2 Vmid 10xMclmp Value={LIMIT(Gain2*V(MGclmp,Vmid),IPOS2,INEG2)}
+I5 Zo_deux Vmid 1E-15
+G10 Vmid VM Value={LIMIT(Gain_deux*V(Zo_deux,Vmid),IPOS_deux,INEG_deux)}
+G18 Vmid N019 Value={LIMIT(Gain_CMR*V(CMR,Vmid),IPOS_CMR,INEG_CMR)}
+I6 CMR Vmid 1E-15
+G19 Vmid PSVp_Vos Value={LIMIT(Gain_PSVp*V(PSVp,Vmid),IPOS_PSVp,INEG_PSVp)}
+I7 PSVp Vmid 1E-15
+G20 Vmid PSVm_Vos Value={LIMIT(Gain_PSVm*V(PSVm,Vmid),IPOS_PSVm,INEG_PSVm)}
+I8 PSVm Vmid 1E-15
+G2639 Vmid Vcntlp Value={IF(V(VimonF,Vmid)>0,(V(VimonF,Vmid)*Gcntlp),0)}
+I9 VimonF Vmid 1E-15
+G2739 Vmid Vcntlm Value={IF(V(VimonF,Vmid)>0,(V(VimonF,Vmid)*Gcntlm),0)}
+I10 VimonF Vmid 1E-15
+V8 Vn2 Vmid 0.65
+D1 Vn2 Vn1 Diode_Vn
+Vmeas1 Vn1 Vmid 0
+V9 Vn4 Vmid 0.65
+D2 Vn4 Vn3 Diode_Vn
+Vmeas2 Vn3 Vmid 0
+H1 Vn5 IVRp Vmeas1 707.1067812
+H2 Vn5 Vnp Vmeas2 707.1067812
+GIVRm Vmid IVRm Value={LIMIT(V(INFm,Vmid),V(VT1p,Vmid),V(VT1m,Vmid))}
+GIVRp Vmid IVRp Value={LIMIT(V(INFp,Vmid),V(VTp,Vmid),V(VTm,Vmid))}
+I11 OL_Vsatp Vmid 1E-15
+I12 OL_Vsatm Vmid 1E-15
+I13 OL_Isc Vmid 1E-15
+GOLT Vmid OL_T Value={IF(V(OL_Vsatp,Vmid)>0.9 | V(OL_Vsatm,Vmid)>0.9 | V(OL_Isc,Vmid)>0.9,1,0)}
+GX Vmid clpp Value={IF( (V(OUT_F,Vmid)>V(Vcc_minus_Vsat,Vmid)),(V(Vcc_minus_Vsat,Vmid)-V(OUT_F,Vmid)),0 )}
+C16 clpp Vmid 1E-15
+GX2 Vmid X2 Value={LIMIT( (V(clpp,Vmid)*G_clpp),ILO_clpp,IHI_clpp )}
+GX3 Vmid OL_Vsatp Value={IF(V(OUT_F,Vmid)>V(Vcc_minus_Vsat,Vmid),1,0)}
+I14 Vcc_minus_Vsat Vmid 1E-15
+I15 OUT_F Vmid 1E-15
+GY Vmid clpm Value={IF( (V(OUT_F,Vmid)<V(Vee_plus_Vsat,Vmid)),(V(Vee_plus_Vsat,Vmid)-V(OUT_F,Vmid)),0 )}
+C19 clpm Vmid 1E-15
+GY1 Vmid X Value={LIMIT( (V(clpm,Vmid)*G_clpm),ILO_clpm,IHI_clpm )}
+GY2 Vmid OL_Vsatm Value={IF(V(OUT_F,Vmid)<V(Vee_plus_Vsat,Vmid),1,0)}
+I16 Vee_plus_Vsat Vmid 1E-15
+I17 OUT_F Vmid 1E-15
+G1039 Vmid OL Value={IF( (V(VimonF,Vmid)>V(VT_plus_Isc,Vmid)),(V(VT_plus_Isc,Vmid)-V(VimonF,Vmid)),0 )}
+C20 OL Vmid 1E-15
+GOL_Isc1 Vmid OL Value={IF( (V(VimonF,Vmid)<V(VT_minus_Isc,Vmid)),(V(VT_minus_Isc,Vmid)-V(VimonF,Vmid)),0 )}
+G1239 IscCLMP Vmid Value={LIMIT( V(OL,Vmid)*G_OL,ILO_OL,IHI_OL )}
+I18 VT_plus_Isc Vmid 1E-15
+I19 VT_minus_Isc Vmid 1E-15
+I20 VimonF Vmid 1E-15
+GOL_Isc2 Vmid OL_Isc Value={IF( (V(VimonF,Vmid)>V(VT_plus_Isc,Vmid)),(V(VT_plus_Isc,Vmid)-V(VimonF,Vmid)),0 )}
+GImonX1 Vmid V_ImonX Value={IF( V(VimonF2,Vmid)<0,0,ABS(V(VimonF2,Vmid)) )}
+C21 V_ImonX Vmid 1E-15
+C22 VccmVsat Vmid 1E-15
+GImonX3 Vmid Vcc_minus_Vsat Value={V(Vcc_B,Vmid)-V(VccmVsat,Vmid)}
+C26 Vcc_minus_Vsat Vmid 1E-15
+I21 Vcc_B Vmid 1E-15
+I22 VimonF2 Vmid 1E-15
+GImonY1 Vmid V_ImonY Value={IF( V(VimonF2,Vmid)>0,0,ABS(V(VimonF2,Vmid)) )}
+C27 V_ImonY Vmid 1E-15
+C28 VeepVsat Vmid 1E-15
+GImonY3 Vmid Vee_plus_Vsat Value={V(Vee_B,Vmid)+V(VeepVsat,Vmid)}
+C29 Vee_plus_Vsat Vmid 1E-15
+I23 Vee_B Vmid 1E-15
+I24 VimonF2 Vmid 1E-15
+R28 N027 Vcc_B R_NONOISE 10G
+R35 Vee_B N027 R_NONOISE 10G
+R36 INFp 1 R_NONOISE 10
+R53 2 INFm R_NONOISE 10
+R54 INFm INFp R_NONOISE 10E12
+R55 INFm Vmid R_NONOISE 10E12
+R56 INFp Vmid R_NONOISE 10E12
+R57 IVRm Vmid R_NONOISE 1
+R58 IVRp Vmid R_NONOISE 1
+R10 N003 Vmid R_25C 60
+R14 N004 Vmid R_25C 60
+R59 Gclmpn Vmid R_NONOISE 10Meg
+R19 Vmid Gclmpp R_NONOISE 10Meg
+R16 Mclmpp Vmid R_NONOISE 10Meg
+R17 Vmid Mclmpn R_NONOISE 10Meg
+R20 OL_T Vmid R_NONOISE 1
+R18 Aol_outFX Vmid R_NONOISE 1
+R51 OUT_F Vmid R_NONOISE 1
+R41 OL_Vsatm Vmid R_NONOISE 1
+R50 VimonF2 Vmid R_NONOISE 1
+R21 Vimon Vmid R_NONOISE 1
+R23 VimonF Vmid R_NONOISE 1
+R42 clpm Vmid R_NONOISE 1
+R46 Vcc_minus_Vsat Vmid R_NONOISE 1
+R45 VccmVsat Vmid R_NONOISE 1
+R44 V_ImonX Vmid R_NONOISE 1
+R40 clpp Vmid R_NONOISE 1
+R65 OL_Vsatp Vmid R_NONOISE 1
+R43 OL Vmid R_NONOISE 1
+R66 OL_Isc Vmid R_NONOISE 1
+R52 Vee_plus_Vsat Vmid R_NONOISE 1
+R48 VeepVsat Vmid R_NONOISE 1
+R47 V_ImonY Vmid R_NONOISE 1
+R1 MGclmp Vmid R_NONOISE 1E10
+R2 10xMclmp Vmid R_NONOISE 1E4
+R5 N005 Vmid R_NONOISE 1.5E4
+R7 N006 Vmid R_NONOISE 1.5E4
+R15 N007 Vmid R_NONOISE 1.5E4
+R25 N008 Vmid R_NONOISE 1.5E4
+R26 N009 Vmid R_NONOISE 1.5E4
+Rvsat X2 Vmid R_NONOISE 1E3
+Rvsat1 X Vmid R_NONOISE 1E3
+Risc IscCLMP Vmid R_NONOISE 1E3
+R22 N010 Vmid R_NONOISE 1
+R13 Vmid Aol_out R_NONOISE 2E6
+R49 Aol_out Zo_Out R_NONOISE 14.85E3
+R8 N011 Vmid R_NONOISE 10
+R9 N012 N011 R_NONOISE 1E5
+R6 Zo_deux N013 R_NONOISE 1E5
+R3 N013 Vmid R_NONOISE 10
+R69 N012 Vmid R_NONOISE 4.665667E+04
+R24 Zo_deux Vmid R_NONOISE 6.999900E+05
+R27 VM Vmid R_NONOISE 1
+R34 N015 Vmid R_NONOISE 1
+R70 N023 Vmid R_NONOISE 1
+R71 N015 N022 R_NONOISE 100E3
+R72 N022 N023 R_NONOISE 100E3
+R73 N017 N016 R_NONOISE 1E7
+R74 CMR N018 R_NONOISE 1E4
+R75 N016 Vmid R_NONOISE 1
+R76 N018 Vmid R_NONOISE 10
+R77 N017 Vmid R_NONOISE 5.025026E+04
+R78 CMR Vmid R_NONOISE 6.282979E+02
+R79 N019 Vmid R_NONOISE 1
+R11 PSVp N026 R_NONOISE 1E8
+R4 N026 Vmid R_NONOISE 10
+R80 PSVp Vmid R_NONOISE 5.323618E+03
+R12 PSVp_Vos Vmid R_NONOISE 1
+R60 PSVm N034 R_NONOISE 1E8
+R62 N034 Vmid R_NONOISE 10
+R63 PSVm Vmid R_NONOISE 1.199144E+04
+R61 PSVm_Vos Vmid R_NONOISE 1
+R64 N028 Vmid R_NONOISE 1
+R68 N020 PSR_Outp R_NONOISE 1E-3
+R81 Vmid 5 R_NONOISE 2E6
+R82 N024 Vmid R_NONOISE 1
+R83 N030 Vmid R_NONOISE 1
+R84 N025 Vmid R_NONOISE 1E3
+R85 N031 Vmid R_NONOISE 1E3
+R67 N029 Zo_out R_NONOISE 1E-3
+R30 Vcntlm Vmid R_NONOISE 1
+R29 Vcntlp Vmid R_NONOISE 1
+I25 VT1p Vmid 1E-15
+I26 VT1m Vmid 1E-15
+I27 INFm Vmid 1E-15
+I28 VTp Vmid 1E-15
+I29 VTm Vmid 1E-15
+I30 INFp Vmid 1E-15
+GImonY2 Vmid VeepVsat Value={( 1.546718 + 138.2231*V(V_ImonY,Vmid) - 18991.62*V(V_ImonY,Vmid)*V(V_ImonY,Vmid)+ 1358718*V(V_ImonY,Vmid)*V(V_ImonY,Vmid)*V(V_ImonY,Vmid) + - 40635510*V(V_ImonY,Vmid)*V(V_ImonY,Vmid)*V(V_ImonY,Vmid)*V(V_ImonY,Vmid)+ 428906800*V(V_ImonY,Vmid)*V(V_ImonY,Vmid)*V(V_ImonY,Vmid)*V(V_ImonY,Vmid)*V(V_ImonY,Vmid))}
+GImonX2 Vmid VccmVsat Value={( 2.100398 + 49.02051*V(V_ImonX,Vmid) - 2464.197*V(V_ImonX,Vmid)*V(V_ImonX,Vmid)+ 187958.9*V(V_ImonX,Vmid)*V(V_ImonX,Vmid)*V(V_ImonX,Vmid) + - 5776660*V(V_ImonX,Vmid)*V(V_ImonX,Vmid)*V(V_ImonX,Vmid)*V(V_ImonX,Vmid)+ 60044610*V(V_ImonX,Vmid)*V(V_ImonX,Vmid)*V(V_ImonX,Vmid)*V(V_ImonX,Vmid)*V(V_ImonX,Vmid))}
+.model R_NONOISE RES(T_ABS=-273.15)
+.model TGSW SW(Ron=1 Roff=1e12 Von=100m Voff=0)
+.model TGSW1 SW(Ron=100 Roff=1E12 Von=0.9 Voff=0.1)
+.model TGSW3 SW(Ron=0.1m Roff=1e12 Von=600m Voff=0)
+.model R_25C RES(T_ABS=25)
+.param Gain = 1.148530E-05
+.param IPOS = 5.092958E-06
+.param INEG= -7.093763E-06
+.param Gain2 = 1E-3
+.param IPOS2 = 2.60000E-03
+.param INEG2= -2.60000E-03
+.param Gain_deux = 1
+.param IPOS_deux = 16.4
+.param INEG_deux= -21
+.param Gain_CMR = 1
+.param IPOS_CMR = 0.18
+.param INEG_CMR= -0.18
+.param Gain_PSVp = 1
+.param IPOS_PSVp = 1
+.param INEG_PSVp = -1
+.param Gain_PSVm = 1
+.param IPOS_PSVm = 1
+.param INEG_PSVm = -1
+.param Gcntlp = 1
+.param Gcntlm = 1
+.model Diode_Vn D(KF={KFX} IS={ISX})
+.param KFX = 2.13614E-17
+.param ISX = 1.40533E-15
+.param G_clpp = 1
+.param IHI_clpp = 0.52
+.param ILO_clpp = -0.52
+.param G_clpm = 1
+.param IHI_clpm = 0.52
+.param ILO_clpm = -0.52
+.param G_OL = 10
+.param IHI_OL = 0.52
+.param ILO_OL = -0.52
+.ends ADA4627

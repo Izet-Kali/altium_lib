@@ -1,0 +1,101 @@
+* ADG1402 SPICE Macro-model
+* Generic Desc: 1 O On Resistance, ±15 V/+12 V/±5 V , iCMOS, SPST
+* Developed by: MPorley / ADGT
+* Revision History: 1.0 (07/2018)
+* Copyright 2018 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* Begin Notes:
+* The model will work on Vdd/Vss from 5V to 16.5V single supply and +/-4.5V to +/-16.5V dual supply.
+* The model provides parametric specifications at +/-16.5V only and is not variable with Vdd and Vss changes. Please see datasheet page 3.
+*
+* Not Modeled:
+*
+* Parameters modeled include:
+*	On Resistance
+*	Ton and Toff
+*	Break-Before-Make
+*	Off Isolation
+*	Crosstalk
+*	Supply Currents: Iss/Idd
+*	Bandwidth
+*	Charge Injection
+* Connections
+*      1  = S1
+*      2  = NIC
+*      3  = GND
+*      4  = VDD
+*      5  = NIC
+*      6  = IN1
+*      7  = VSS
+*      8  = D1
+*
+.SUBCKT ADG1402 1 3 4 6 7 8
+
+.MODEL VON VSWITCH(Von=5 Voff=0.8 Ron=0.001 Roff=1000000000000)
+.MODEL VEN VSWITCH(Von=5 Voff=0.8 Ron=120000 Roff=160000)
+.MODEL DCLAMP D(IS=1E-15 IBV=1E-13)
+
+
+* IDD/ISS
+I1 4 3 60E-006
+I2 7 3 0.002E-006
+
+* Configuration: SPST 1:1
+
+
+** SWITCH 1 **
+*
+* ESD PROTECTION DIODES
+D11 7 8 DCLAMP
+D12 8 4 DCLAMP
+D13 7 1 DCLAMP
+D14 1 4 DCLAMP
+*
+* OFF ISOLATION
+C11 1 8 4E-012
+*
+* CHARGE INJECTION
+C12 8 140 4.3E-012
+C13 1 140 4.3E-012
+*
+* CD/CS OFF AND BANDWIDTH
+C14 1 3 35E-012
+C15 8 3 3e-012
+*
+* ON RESISTANCE
+Ech155 1555 3 VALUE = { IF ((ABS(V(1)))>(ABS(V(184))),V(1),V(8)) }
+R155 1555 3 1G
+R11 137 8 0.001
+S111 136 141 1141 3 VON
+Ech111 1141 3 VALUE = { IF (V(1555)<-13,5,0) }
+Ech11 141 3 VALUE = { IF (V(1555)<-13,2.85714285714286E-03*(V(1555)--13)+1.2,0) }
+S112 136 146 1146 3 VON
+Ech112 1146 3 VALUE = { IF ((V(1555)>=-13) & (V(1555)<=13.5),5,0) }
+Ech12 146 3 VALUE = { IF ((V(1555)>=-13) & (V(1555)<=13.5),((1.2-0.8)/((-13--0.283911485717662)*(-13--0.283911485717662)))*(V(1555)--0.283911485717662)*(V(1555)--0.283911485717662) + 0.8,0) }
+S113 136 144 1144 3 VON
+Ech113 1144 3 VALUE = { IF (V(1555)>13.5,5,0) }
+Ech13 144 3 VALUE = { IF (V(1555)>13.5,-6.66666666666667E-03*(V(1555)-13.5)+1.27,0) }
+RIN1	136 3	1G
+EOUT1 137 181	POLY(2) (136,3) (180,3) 0 0 0 0 0.999/1000
+FCOPY1	3 180 VSENSE1 1
+RSENSOR1 180 3	1K
+VSENSE1 181 184	0
+*
+* TON/ TOFF/ BBM
+S11 182 184 140 3 VON
+S12 143 138 143 3 VEN
+Ech14 143 3 VALUE = { IF(V(6)<2.0, 5 , 0.8 ) }
+eV1 140 3 138 3 1
+C16 138 3 1e-012
+*
+* VOLTAGE SUPPLY REQUIREMENT
+S13 1 182 185 3 VON
+S14 142 185 142 3 VON
+Ech15 142 3 VALUE = { IF((V(7)<=-0.5 & V(7)>=-16.5) & (V(4)<=16.5 & V(4)>=4.5), 5 , 0.01 ) }
+S15 139 185 139 3 VON
+Ech16 139 3 VALUE = { IF((V(7)>=-0.5 & (V(4)<=16.5 & V(4)>=5)), 5 , 0.01 ) }
+
+.ENDS ADG1402

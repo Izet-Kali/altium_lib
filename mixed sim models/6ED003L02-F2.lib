@@ -1,0 +1,480 @@
+******************************************************************************
+*  Simulation model of 6ED003L02-F2 Level 1 for SIMetrix version 8.3g or higher
+*  Version: 01.00 (Revision: 256)
+*  (C) Copyright 2020 Infineon Technologies. All rights reserved. 
+*
+******************************************************************************
+*  Model performance : 
+*  - Static Electrical Characteristics and Dynamic Electrical Characteristics 
+*    are modeled with the typical values from the datasheet.
+*  - Temperature effects are not modeled
+*
+*  The following features have been modeled :
+*  - Switching Characteristics such as propagation delay, peak currents
+*  - Undervoltage lockout 
+*
+******************************************************************************
+* PINS:
+*  --------------------------------------------------------------------------
+*  | NAME   | DESCRIPTION 
+*  --------------------------------------------------------------------------
+*  | LO1    | Low side gate drive outputs 
+*  --------------------------------------------------------------------------
+*  | LO2    | Low side gate drive outputs 
+*  --------------------------------------------------------------------------
+*  | LO3    | Low side gate drive outputs 
+*  --------------------------------------------------------------------------
+*  | HO1    | High side gate drive outputs 
+*  --------------------------------------------------------------------------
+*  | HO2    | High side gate drive outputs 
+*  --------------------------------------------------------------------------
+*  | HO3    | High side gate drive outputs 
+*  --------------------------------------------------------------------------
+*  | NLIN1  | Logic inputs for low side gate driver output (LO1), out of phase 
+*  --------------------------------------------------------------------------
+*  | NLIN2  | Logic inputs for low side gate driver output (LO2), out of phase 
+*  --------------------------------------------------------------------------
+*  | NLIN3  | Logic inputs for low side gate driver output (LO3), out of phase 
+*  --------------------------------------------------------------------------
+*  | NHIN1  | Logic inputs for high side gate driver outputs (HO1), out of phase 
+*  --------------------------------------------------------------------------
+*  | NHIN2  | Logic inputs for high side gate driver outputs (HO2), out of phase 
+*  --------------------------------------------------------------------------
+*  | NHIN3  | Logic inputs for high side gate driver outputs (HO3), out of phase 
+*  --------------------------------------------------------------------------
+*  | VCC    | Low-side and logic supply voltage 
+*  --------------------------------------------------------------------------
+*  | VSS    | Logic ground 
+*  --------------------------------------------------------------------------
+*  | COM    | Low side return 
+*  --------------------------------------------------------------------------
+*  | VB1    | High side floating supplies 
+*  --------------------------------------------------------------------------
+*  | VB2    | High side floating supplies 
+*  --------------------------------------------------------------------------
+*  | VB3    | High side floating supplies 
+*  --------------------------------------------------------------------------
+*  | VS1    | High side floating supply returns 
+*  --------------------------------------------------------------------------
+*  | VS2    | High side floating supply returns 
+*  --------------------------------------------------------------------------
+*  | VS3    | High side floating supply returns 
+*  --------------------------------------------------------------------------
+*  | ITRIP  | Input for over-current shutdown 
+*  --------------------------------------------------------------------------
+*  | NFAULT | Indicates over-current or undervoltage lockout (low side) has occurred, negative logic 
+*  --------------------------------------------------------------------------
+*  | RCIN   | External RC-network to define FAULT clear delay after FAULT-Signal 
+*  --------------------------------------------------------------------------
+*  | EN     | Enable I/O functionality 
+*  --------------------------------------------------------------------------
+*
+******************************************************************************
+* DISCLAIMER
+* 
+* INFINEON’S MODEL TERMS OF USE
+*
+* BY DOWNLOADING AND/OR USING THIS INFINEON MODEL (“MODEL”), THE USER
+* (INCLUDING YOU) AGREES TO BE BOUND BY THE TERMS OF USE HERE STATED. IF USER
+* DOES NOT AGREE TO ALL TERMS OF USE HERE STATED, USER SHALL NOT DOWNLOAD,
+* USE OR COPY THE MODEL BUT IMMEDIATELY DELETE IT (TO THE EXTENT THAT IT
+* WAS DOWNLOADED ALREADY).
+*
+* 1. SCOPE OF USE
+* 1.1 Any use of this Model provided by Infineon Technologies AG is subject
+*     to these Terms of Use.
+* 1.2 This Model, provided by Infineon, does not fully represent all of the
+*     specifications and operating characteristics of the product to which
+*     this Model relates.
+* 1.3 This Model only describes the characteristics of a typical product.
+*     In all cases, the current data sheet information for a given product
+*     is the final design guideline and the only actual performance
+*     specification. Although this Model can be a useful tool to evaluate
+*     the product performance, it cannot simulate the exact product performance
+*     under all conditions and it is also not intended to replace
+*     bread-boarding for final verification.
+*
+* 2. IMPORTANT NOTICE
+* 2.1 Infineon Technologies AG (“Infineon”) is not and cannot be aware of the
+*     specific application of the Infineon’s Model by User. However, Model may
+*     from time to time be used by User in potentially harmful and/or life-
+*     endangering applications such as traffic, logistic, medical, nuclear
+*     or military applications or in other applications where failure of the
+*     Model may predictably cause damage to persons’ life or health or to
+*     property (hereinafter "Critical Applications").
+* 2.2 User acknowledges that Infineon has not specifically designed or
+*     qualified the Model for Critical Applications that the Model may contain
+*     errors and bugs and that User is required to qualify the Model for
+*     Critical Applications pursuant to the applicable local quality, safety
+*     and legal requirements before permitting or giving access to any such use.
+*
+* 3. CONFIDENTIAL INFORMATION
+*     User shall treat ideas, concepts and information incorporated in the
+*     Model, the documentation and the content of this Terms of Use (together
+*     hereinafter "Confidential Information") confidential, not disclose it to
+*     any third party unless otherwise agreed in writing between User and
+*     Infineon, not use it for any other purposes than using the Model for
+*     simulation and testing purposes only.
+*
+* 4. WARRANTY
+* 4.1 User acknowledges that the Model is provided by Infineon under this Terms	       
+*     of Use is provided free of charge and "AS IS" without any warranty or 	      
+*     liability of any kind and Infineon hereby expressly disclaims any 		      
+*     warranties or representations, whether express, implied, statutory or 	      
+*     otherwise, including but not limited to warranties of workmanship, 		      
+*     merchantability, fitness for a particular purpose, defects in the 		      
+*     Model, or non-infringement of third parties intellectual property rights.	       
+* 4.2 Infineon reserves the right to make corrections, deletions, modifications, 	      
+*     enhancements, improvements and other changes to the Model at any time 	      
+*     or to move or discontinue any Model without notice. 			      
+* 										      
+* 5. LIABILITY 									      
+* 5.1 Nothing in this Terms of Use shall limit or exclude Infineon's liability 	      
+*     under mandatory liability laws, for injuries to life, body or health,  	      
+*     for fraudulent concealment of defects in the software, or in cases 		      
+*     of Infineon's intentional misconduct or gross negligence. 			      
+* 5.2 Without prejudice to Sections 5.1, in cases of Infineon's slight		       
+*     negligent breach of obligations that restrict essential rights or duties 	      
+*     arising from the nature of this Terms of Use in a way that there is a 	      
+*     risk of non-achievement of the purpose of this Terms of Use or of an 	      
+*     obligation whose observance User regularly may trust in and whereas		       
+*     compliance with only makes proper execution of this Terms of Use 		      
+*     possible, Infineon's liability shall be limited to the typically, 		      
+*     foreseeable damage. 							      
+* 5.3 Without prejudice to Sections 8.1 and 8.2, Infineon's liability under 	      
+*     this Agreement shall be excluded in all other cases. 			      
+* 										      
+* 6. EXPORT REGULATIONS 								      
+*     The User shall comply with all applicable national and international 	      
+*     laws and regulations, in particular the applicable export control 		      
+*     regulations and sanction programs. The User also agrees not to 		      
+*     export, re-export or transfer any software or technology developed		       
+*     with or using information, software or technology offered by Infineon, 	      
+*     in violation of any applicable laws or regulations of the competent 	      
+*     authorities. Further, the User shall neither use any products, 		      
+*     information, software and technology offered by Infineon in or in 		      
+*     connection with nuclear technology or weapons of mass destruction 		      
+*     (nuclear, biological or chemical) and carriers thereof nor supply 		      
+*     military consignees. 							      
+* 										      
+* 7. TERMINATION OF USE PERMIT 							      
+*     If the User violates these Terms of Use, such User’s permit to use 		      
+*     this Model terminates automatically. In addition, Infineon may 		      
+*     terminate the User’s permit to use this Model at its discretion and 	      
+*     at any time regardless of any violation of these Terms of Use. In 		      
+*     any of the foregoing events, the User is obliged to immediately destroy 	      
+*     any content that has been downloaded or printed from Infineon’s website. 	      
+* 										      
+* 8. MISCELLANEOUS 								      
+* 8.1 These Terms of Use are subject to the laws of the Federal Republic 		      
+*     of Germany with the exception of the United Nations on Purchase 		      
+*     Contracts on the International Sale of Goods dated April 11, 1980 (CISG). 	      
+*     The exclusive place of jurisdiction is Munich, Germany. 			      
+* 8.2 Should any provision in these Terms of Use be or become invalid, the 	      
+*     validity of all other provisions or agreements shall remain unaffected
+*     thereby.
+*
+******************************************************************************
+.SUBCKT 6ED003L02-F2 LO1 LO2 LO3 HO1 HO2 HO3 NLIN1 NLIN2 NLIN3 NHIN1 NHIN2 NHIN3 VCC VSS COM VB1 VB2 VB3 VS1 VS2 VS3 ITRIP NFAULT 
++ RCIN EN
+R_HIN1 NHIN1 VSS 1E12
+C_HIN1 NHIN1 VSS 1F
+R_LIN1 NLIN1 VSS 1E12
+C_LIN1 NLIN1 VSS 1F
+R_HO1 HO1 VS1 1E12
+R_LO1 LO1 COM 1E12
+R_VB1 VB1 VS1 1E12
+R_VS1 VS1 COM 1E12
+R_HIN2 NHIN2 VSS 1E12
+C_HIN2 NHIN2 VSS 1F
+R_LIN2 NLIN2 VSS 1E12
+C_LIN2 NLIN2 VSS 1F
+R_HO2 HO2 VS1 1E12
+R_LO2 LO2 COM 1E12
+R_VB2 VB2 VS1 1E12
+R_VS2 VS2 COM 1E12
+R_HIN3 NHIN3 VSS 1E12
+C_HIN3 NHIN3 VSS 1F
+R_LIN3 NLIN3 VSS 1E12
+C_LIN3 NLIN3 VSS 1F
+R_HO3 HO3 VS1 1E12
+R_LO3 LO3 COM 1E12
+R_VB3 VB3 VS1 1E12
+R_VS3 VS3 COM 1E12
+R_VCC VCC VSS 1E12
+R_VSS VSS COM 1E12
+R_DT DT VSS 1
+C_DT DT VSS 1P
+R_ITRIP ITRIP VSS 1E12
+R_NFAULT1 NFAULT VSS 1E12
+X_VSS_SD_D VSS EN SIX_ED003L02-F2_ESD_DIO PARAMS: P_V_BV=1 P_I_BV=1M
+X_CL_SD EN VSS SIX_ED003L02-F2_CL_DIO PARAMS: P_V_BV=10.3 P_I_BV=4M
+X_FLTCLR_VCC_D RCIN VCC SIX_ED003L02-F2_ESD_DIO PARAMS: P_V_BV=0.5 P_I_BV=1M
+X_VSS_FLTCLR_D VSS RCIN SIX_ED003L02-F2_ESD_DIO PARAMS: P_V_BV=0.5 P_I_BV=1M
+X_VSS_ITRIP_D VSS ITRIP SIX_ED003L02-F2_ESD_DIO PARAMS: P_V_BV=1 P_I_BV=1M
+X_CL_ITRIP ITRIP VSS SIX_ED003L02-F2_CL_DIO PARAMS: P_V_BV=10.3 P_I_BV=4M
+X_CL_VB1 VB1 VS1 SIX_ED003L02-F2_CL_DIO PARAMS: P_V_BV=20.4 P_I_BV=100M
+X_CL_VB2 VB2 VS2 SIX_ED003L02-F2_CL_DIO PARAMS: P_V_BV=20.4 P_I_BV=100M
+X_CL_VB3 VB3 VS3 SIX_ED003L02-F2_CL_DIO PARAMS: P_V_BV=20.4 P_I_BV=100M
+X_CL_VCC VCC COM SIX_ED003L02-F2_CL_DIO PARAMS: P_V_BV=25.4 P_I_BV=100M
+X_CL_VSS VCC VSS SIX_ED003L02-F2_CL_DIO PARAMS: P_V_BV=20.4 P_I_BV=100M
+X_FLT_VCC_D NFAULT VCC SIX_ED003L02-F2_ESD_DIO PARAMS: P_V_BV=0.5 P_I_BV=1M
+X_VSS_FLT_D VSS NFAULT SIX_ED003L02-F2_ESD_DIO PARAMS: P_V_BV=0.5 P_I_BV=1M
+X_CL_VSS_COM VSS COM SIX_ED003L02-F2_CL_DIO PARAMS: P_V_BV=5.7 P_I_BV=100M
+X_CL_COM_VSS COM VSS SIX_ED003L02-F2_CL_DIO PARAMS: P_V_BV=5.7 P_I_BV=100M
+XOVC_DETECT4 ITRIP NFAULT FAULT_OUT VCC_UV VSS RCIN VCC EN SIX_ED003L02-F2_OVC_DETECT4
+XVCC_UV_DETECT VCC_UV VCC VSS SIX_ED003L02-F2_VCC_UV_DETECT PARAMS: P_VCC_UVL=9.8 P_VCC_UVH=11.7 P_R_UV_D_L=1428
+G_QCC VCC VSS VALUE {TABLE(V(VCC,VSS) , 0,0 , 0.1,1U , 1,10U ,10 ,750U , 20,770U )}
+R_QCC VCC VSS 1E12
+G_LEAK1 VS1 VS2 VALUE {TABLE(V(VS1,VS2) , 0,0 , 600, 7U)}
+R_LEAK1 VS1 VS2 1E12
+G_LEAK2 VS1 VS3 VALUE {TABLE(V(VS1,VS3) , 0,0 , 600, 7U)}
+R_LEAK2 VS1 VS3 1E12
+G_LEAK3 VS2 VS1 VALUE {TABLE(V(VS2,VS1) , 0,0 , 600, 7U)}
+R_LEAK3 VS2 VS1 1E12
+G_LEAK4 VS2 VS3 VALUE {TABLE(V(VS2,VS3) , 0,0 , 600, 7U)}
+R_LEAK4 VS2 VS3 1E12
+G_LEAK5 VS3 VS1 VALUE {TABLE(V(VS3,VS1) , 0,0 , 600, 7U)}
+R_LEAK5 VS3 VS1 1E12
+G_LEAK6 VS3 VS2 VALUE {TABLE(V(VS3,VS2) , 0,0 , 600, 7U)}
+R_LEAK6 VS3 VS2 1E12
+X_GD_TEMPLATE1 LO1 HO1 COM VSS NLIN1 NHIN1 VCC VB1 VS1 DT VCC_UV FAULT_OUT SIX_ED003L02-F2_GD_TEMPLATE
+X_GD_TEMPLATE2 LO2 HO2 COM VSS NLIN2 NHIN2 VCC VB2 VS2 DT VCC_UV FAULT_OUT SIX_ED003L02-F2_GD_TEMPLATE
+X_GD_TEMPLATE3 LO3 HO3 COM VSS NLIN3 NHIN3 VCC VB3 VS3 DT VCC_UV FAULT_OUT SIX_ED003L02-F2_GD_TEMPLATE
+.ENDS 6ED003L02-F2
+.SUBCKT SIX_ED003L02-F2_GD_TEMPLATE LO HO COM VSS LIN HIN VCC VB VS DT VCC_UV FAULT_OUT PARAMS: HB_EN=1 SHT_EN=1 P_OFFSET_DT=3.1E-07 
++ P_SLOPE_DT=-0.0 P_SD_D=6.285714285714287E-08 P_TH_SD_UP=1.9 P_TH_SD_DW=1.1 P_C_SD_LPF=4.4877096463336025E-08 P_C_TPD=2.9475E-08 
++ P_TH_TPD=0.5313750357 P_C_PW_MIN=4.34E-08 P_TH_HIN_OFF=0.9 P_TH_LIN_OFF=0.9 P_TH_HIN_ON=2.1 P_TH_LIN_ON=2.1 P_R_HIN_CL=100000.0 
++ P_R_LIN_CL=100000.0 P_C_GATE=1E-12 P_RBOND_NMOS=0.01 P_RBOND_PMOS=0.01 P_LO_VGS_NMOS=5.3 P_LO_VGS_PMOS=7.7 P_LPMOS_LAMDA=0.071 
++ P_LPMOS_KP=5E-06 P_LNMOS_LAMDA=0.02 P_LNMOS_KP=3.4E-05 P_HO_VGS_NMOS=5.3 P_HO_VGS_PMOS=7.7 P_HPMOS_LAMDA=0.071 P_HPMOS_KP=5E-06 
++ P_HNMOS_LAMDA=0.02 P_HNMOS_KP=3.4E-05 P_VCC_UVH=11.7 P_VCC_UVL=9.8 P_VB_UVL=9.8 P_VB_UVH=11.7 P_R_UV_D_H=1428.5714285714287 
++ P_R_UV_D_L=1428.5714285714287 P_VCC_MIN=10 P_IQ_VCC_MIN=0.003 P_VB_MIN=10 P_IQ_VB_MIN=0.0002 P_VCC_MAX=20 P_IQ_VCC_MAX=0.005 
++ P_VB_MAX=20 P_IQ_VB_MAX=0.00022 P_V_LEAK=600 P_I_LEAK=1E-06 P_R_BSD=35 P_N_BSD=1.4534194248417849 P_IS_BSD=9.1E-16
+G_LIN_CLAMP VCC LIN VALUE={TABLE(V(VCC,LIN),0,0, 9.7,0,11.7, 70U,15,110U,20,150U) }
+G_HIN_CLAMP VCC HIN VALUE={TABLE(V(VCC,HIN),0,0, 9.7,0,11.7, 70U,15,110U,20,150U)}
+X_CL_HIN HIN VSS SIX_ED003L02-F2_CL_DIO PARAMS: P_V_BV=10.3 P_I_BV=4M
+X_CL_LIN LIN VSS SIX_ED003L02-F2_CL_DIO PARAMS: P_V_BV=10.3 P_I_BV=4M
+X_INPUT_STAGE LIN_DD HIN_DD LIN HIN VSS SIX_ED003L02-F2_INPUT_STAGE PARAMS: P_SD_D={P_SD_D} P_TH_SD_UP={P_TH_SD_UP} P_TH_SD_DW=
++ {P_TH_SD_DW} P_C_SD_LPF={P_C_SD_LPF} P_C_TPD={P_C_TPD} P_TH_TPD={P_TH_TPD} P_C_PW_MIN={P_C_PW_MIN} P_TH_HIN_OFF={P_TH_HIN_OFF} 
++ P_TH_LIN_OFF={P_TH_LIN_OFF} P_TH_HIN_ON={P_TH_HIN_ON} P_TH_LIN_ON={P_TH_LIN_ON}
+X_DEADTIME LIN_DT_DIG HIN_DT_DIG LIN_DD HIN_DD DT VCC VSS VCC_UV FAULT_OUT SIX_ED003L02-F2_DEADTIME PARAMS: P_SLOPE_DT={P_SLOPE_DT} 
++ P_OFFSET_DT={P_OFFSET_DT} HB_EN={HB_EN} SHT_EN = {SHT_EN}
+X_HO_STAGE HO HIN_DT_DIG VCC_UV VB_UV VB VS SIX_ED003L02-F2_HO_STAGE PARAMS: P_RBOND_PMOS={P_RBOND_PMOS} P_RBOND_NMOS={P_RBOND_NMOS} 
++ P_C_GATE={P_C_GATE} P_HO_VGS_PMOS={P_HO_VGS_PMOS} P_HPMOS_LAMDA={P_HPMOS_LAMDA} P_HPMOS_KP={P_HPMOS_KP} P_HO_VGS_NMOS=
++ {P_HO_VGS_NMOS} P_HNMOS_LAMDA={P_HNMOS_LAMDA} P_HNMOS_KP={P_HNMOS_KP}
+X_LO_STAGE LO LIN_DT_DIG VCC_UV VCC COM SIX_ED003L02-F2_LO_STAGE PARAMS: P_RBOND_PMOS={P_RBOND_PMOS} P_RBOND_NMOS={P_RBOND_NMOS} 
++ P_C_GATE={P_C_GATE} P_LO_VGS_PMOS={P_LO_VGS_PMOS} P_LPMOS_LAMDA={P_LPMOS_LAMDA} P_LPMOS_KP={P_LPMOS_KP} P_LO_VGS_NMOS=
++ {P_LO_VGS_NMOS} P_LNMOS_LAMDA={P_LNMOS_LAMDA} P_LNMOS_KP={P_LNMOS_KP}
+X_VB_UV_DETECT VB_UV VB VS SIX_ED003L02-F2_VB_UV_DETECT PARAMS: P_VB_UVL={P_VB_UVL} P_VB_UVH={P_VB_UVH} P_R_UV_D_H={P_R_UV_D_H} 
++ P_VCC_UVL={P_VCC_UVL} P_VCC_UVH={P_VCC_UVH} P_R_UV_D_L={P_R_UV_D_L}
+X_CC_EMULATOR VCC VSS VB VS SIX_ED003L02-F2_CC_EMULATOR PARAMS: P_VB_MIN={P_VB_MIN} P_VCC_MIN={P_VCC_MIN} P_IQ_VB_MIN={P_IQ_VB_MIN} 
++ P_IQ_VCC_MIN={P_IQ_VCC_MIN} P_I_LEAK={P_I_LEAK} P_V_LEAK={P_V_LEAK} P_VB_MAX={P_VB_MAX} P_VCC_MAX={P_VCC_MAX} P_IQ_VB_MAX=
++ {P_IQ_VB_MAX} P_IQ_VCC_MAX={P_IQ_VCC_MAX}
+.ENDS SIX_ED003L02-F2_GD_TEMPLATE
+.SUBCKT SIX_ED003L02-F2_AMPLIFIER IN+ IN- OUT VCC VSS PARAMS: VCMRR=2.549M VPSRR=4.161M
+E_CTRL+ CTRL+ 0 VALUE= {V(IN+,VSS)+ TABLE( (V(IN+,VSS)+V(IN-,VSS))/2, 0,100U,0.1,1M,5,{VCMRR}) + TABLE( V(VCC,VSS), 0,100U, 10,1M, 
++ 20, {VPSRR})}
+E_CTRL- CTRL- 0 VALUE= {V(IN-,VSS)}
+E_SUPPLY SUPPLY VSS VALUE={TABLE(V(VCC,VSS),0,0,5,5,6,5.2) }
+E_UP_CTRL UP_CTRL 0 VALUE={TABLE( V(CTRL+,CTRL-),0,0,10U,1)}
+E_DW_CTRL DW_CTRL 0 VALUE={1-V(UP_CTRL)}
+G_UP SUPPLY OUT VALUE={ V(UP_CTRL)* TABLE(V(SUPPLY,OUT), 0,0,1.2,7M,5.2,10M)*TABLE(V(VCC,VSS),10,0.5,15,1,20,1.5)}
+G_DW OUT VSS VALUE={V(DW_CTRL)* TABLE(V(OUT,VSS),0,0,2,1M,5,4M)*TABLE(V(VCC,VSS),10,0.8,15,1,20,1.2)}
+C_OUT OUT VSS 0.4N
+R_1 OUT VSS 1E12
+R_2 IN- VSS 1E12
+R_3 IN+ VSS 1E12
+.ENDS SIX_ED003L02-F2_AMPLIFIER
+.SUBCKT SIX_ED003L02-F2_OVC_DETECT3 ITRIP FAULT FAULT_OUT VCC_UV COM FLTCLR SD
+X_SD_TH SD SD_DIG COM SIX_ED003L02-F2_STN_IDEAL PARAMS: P_TH_UP=1.9 P_TH_DW=1.7
+X_SD_LPF SD_DIG SD_LPF_DIG SIX_ED003L02-F2_ADV_FILTER PARAMS: P_C_DELAY = 4.4877096463336025E-08
+X_SD_DD SD_LPF_DIG SD_DD SIX_ED003L02-F2_RC_DELAY_10 PARAMS: P_C_DELAY = 3.428571428571429E-08
+R_ITRIP ITRIP COM 0.166MEG
+R_SD SD COM 0.166MEG
+X_FLTCLR FLTCLR FLTCLR_DIG COM SIX_ED003L02-F2_STN_IDEAL PARAMS: P_TH_UP= 2.5 P_TH_DW= 0.6
+X_FLTCLR_DELAY FLTCLR_DIG FLTCLR_DD SIX_ED003L02-F2_RC_DELAY_10 PARAMS: P_C_DELAY=1.2142857142857143E-07
+X_ITRIP ITRIP OVC_DIG COM SIX_ED003L02-F2_STP_IDEAL PARAMS: P_TH_UP=0.57 P_TH_DW=0.46
+X_OVC_LPF OVC_DIG OVC_LPF_DIG SIX_ED003L02-F2_ADV_FILTER PARAMS: P_C_DELAY = 5.7905930920433573E-08
+X_ITRIP_TO_FAULT OVC_LPF_DIG ITRIP_TO_FAULT_DD SIX_ED003L02-F2_RC_DELAY_10 PARAMS: P_C_DELAY = 3.571428571428571E-08 P_TH_TPD=0.5
+E_FAULT_RESET FAULT_RESET 0 VALUE={ IF( V(ITRIP_TO_FAULT_DD) > 0.5 | V(SD_DD) < 0.5 | V(VCC_UV) < 0.5, 1, 0 ) }
+E_FAULT_SET FAULT_SET 0 VALUE={V(FLTCLR_DD)}
+X_FAULT_LATCH FAULT_SET FAULT_RESET FAULT_Q FAULT_QN SIX_ED003L02-F2_RS_LATCH
+X_FAULT_OUT FAULT_Q FAULT_OUT SIX_ED003L02-F2_RC_DELAY_10 PARAMS: P_C_DELAY=2.8571428571428575E-08
+G_FAULT FAULT COM VALUE = {(V(FAULT,COM) / 70) * V(FAULT_QN)}
+.ENDS SIX_ED003L02-F2_OVC_DETECT3
+.SUBCKT SIX_ED003L02-F2_OVC_DETECT4 ITRIP FAULT FAULT_OUT VCC_UV COM RCIN VCC SD
+X_SD_TH SD SD_DIG COM SIX_ED003L02-F2_STP_IDEAL PARAMS: P_TH_UP=2.1 P_TH_DW=1.3
+X_SD_LPF SD_DIG SD_LPF_DIG SIX_ED003L02-F2_ADV_FILTER PARAMS: P_C_DELAY = 8.685889638065036E-08
+X_SD_DD SD_LPF_DIG SD_DD SIX_ED003L02-F2_RC_DELAY_10 PARAMS: P_C_DELAY = 2.5714285714285715E-08
+R_ITRIP ITRIP COM 73.33K
+R_SD SD COM 73.33K
+X_ITRIP ITRIP ITRIP_DIG COM SIX_ED003L02-F2_STP_IDEAL PARAMS: P_TH_UP=0.445 P_TH_DW=0.375
+X_ITRIP_LPF ITRIP_DIG ITRIP_LPF_DIG SIX_ED003L02-F2_ADV_FILTER PARAMS: P_C_DELAY = 3.3295910279249306E-08
+E_RCIN_VCC RCIN_VCC COM VALUE= {V(VCC,COM)}
+G_RCIN_UP RCIN_VCC RCIN VALUE={TABLE( V(RCIN_VCC, RCIN),0,0,10M,1 ) * 2.8U }
+G_RCIN_DW RCIN COM VALUE={ ( V(RCIN,COM) / 40 ) * V(ITRIP_LPF_DIG) }
+X_RCIN RCIN RCIN_DIG COM SIX_ED003L02-F2_STP_IDEAL PARAMS: P_TH_UP= 5.2 P_TH_DW= 3.2
+X_LATCH ITRIP_LPF_DIG RCIN_DIG LATCH_Q LATCH_QN SIX_ED003L02-F2_SET_DOMINANT_RS_LATCH
+X_ITRIP_TO_FAULT LATCH_Q ITRIP_TO_FAULT SIX_ED003L02-F2_RC_DELAY_10 PARAMS: P_C_DELAY = 2.7142857142857147E-08
+X_ITRIP_TO_OUT LATCH_Q ITRIP_TO_OUT SIX_ED003L02-F2_RC_DELAY_10 PARAMS: P_C_DELAY = 6.285714285714287E-08
+E_FAULT_DIG FAULT_DIG 0 VALUE={ IF( V(ITRIP_TO_FAULT) > 0.5 | V(VCC_UV) < 0.5, 1, 0)}
+E_FAULT_OUT FAULT_OUT 0 VALUE={ IF( V(ITRIP_TO_OUT) < 0.5 & V(SD_DD) > 0.5 & V(VCC_UV) > 0.5, 1, 0)}
+G_FAULT FAULT COM VALUE = {(V(FAULT,COM) / 45) * V(FAULT_DIG)}
+.ENDS SIX_ED003L02-F2_OVC_DETECT4
+.SUBCKT SIX_ED003L02-F2_INPUT_STAGE LIN_DD HIN_DD LIN HIN COM PARAMS: P_SD_D=5E-08 P_TH_SD_UP=2.1 P_TH_SD_DW=1.1 P_C_TPD=1.9E-07 
++ P_TH_TPD=10E-9 P_TH_HIN_OFF=0.9 P_TH_LIN_OFF=0.9 P_TH_HIN_ON=2.1 P_TH_LIN_ON=2.1 P_C_PW_MIN=42E-9 P_C_SD_LPF=1E-9
+X_HIN_TH HIN HIN_DIG COM SIX_ED003L02-F2_STN_IDEAL PARAMS: P_TH_UP={P_TH_HIN_ON} P_TH_DW={P_TH_HIN_OFF}
+X_HIN_LPF HIN_DIG HIN_LPF_DIG SIX_ED003L02-F2_ADV_FILTER PARAMS: P_C_DELAY = {P_C_PW_MIN}
+X_HIN_DD HIN_LPF_DIG HIN_DD SIX_ED003L02-F2_RC_DELAY_10 PARAMS: P_C_DELAY = {P_C_TPD} P_TH_TPD = {P_TH_TPD}
+X_LIN_TH LIN LIN_DIG COM SIX_ED003L02-F2_STN_IDEAL PARAMS: P_TH_UP={P_TH_LIN_ON} P_TH_DW={P_TH_LIN_OFF}
+X_LIN_LPF LIN_DIG LIN_LPF_DIG SIX_ED003L02-F2_ADV_FILTER PARAMS: P_C_DELAY = {P_C_PW_MIN}
+X_LIN_DD LIN_LPF_DIG LIN_DD SIX_ED003L02-F2_RC_DELAY_10 PARAMS: P_C_DELAY = {P_C_TPD} P_TH_TPD = {P_TH_TPD}
+.ENDS SIX_ED003L02-F2_INPUT_STAGE
+.SUBCKT SIX_ED003L02-F2_OVC_DETECT ITRIP RFE OVC_OUT_CTRL VCC_UV COM PARAMS: P_TH_OVC_UP=0.445 P_TH_OVC_DW=0.375 P_C_ITRIP_LPF=330E-9 
++ P_I_TRIP=2.8E-06 P_TH_RFE_UP=5.2 P_TH_RFE_DW=3.2 P_R_RFE_ON=45 P_C_ITRIP_TO_RFE=1E-9 P_C_ITRIP_TO_OUT=1E-9 P_TH_TPD_ITRIP_TO_RFE=0
+R_ITRIP ITRIP COM 800K
+X_ITRIP ITRIP OVC_DIG COM SIX_ED003L02-F2_STP_IDEAL PARAMS: P_TH_UP={P_TH_OVC_UP} P_TH_DW={P_TH_OVC_DW}
+X_OVC_LPF OVC_DIG OVC_LPF_DIG SIX_ED003L02-F2_ADV_FILTER PARAMS: P_C_DELAY = {P_C_ITRIP_LPF}
+X_ITRIP_TO_RFE OVC_LPF_DIG RFE_CTRL1 SIX_ED003L02-F2_RC_DELAY_10 PARAMS: P_C_DELAY = {P_C_ITRIP_TO_RFE} P_TH_TPD=
++ {P_TH_TPD_ITRIP_TO_RFE}
+X_ITRIP_TO_OUT OVC_LPF_DIG OVC_DD SIX_ED003L02-F2_RC_DELAY_10 PARAMS: P_C_DELAY = {P_C_ITRIP_TO_OUT}
+G_RFE RFE COM VALUE {(V(RFE,COM)/{P_R_RFE_ON})*V(RFE_CTRL)}
+X_RFE_TH RFE RFE_DIG COM SIX_ED003L02-F2_STP_IDEAL PARAMS: P_TH_UP={P_TH_RFE_UP} P_TH_DW={P_TH_RFE_DW}
+E_OVC_PLS OVC_PLS 0 VALUE={IF( (V(OVC_DD) > 0.5) | (V(OVC) > 0.5) , 1.0 , 0.0)}
+E_OVC OVC 0 VALUE={IF( (V(OVC_PLS) > 0.5) & (V(RFE_DIG) < 0.5) , 1.0 , 0.0)}
+E_OUT_CTRL OVC_OUT_CTRL 0 VALUE={V(OVC)}
+E_RFE_CTRL RFE_CTRL 0 VALUE={IF( (V(VCC_UV) < 0.5) | (V(RFE_CTRL1) > 0.5) , 1.0 , 0.0 )}
+.ENDS SIX_ED003L02-F2_OVC_DETECT
+.SUBCKT SIX_ED003L02-F2_SET_DOMINANT_RS_LATCH S R Q QN
+R_Q Q 0 1E12
+R_QN QN 0 1E12
+E_Q Q 0 VALUE={ IF( V(S) > 0.5 ,1, IF( (V(R) > 0.5 & V(S) < 0.5 ) | TIME < 1NS, 0, IF(V(QN)>0.5,0,1)))}
+E_QN QN 0 VALUE={ IF( V(R) > 0.5 & V(S) < 0.5 ,1, IF( ( V(S) > 0.5), 0, IF(V(Q)>0.5,0,1))) }
+.ENDS SIX_ED003L02-F2_SET_DOMINANT_RS_LATCH
+.SUBCKT SIX_ED003L02-F2_RS_LATCH S R Q QN
+R_Q Q 0 1E12
+R_QN QN 0 1E12
+E_Q Q 0 VALUE={ IF( V(S) > 0.5 & V(R) < 0.5,1, IF( (V(R) > 0.5 ) | TIME < 1NS, 0, IF(V(QN)>0.5,0,1)))}
+E_QN QN 0 VALUE={ IF( V(R) > 0.5 ,1, IF( (V(R) < 0.5 & V(S) > 0.5), 0, IF(V(Q)>0.5,0,1))) }
+.ENDS SIX_ED003L02-F2_RS_LATCH
+.SUBCKT SIX_ED003L02-F2_DEADTIME LIN_DT_DIG HIN_DT_DIG LIN HIN DT VCC COM VCC_UV FAULT_OUT PARAMS: HB_EN=1 SHT_EN=0.0 P_SLOPE_DT=
++ 2.43236451E-05 P_OFFSET_DT=5.4E-07 P_I_DT=1E-06 P_C_DT=10P P_TH_UP=0.5
+X_LIN_DT LIN LIN_DD SIX_ED003L02-F2_RC_DELAY_10 PARAMS: P_C_DELAY = 0.3N
+X_HIN_DT HIN HIN_DD SIX_ED003L02-F2_RC_DELAY_10 PARAMS: P_C_DELAY = 0.1N
+E_VCC_1V VCC_1V 0 VALUE={TABLE( V(VCC,COM) , 0,0 , 3,0 , 6,1 )}
+G_DT VCC DT VALUE={TABLE( V(VCC,DT) , 0,0 , 10M,{P_I_DT} )}
+E_HDT_PLS HIN_DT_PLS 0 VALUE={IF( ((V(HIN_DD) - V(LIN_DD)) > 0.1) | (V(HIN_DT_DIG) > 0.5) | ({HB_EN} < 0.5), 1.0 , 0.0 )}
+E_HIN_DT HIN_DT_DIG 0 VALUE={IF( ( ((V(HIN_DT_PLS) > 0.5) & (V(LOFF) > {P_TH_UP})) | {HB_EN} < 0.5 ) & (V(HIN_DD) > 0.5 ) & V(
++ FAULT_OUT)>0.5 , 1.0 , 0.0 )}
+E_LDT_PLS LIN_DT_PLS 0 VALUE={IF( ((V(LIN_DD) - V(HIN_DD)) > 0.1) | (V(LIN_DT_DIG) > 0.5) | ({HB_EN} < 0.5) , 1.0 , 0.0 )}
+E_LIN_DT LIN_DT_DIG 0 VALUE={IF( ( ((V(LIN_DT_PLS) > 0.5) & (V(HOFF) > {P_TH_UP})) | {HB_EN} < 0.5 ) & (V(LIN_DD) > 0.5 ) & V(
++ FAULT_OUT)>0.5 , 1.0 , 0.0 )}
+E_SHT_H SHT_H 0 VALUE={IF( {SHT_EN} > 0.5 , V(HIN_DD) , V(HIN_DT_DIG) )}
+E_SHT_L SHT_L 0 VALUE={IF( {SHT_EN} > 0.5 , V(LIN_DD) , V(LIN_DT_DIG) )}
+G_H_DT VCC_1V HOFF VALUE={TABLE( V(VCC_1V,HOFF) , 0,0 , 10M, I_DT( V(DT,COM) ) )}
+C_H_DT HOFF 0 {P_C_DT}
+R_H_DT HOFF 0 1E8
+S_H_DT HOFF 0 SHT_H 0 SIX_ED003L02-F2_DT_SW
+G_L_DT VCC_1V LOFF VALUE={TABLE( V(VCC_1V,LOFF) , 0,0 , 10M, I_DT( V(DT,COM) ) )}
+C_L_DT LOFF 0 {P_C_DT}
+R_L_DT LOFF 0 1E8
+S_L_DT LOFF 0 SHT_L 0 SIX_ED003L02-F2_DT_SW
+.FUNC I_DT(V_DT) {{P_C_DT} * {P_TH_UP} / ({P_SLOPE_DT}/{P_I_DT}*V_DT + {P_OFFSET_DT})}
+.MODEL SIX_ED003L02-F2_DT_SW VSWITCH RON=1 ROFF=100MEG VON=0.8 VOFF=0.2
+.ENDS SIX_ED003L02-F2_DEADTIME
+.SUBCKT SIX_ED003L02-F2_HO_STAGE HO HIN_DT_DIG VCC_UV VB_UV VB VS PARAMS: P_RBOND_NMOS=10M P_RBOND_PMOS=10M P_C_GATE=1E-12 
++ P_HO_VGS_PMOS=6 P_HPMOS_LAMDA=0.06 P_HPMOS_KP=60U P_HO_VGS_NMOS=6 P_HNMOS_LAMDA=0.05 P_HNMOS_KP=100U
+R_HIN_DT_DD HIN_DT_DIG HIN_DT_DD 100
+C_HIN_DT_DD HIN_DT_DD 0 1N
+E_HIN_PLS HIN_PLS 0 VALUE {IF( (V(HIN_DT_DIG) - V(HIN_DT_DD)) > 0.1 | ((V(HGATE_DIG) > 0.5) & V(HIN_DT_DIG)>0.5), 1.0,0.0 )}
+E_HGATE_DIG HGATE_DIG 0 VALUE {IF( ( V(HIN_PLS) > 0.5 & V(VB_UV) > 0.5 ) , 1.0,0.0 )}
+R_HGATE HGATE_DIG HGATE 1
+C_HGATE HGATE 0 {P_C_GATE}
+E_HGATE_P VB HGATE_P VALUE {V(HGATE) * {P_HO_VGS_PMOS} * V(HGATE_DIG)}
+E_HGATE_N HGATE_N VS VALUE {(1 - V(HGATE)) * {P_HO_VGS_NMOS} * (1 - V(HGATE_DIG))}
+M_HO_PMOS HO HGATE_P VB VB SIX_ED003L02-F2_HO_PMOS
+M_HO_NMOS HO HGATE_N VS VS SIX_ED003L02-F2_HO_NMOS
+.MODEL SIX_ED003L02-F2_HO_PMOS PMOS (LEVEL=1 VTO=-1 CGSO=100P W=1M L=1U RB=1 RG=10 RS=10M RD={P_RBOND_PMOS} LAMBDA={P_HPMOS_LAMDA} KP=
++ {P_HPMOS_KP} )
+.MODEL SIX_ED003L02-F2_HO_NMOS NMOS (LEVEL=1 VTO=1 CGSO=100P W=1M L=1U RB=1 RG=10 RS=10M RD={P_RBOND_NMOS} LAMBDA={P_HNMOS_LAMDA} KP=
++ {P_HNMOS_KP} )
+.ENDS SIX_ED003L02-F2_HO_STAGE
+.SUBCKT SIX_ED003L02-F2_LO_STAGE LO LIN_DT_DIG VCC_UV VCC COM PARAMS: P_RBOND_NMOS=10M P_RBOND_PMOS=10M P_C_GATE=1E-12 P_LO_VGS_PMOS=6 
++ P_LPMOS_LAMDA=0.06 P_LPMOS_KP=60U P_LO_VGS_NMOS=6 P_LNMOS_LAMDA=0.05 P_LNMOS_KP=100U
+E_LGATE_DIG LGATE_DIG 0 VALUE {IF( V(LIN_DT_DIG) > 0.5 , 1.0,0.0 )}
+R_LGATE LGATE_DIG LGATE 1
+C_LGATE LGATE 0 {P_C_GATE}
+E_LGATE_P VCC LGATE_P VALUE {V(LGATE) * {P_LO_VGS_PMOS} * V(LGATE_DIG)}
+E_LGATE_N LGATE_N COM VALUE {(1 - V(LGATE)) * {P_LO_VGS_NMOS} * (1 - V(LGATE_DIG))}
+M_LO_PMOS LO LGATE_P VCC VCC SIX_ED003L02-F2_LO_PMOS
+M_LO_NMOS LO LGATE_N COM COM SIX_ED003L02-F2_LO_NMOS
+.MODEL SIX_ED003L02-F2_LO_PMOS PMOS (LEVEL=1 VTO=-1 CGSO=100P W=1M L=1U RB=1 RG=10 RS=10M RD={P_RBOND_PMOS} LAMBDA={P_LPMOS_LAMDA} KP=
++ {P_LPMOS_KP} )
+.MODEL SIX_ED003L02-F2_LO_NMOS NMOS (LEVEL=1 VTO=1 CGSO=100P W=1M L=1U RB=1 RG=10 RS=10M RD={P_RBOND_NMOS} LAMBDA={P_LNMOS_LAMDA} KP=
++ {P_LNMOS_KP} )
+.ENDS SIX_ED003L02-F2_LO_STAGE
+.SUBCKT SIX_ED003L02-F2_VB_UV_DETECT VB_UV VB VS PARAMS: P_VB_UVL=7 P_VB_UVH=8 P_R_UV_D_H=142857 P_VCC_UVL=8 P_VCC_UVH=9 P_R_UV_D_L=
++ 71428
+X_VB_UV VB VB_UV_DIG VS SIX_ED003L02-F2_STP_IDEAL PARAMS: P_TH_UP={P_VB_UVH} P_TH_DW={P_VB_UVL}
+E_VB_UVL VB_UVL 0 VALUE {IF( V(VB,VS) < {P_VB_UVL} , 0.0 , 1.0 )}
+R_VB_UVL VB_UVL VB_UVL_LPF {P_R_UV_D_H}
+C_VB_UVL VB_UVL_LPF 0 1P
+E_VB_UVL_PLS VB_UVL_PLS 0 VALUE {IF( V(VB_UVL_LPF) < 0.5 | V(VB_UV) < 0.5 , 0.0 , 1.0 )}
+E_VB_UV VB_UV 0 VALUE {IF( V(VB_UV_DIG) < 0.5 & V(VB_UVL_PLS) < 0.5 , 0.0 , 1.0 )}
+.ENDS SIX_ED003L02-F2_VB_UV_DETECT
+.SUBCKT SIX_ED003L02-F2_VCC_UV_DETECT VCC_UV VCC COM PARAMS: P_VCC_UVL=8 P_VCC_UVH=9 P_R_UV_D_L=71428
+X_VCC_UV VCC VCC_UV_DIG COM SIX_ED003L02-F2_STP_IDEAL PARAMS: P_TH_UP={P_VCC_UVH} P_TH_DW={P_VCC_UVL}
+E_VCC_UVL VCC_UVL 0 VALUE {IF( V(VCC,COM) < {P_VCC_UVL} , 0.0 , 1.0 )}
+R_VCC_UVL VCC_UVL VCC_UVL_LPF {P_R_UV_D_L}
+C_VCC_UVL VCC_UVL_LPF 0 1P
+E_VCC_UVL_PLS VCC_UVL_PLS 0 VALUE {IF( V(VCC_UVL_LPF) < 0.5 | V(VCC_UV) < 0.5 , 0.0 , 1.0 )}
+E_VCC_UV VCC_UV 0 VALUE {IF( V(VCC_UV_DIG) < 0.5 & V(VCC_UVL_PLS) < 0.5 , 0.0 , 1.0 )}
+.ENDS SIX_ED003L02-F2_VCC_UV_DETECT
+.SUBCKT SIX_ED003L02-F2_CC_EMULATOR VCC COM VB VS PARAMS: P_VB_MIN=10 P_VCC_MIN=10 P_IQ_VB_MIN=100U P_IQ_VCC_MIN=500U P_I_LEAK=1.0U 
++ P_V_LEAK=650 P_VB_MAX=10 P_VCC_MAX=10 P_IQ_VB_MAX=100U P_IQ_VCC_MAX=500U
+G_QB VB VS VALUE {TABLE(V(VB,VS) , 0,0 , 0.1,1U , 1,10U , {P_VB_MIN},{P_IQ_VB_MIN} , {P_VB_MAX},{P_IQ_VB_MAX} )}
+R_QB VB VS 1E12
+G_VB_LEAK VS COM VALUE {TABLE(V(VS,COM) , 0,0 , {P_V_LEAK},{P_I_LEAK})}
+R_VB_LEAK VS COM 1E12
+.ENDS SIX_ED003L02-F2_CC_EMULATOR
+.SUBCKT SIX_ED003L02-F2_CL_DIO C A PARAMS: P_V_BV=5 P_I_BV=1
+G_CL_DIO C A VALUE {TABLE(V(C,A) , 0,0 , {P_V_BV},0 , {P_V_BV}*1.002,{P_I_BV} , 10*{P_V_BV}, 100*{P_I_BV} )}
+C_CL_DIO C A 10F
+R_CL_DIO C A 1E12
+.ENDS SIX_ED003L02-F2_CL_DIO
+.SUBCKT SIX_ED003L02-F2_ESD_DIO A C PARAMS: P_V_BV=5 P_I_BV=1
+G_ESD_DIO A C VALUE {TABLE(V(A,C) , 0,0 , {P_V_BV},0 , {P_V_BV}*1.002,{P_I_BV} , 10*{P_V_BV}, 100*{P_I_BV} )}
+C_ESD_DIO A C 10F
+R_ESD_DIO A C 1E12
+.ENDS SIX_ED003L02-F2_ESD_DIO
+.SUBCKT SIX_ED003L02-F2_RC_DELAY_10 IN OUT PARAMS: P_C_DELAY = 60E-9 P_TH_TPD = 0.5
+X_D1 IN D1 SIX_ED003L02-F2_RC_DELAY_5 PARAMS: P_C_DELAY = {P_C_DELAY} P_TH_TPD = {P_TH_TPD}
+X_D2 D1 OUT SIX_ED003L02-F2_RC_DELAY_5 PARAMS: P_C_DELAY = {P_C_DELAY} P_TH_TPD = {P_TH_TPD}
+.ENDS SIX_ED003L02-F2_RC_DELAY_10
+.SUBCKT SIX_ED003L02-F2_RC_DELAY_5 IN OUT PARAMS: P_C_DELAY = 60E-9 P_TH_TPD = 0.5
+X_D1 IN D1 SIX_ED003L02-F2_RC_DELAY_BASE PARAMS: P_C_DELAY = {P_C_DELAY} P_TH_TPD = {P_TH_TPD}
+X_D2 D1 D2 SIX_ED003L02-F2_RC_DELAY_BASE PARAMS: P_C_DELAY = {P_C_DELAY} P_TH_TPD = {P_TH_TPD}
+X_D3 D2 D3 SIX_ED003L02-F2_RC_DELAY_BASE PARAMS: P_C_DELAY = {P_C_DELAY} P_TH_TPD = {P_TH_TPD}
+X_D4 D3 D4 SIX_ED003L02-F2_RC_DELAY_BASE PARAMS: P_C_DELAY = {P_C_DELAY} P_TH_TPD = {P_TH_TPD}
+X_D5 D4 OUT SIX_ED003L02-F2_RC_DELAY_BASE PARAMS: P_C_DELAY = {P_C_DELAY} P_TH_TPD = {P_TH_TPD}
+.ENDS SIX_ED003L02-F2_RC_DELAY_5
+.SUBCKT SIX_ED003L02-F2_RC_DELAY_BASE IN OUT PARAMS: P_C_DELAY = 60E-9 P_TH_TPD = 0.5
+R_DELAY IN IN_DEL 1
+C_DELAY IN_DEL 0 {P_C_DELAY}
+E_DELAY OUT 0 VALUE={IF( V(IN_DEL) > {P_TH_TPD} , 1.0,0.0 )}
+.ENDS SIX_ED003L02-F2_RC_DELAY_BASE
+.SUBCKT SIX_ED003L02-F2_ADV_FILTER IN OUT PARAMS: P_C_DELAY = 60E-9 P_TH_TPD = 0.5
+R_RISE IN IN_DEL 1
+C_RISE IN_DEL 0 {P_C_DELAY}
+X_CMP IN_DEL OUT 0 SIX_ED003L02-F2_STP_IDEAL PARAMS: P_TH_UP=0.999 P_TH_DW=0.001
+.ENDS SIX_ED003L02-F2_ADV_FILTER
+.SUBCKT SIX_ED003L02-F2_STP_IDEAL IN OUT GND PARAMS: P_TH_UP=0.9 P_TH_DW=0.1
+E_OUTP OUTP 0 VALUE={IF( V(IN,GND)>={P_TH_UP} | V(OUTN)<0.5 , 1,0 )}
+E_OUTN OUTN 0 VALUE={IF( V(IN,GND)<={P_TH_DW} | V(OUTP)<0.5 , 1,0 )}
+E_OUT OUT 0 VALUE={V(OUTP)}
+.ENDS SIX_ED003L02-F2_STP_IDEAL
+.SUBCKT SIX_ED003L02-F2_STN_IDEAL IN OUT GND PARAMS: P_TH_UP=0.9 P_TH_DW=0.1
+E_OUTP OUTP 0 VALUE={IF( V(IN,GND)>={P_TH_UP} | V(OUTN)<0.5 , 1,0 )}
+E_OUTN OUTN 0 VALUE={IF( V(IN,GND)<={P_TH_DW} | V(OUTP)<0.5 , 1,0 )}
+E_OUT OUT 0 VALUE={V(OUTN)}
+.ENDS SIX_ED003L02-F2_STN_IDEAL

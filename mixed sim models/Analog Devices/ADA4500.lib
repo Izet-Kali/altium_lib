@@ -1,0 +1,161 @@
+* ADA4500 SPICE Macro-model        
+* Function: Amplifier
+* Revision History:
+* 1.0 (3/2013) – PH/DB – initial release
+
+* Copyright 2013 by Analog Devices
+*
+*Refer to 
+*http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html 
+*for License Statement. Use of this model indicates your acceptance
+*of the terms and provisions in the License Statement.
+* 
+*
+* Notes:
+*
+* Node Assignments
+*                  noninverting input
+*                  |   inverting input
+*                  |   |    positive supply
+*                  |   |    |    negative supply
+*                  |   |    |    |    output
+*                  |   |    |    |    |
+*           	   |   |    |    |    
+.SUBCKT ADA4500    1   2   99   50   45
+*
+* input stage
+G_TAIL 99 8 40 98 120e-6
+mp1 11  7  8  8  pix  
+mp2 12  2  8  8  pix  
+RD1 11 50  2.0k
+RD2 12 50  2.0k
+C1  11 50  5.0pf
+C2  12 50  5.0pf
+C11  1 50  2.5pf
+C12  2 50  2.5pf
+C13  1  2  2.0pf
+*
+* gain stage
+* basic gain stage
+EXP1 13 98 11 12  10
+EXP2 16 98 14 98   1
+EXP3 18 98 17 98   1
+G1   98 30  19 98 60E-6
+R1   30 98  1E6 
+R13  13 14  1.0K
+R15  16 17  2.0K
+R16  18 19  1.0K
+C15  14 98  1.0PF
+C16  17 98  1.0PF
+C17  19 98  1.0PF
+*
+* slew rate enhance 
+D1  13 15  dx
+D2  15 13  dx
+G2  98 30  15 98  200E-6  
+* GR1 is a noiseless 10K resistor
+GR1 15 98  15 98  1.0E-4    
+*
+* overload clamp
+EVN  98 29  40 98 2.8 
+EVp  28 98  40 98 2.4 
+D3   30 28  dx
+D4   29 30  dx
+*
+* output stage
+EG1  42 44  98 30  1
+EG2  43 41  30 98  1
+EG3  47 42  47 33  1
+EG4  41 46  32 46  1
+EVH  99 47  40 98  0.006
+EVL  46 50  40 98  0.006
+GG5  33 32  40 98 600E-6
+mn6  45 43 46 50  nox 
+mn8  32 32 46 50  nox 
+mp5  45 44 47 47  pox 
+mp7  33 33 47 47  pox 
+RZ   31 45  560
+CC1  30 31  30pf
+CC2  30 45  2.0pf
+*
+* gnd bias
+EREF  98 50  99 50  0.50
+*
+* start up and bias generator
+EB1  38 98  36 50  0.755
+EB2  40 38  36 37  9.65
+GB1  99 37  99 35   5e-6
+GB2  99 36  99 35  50e-6
+D39  34 52  dx
+D40  35 34  dx
+D41  99 35  dx
+D42  37 50  dx
+D43  36 50  dx
+R39  52 50  20K
+R40  99 34  20K
+R41  99 35  40K
+R42  37 50  20e6
+R43  36 50   2e6
+CB1  99 34  40pf
+*
+* input Vos adjust
+* CMRR  (set E23 K = 0.00 to remove CMRR adj)
+*E23  23  1  72 98  0.0 
+E23  23  1  72 98  0.50
+*
+* This gnd is the only system ground used in this macromodel
+* Different versions of SPICE may need gnd, gnd!, GND, GND!, or node 0 
+* Note gnd is not a pin on the amp macromodel schematic, but gnd is in 
+* both the amp subckt call pin list and in the subckt header pin list
+E71  71 98   8 0 1.0 ;orig = E71  71 98   8 gnd 1.0 
+*
+R71  71 72  500K
+R72  72 98  1.0
+R73  71 73  100
+C72  73 72  200PF
+*
+* SHOT and FLICKER NOISE (set E25 & E26 K = 0.00 to remove shot noise)
+*E25  25 23  81 98 0.00
+*E26  25 26  98 82 0.00
+E25  25 23  81 98 9.0E-3
+E26  25 26  98 82 9.0E-3
+G81  82 81  40 98 50E-6
+D81  81 98  dnoise
+D82  98 82  dnoise
+R81  81 98  1.0e6
+R82  98 82  1.0e6
+*
+* WHITE NOISE (set E27 K = 0.00 to remove white noise)
+*E27  27 26  98 83  0.00
+E27  27 26  98 83  0.690
+R83  83 98  20K
+R84  83 98  20K
+*
+* VOS ADJUST (set E28 K = 0.00 to remove VOS adj)
+*E28  7 27  40 98  0.00
+E28  7 27  40 98  -0.8e-6
+*
+*
+* ESD DIODES
+D11  50  1  dx
+D12  50  2  dx
+D13   1 99  dx
+D14   2 99  dx
+D15  50 45  dx
+D16  45 99  dx
+D17  50 99  dz8p50
+*
+**************************************************************************************
+*
+.model pix pmos (kp=1.00e-05, vto=-0.700, lambda=0.001, rd=0, w=2000u, l=1.0u)
+.model pox pmos (kp=1.00e-05, vto=-0.700, lambda=0.020, rd=0, w=1400u, l=1.0u)
+.model nox nmos (kp=2.00e-05, vto=+0.650, lambda=0.020, rd=0, w=700u,  l=1.0u)
+.model dx     d (is=1e-14, rs=1.0)
+.model dz8p50 d (is=1e-13, rs=1.0, bv=8.50, ibv=5e-4)
+.model dnoise d (is=1e-14, rs=1.0, kf=4.78e-11)
+*
+**************************************************************************************
+*
+.ENDS ADA4500
+*
+**************************************************************************************

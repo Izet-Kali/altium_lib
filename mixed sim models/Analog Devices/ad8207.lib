@@ -1,0 +1,86 @@
+* AD8207 SPICE Macro-model               10/11, Rev. A
+*                                        PRB IAP ADI
+*
+* Revision History:
+*
+* Not Modeled:
+*   Temperature effects
+*
+*
+* Node assignments
+*                 inverting input
+*                 |   ground
+*                 |   |    reference 2
+*                 |   |    |     supply voltage range pin
+*                 |   |    |     |     output
+*                 |   |    |     |     |   positive supply
+*                 |   |    |     |     |   |  reference 1
+*                 |   |    |     |     |   |  |     non-inverting input
+*                 |   |    |     |     |   |  |     |
+.SUBCKT AD8207   -In  Gnd  VRef2 Range Out Vs VRef1 +In
+R1 +In N009 120e3
+R3 N003 N010 120e3
+R6 N006 N005 9.10614e3
+R4 N006 N010 100e3
+R5 N011 N006 100e3
+R2 N009 N005 100e3
+R11 N005 VRef_Mid 50e3
+R9 N004 VRef1 100.597375e3
+R10 N004 VRef2 99.4026e3
+R12 N014 N009 60.003e3
+R13 N010 N014 59.997e3
+R8 N010 N024 5.9997e3
+R7 N024 N009 6.0003e3
+R14 N025 0 10e9
+R15 N013 0 10e9
+G1 0 N025 CMV N014 1
+G2 0 N013 N009 N010 1
+Vos N003 -In 200e-6
+D1 N019 N012 DX
+D2 N026 N019 DX
+V2 N026 N027 .372
+V3 N007 N012 .302
+E4 N016 N015 value={if (v(Range)<.05, 12.288e-3,7.464e-3)}
+V_Current_Sense N022 N021 0
+E2 N017 N016 VRef_Mid 0 -1.703e-3
+H1 VS N007 V_Current_Sense -133
+H2 N027 0 V_Current_Sense 61
+H3 N015 N011 V_Current_Sense -4.22
+C1 N020 0 1.06103e-12
+R16 N020 0 1e6
+G3 0 N020 N017 0 1e-6
+C2 N018 0 49.115e-15
+R18 0 N018 1e6
+E1 N021 0 N019 0 1
+R17 0 N019 1e6
+C3 N019 0 49.115e-15
+G4 0 N018 N020 0 1e-6
+R19 N023 N022 2
+G5 0 N019 N018 0 1e-6
+V5 N001 0 0
+R20 N008 0 .0166
+H4 Out N023 V5 10250
+G6 VS 0 value={if((v(Range)<.5), 1.6e-3, 1.6e-3)}
+R21 +In Vcm 10e9
+R22 Vcm -In 10e9
+G8 VS 0 value={if(v(Range)<.05, if((v(Vcm)<65.1) & (v(Vcm)>-10.1), v(Vcm)*1.278e-6, v(Vcm)*164.34e-6),if((v(Vcm)<30.1) & (v(Vcm)>-10.1), v(Vcm)*1.278e-6, v(Vcm)*164.34e-6))}
+E3 VRef_Mid N004 value={if(v(Vref1)==v(Vref2),(v(VRef1)*3e-3),0)}
+E5 N024 0 N025 0 1
+E6 N011 0 N013 0 1
+L1 N002 N001 650.197e-9
+C4 N002 P001 70e-6
+L2 N008 N002 320e-9
+R23 P001 N001 .03
+E99 CMV 0 value={if (v(Range) <.050 , 3.396 , 2.064)}
+* Common Mode Control Amplifer Set by Range Pin
+* Bandwidth
+* Transient Response
+.MODEL DX D(CJO=1F RS=.1)
+* Spectral Noise
+* Output Vs Load
+* Is Vs Vcm
+* Supply Current
+* Ratiometric Accuracy
+* Ref Gain Accuracy
+.backanno
+.ends

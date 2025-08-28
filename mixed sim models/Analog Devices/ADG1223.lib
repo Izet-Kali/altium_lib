@@ -1,0 +1,160 @@
+* ADG1223 SPICE Macro-model
+* Generic Desc: Low Capacitance, Low Charge Injection, ±15 V/+12 V iCMOS® Dual SPST Switches
+* Developed by: MPorley / ADGT
+* Revision History: 1.0 (07/2018)
+* Copyright 2018 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* Begin Notes:
+* The model will work on Vdd/Vss from 5V to 16.5V single supply and +/-5V to +/-16.5V dual supply.
+* The model provides parametric specifications at +/-16.5V only and is not variable with Vdd and Vss changes. Please see datasheet page 3.
+*
+* Not Modeled:
+*
+* Parameters modeled include:
+*	On Resistance
+*	Ton and Toff
+*	Break-Before-Make
+*	Off Isolation
+*	Crosstalk
+*	Supply Currents: Iss/Idd
+*	Bandwidth
+*	Charge Injection
+* Connections
+*      1  = IN1
+*      2  = S1
+*      3  = D1
+*      4  = D2
+*      5  = S2
+*      6  = VSS
+*      7  = NIC
+*      8  = GND
+*      9  = VDD
+*      10  = IN2
+*
+.SUBCKT ADG1223 1 2 3 4 5 6 8 9 10
+
+.MODEL VON VSWITCH(Von=5 Voff=0.8 Ron=0.001 Roff=1000000000000)
+.MODEL VEN VSWITCH(Von=5 Voff=0.8 Ron=130000 Roff=175000)
+.MODEL VNE VSWITCH(Von=5 Voff=0.8 Ron=130000 Roff=170000)
+.MODEL DCLAMP D(IS=1E-15 IBV=1E-13)
+
+
+* CROSSTALK
+C12X 2 5 0.06E-012
+
+* IDD/ISS
+I1 9 8 0.001E-006
+I2 6 8 0.001E-006
+
+* Configuration: SPST 2:2
+
+
+** SWITCH 1 **
+*
+* ESD PROTECTION DIODES
+D11 6 3 DCLAMP
+D12 3 9 DCLAMP
+D13 6 2 DCLAMP
+D14 2 9 DCLAMP
+*
+* OFF ISOLATION
+C11 2 3 0.55E-012
+*
+* CHARGE INJECTION
+C12 3 140 0.05E-012
+C13 2 140 0.05E-012
+*
+* CD/CS OFF AND BANDWIDTH
+C14 2 8 1E-012
+C15 3 8 1e-012
+*
+* ON RESISTANCE
+Ech155 1555 8 VALUE = { IF ((ABS(V(2)))>(ABS(V(184))),V(2),V(3)) }
+R155 1555 8 1G
+R11 137 3 0.001
+S111 136 141 1141 8 VON
+Ech111 1141 8 VALUE = { IF (V(1555)<-9,5,0) }
+Ech11 141 8 VALUE = { IF (V(1555)<-9,2.93333333333333*(V(1555)--9)+152,0) }
+S112 136 146 1146 8 VON
+Ech112 1146 8 VALUE = { IF ((V(1555)>=-9) & (V(1555)<=6),5,0) }
+Ech12 146 8 VALUE = { IF ((V(1555)>=-9) & (V(1555)<=6),((152-112)/((-9--1.88018792940448)*(-9--1.88018792940448)))*(V(1555)--1.88018792940448)*(V(1555)--1.88018792940448) + 112,0) }
+S113 136 144 1144 8 VON
+Ech113 1144 8 VALUE = { IF (V(1555)>6,5,0) }
+Ech13 144 8 VALUE = { IF (V(1555)>6,-4*(V(1555)-6)+161,0) }
+RIN1	136 8	1G
+EOUT1 137 181	POLY(2) (136,8) (180,8) 0 0 0 0 0.999/1000
+FCOPY1	8 180 VSENSE1 1
+RSENSOR1 180 8	1K
+VSENSE1 181 184	0
+*
+* TON/ TOFF/ BBM
+S11 182 184 140 8 VON
+S12 143 138 143 8 VEN
+Ech14 143 8 VALUE = { IF(V(1)>=2.0, 5 , 0.8 ) }
+eV1 140 8 138 8 1
+C16 138 8 1e-012
+*
+* VOLTAGE SUPPLY REQUIREMENT
+S13 2 182 185 8 VON
+S14 142 185 142 8 VON
+Ech15 142 8 VALUE = { IF((V(6)<=-0.5 & V(6)>=-16.5) & (V(9)<=16.5 & V(9)>=5), 5 , 0.01 ) }
+S15 139 185 139 8 VON
+Ech16 139 8 VALUE = { IF((V(6)>=-0.5 & (V(9)<=16.5 & V(9)>=5)), 5 , 0.01 ) }
+
+
+** SWITCH 2 **
+*
+* ESD PROTECTION DIODES
+D21 6 4 DCLAMP
+D22 4 9 DCLAMP
+D23 6 5 DCLAMP
+D24 5 9 DCLAMP
+*
+* OFF ISOLATION
+C21 5 4 0.55E-012
+*
+* CHARGE INJECTION
+C22 4 240 0.05E-012
+C23 5 240 0.05E-012
+*
+* CD/CS OFF AND BANDWIDTH
+C24 5 8 1E-012
+C25 4 8 1e-012
+*
+* ON RESISTANCE
+Ech255 2555 8 VALUE = { IF ((ABS(V(5)))>(ABS(V(284))),V(5),V(4)) }
+R255 2555 8 1G
+R21 237 4 0.001
+S221 236 241 2241 8 VON
+Ech221 2241 8 VALUE = { IF (V(2555)<-9,5,0) }
+Ech21 241 8 VALUE = { IF (V(2555)<-9,2.93333333333333*(V(2555)--9)+152,0) }
+S222 236 246 2246 8 VON
+Ech222 2246 8 VALUE = { IF ((V(2555)>=-9) & (V(2555)<=6),5,0) }
+Ech22 246 8 VALUE = { IF ((V(2555)>=-9) & (V(2555)<=6),((152-112)/((-9--1.88018792940448)*(-9--1.88018792940448)))*(V(2555)--1.88018792940448)*(V(2555)--1.88018792940448) + 112,0) }
+S223 236 244 2244 8 VON
+Ech223 2244 8 VALUE = { IF (V(2555)>6,5,0) }
+Ech23 244 8 VALUE = { IF (V(2555)>6,-4*(V(2555)-6)+161,0) }
+RIN2	236 8	1G
+EOUT2 237 281	POLY(2) (236,8) (280,8) 0 0 0 0 0.999/1000
+FCOPY2	8 280 VSENSE2 1
+RSENSOR2 280 8	1K
+VSENSE2 281 284	0
+*
+* TON/ TOFF/ BBM
+S21 282 284 240 8 VON
+S22 243 238 243 8 VNE
+Ech24 243 8 VALUE = { IF(V(10)<2.0, 5 , 0.8 ) }
+eV2 240 8 238 8 1
+C26 238 8 1e-012
+*
+* VOLTAGE SUPPLY REQUIREMENT
+S23 5 282 285 8 VON
+S24 242 285 242 8 VON
+Ech25 242 8 VALUE = { IF((V(6)<=-0.5 & V(6)>=-16.5) & (V(9)<=16.5 & V(9)>=5), 5 , 0.01 ) }
+S25 239 285 239 8 VON
+Ech26 239 8 VALUE = { IF((V(6)>=-0.5 & (V(9)<=16.5 & V(9)>=5)), 5 , 0.01 ) }
+
+.ENDS ADG1223

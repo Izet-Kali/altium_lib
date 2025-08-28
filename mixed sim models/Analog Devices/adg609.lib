@@ -1,0 +1,341 @@
+* ADG609 SPICE Macro-model
+* Generic Desc: 3 V/5 V, 4/6 Channel High Performance Analog Multiplexers
+* Developed by: mlacida / ADGT
+* Revision History: 0 (2/2021)
+* Copyright 2021 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* Begin Notes:
+* The model will work on Vdd/Vss from 2.97V to 5.5V single supply and +/-4.5V to +/-5.5V dual supply.
+* The model provides parametric specifications at +/-5.5V only and is not variable with Vdd and Vss changes. Please see datasheet page 3.
+* The model is operational at RESET/VL level from 2.4V to 5V only.
+* Ensure 120us from the time of power-up or RESET before any logic command is issued.
+*
+* Not Modeled:
+* SPI Line interface and functionality is not modeled.
+* The model would instead use a parallel line interface to control the switches.
+* Please see Connections Section below.
+*
+* Parameters modeled include:
+*	On Resistance
+*	Ton and Toff
+*	Break-Before-Make
+*	Off Isolation
+*	Crosstalk
+*	Supply Currents: Iss/Idd
+*	Bandwidth
+*	Charge Injection
+* Connections
+*      1  = A0
+*      2  = EN
+*      3  = VSS
+*      4  = S1
+*      5  = S2
+*      6  = S3
+*      7  = S4
+*      8  = D1
+*      9  = D2
+*      10  = S8
+*      11  = S7
+*      12  = S6
+*      13  = S5
+*      14  = VDD
+*      15  = GND
+*      16  = A1
+*
+.SUBCKT ADG609 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+
+.MODEL VON VSWITCH(Von=5 Voff=0.8 Ron=0.001 Roff=1000000000000)
+.MODEL VEN VSWITCH(Von=5 Voff=0.8 Ron=80000 Roff=130000)
+.MODEL VRESET VSWITCH(Von=5 Voff=0.8 Ron=27000000 Roff=1000)
+.MODEL DCLAMP D(IS=1E-15 IBV=1E-13)
+
+* CROSSTALK
+C12x 4 5 0.45e-014
+C13x 4 6 0.45e-014
+C14x 4 7 0.45e-014
+C15x 4 10 0.45e-014
+C16x 4 11 0.45e-014
+C17x 4 12 0.45e-014
+C18x 4 13 0.45e-014
+C23x 5 6 0.45e-014
+C24x 5 7 0.45e-014
+C25x 5 10 0.45e-014
+C26x 5 11 0.45e-014
+C27x 5 12 0.45e-014
+C28x 5 13 0.45e-014
+C34x 6 7 0.45e-014
+C35x 6 10 0.45e-014
+C36x 6 11 0.45e-014
+C37x 6 12 0.45e-014
+C38x 6 13 0.45e-014
+C45x 7 10 0.45e-014
+C46x 7 11 0.45e-014
+C47x 7 12 0.45e-014
+C48x 7 13 0.45e-014
+C56x 10 11 0.45e-014
+C57x 10 12 0.45e-014
+C58x 10 13 0.45e-014
+C67x 11 12 0.45e-014
+C68x 11 13 0.45e-014
+C78x 12 13 0.45e-014
+
+* IDD/ISS
+I1 14 15 0.05e-006
+I2 3 15 0.01e-006
+
+* Configuration: Dual 4:1 MUX
+
+D11 3 8 DCLAMP
+D12 8 14 DCLAMP
+C15 8 15 1e-015
+* ON RESISTANCE
+Ech151 a151 15 VALUE = { IF ((ABS(V(a1g)))>(ABS(V(8))),V(a1g),V(8)) }
+R151 a151 15 1G
+S1a51 5a1 5b1 15a 15 VON
+Ech251 15a 15 VALUE = { IF (V(a151)<-3.5,5,0) }
+Ech351 5b1 15 VALUE = { IF (V(a151)<-3.5,0.5*(V(a151)--3.5)+16,0) }
+S2a51 5a1 2b51 152a 15 VON
+Ech451 152a 15 VALUE = { IF ((V(a151)>=-3.5) & (V(a151)<=4.25),5,0) }
+Ech551 2b51 15 VALUE = { IF ((V(a151)>=-3.5) & (V(a151)<=4.25),((16-14.5)/((-3.5--0.985126551241241)*(-3.5--0.985126551241241)))*(V(a151)--0.985126551241241)*(V(a151)--0.985126551241241) + 14.5,0) }
+S3a51 5a1 3b51 153a 15 VON
+Ech651 153a 15 VALUE = { IF (V(a151)>4.25,5,0) }
+Ech751 3b51 15 VALUE = { IF (V(a151)>4.25,-1.6*(V(a151)-4.25)+21,0) }
+RIN51 5a1 15	1G
+FCOPY51 15 154a VSENSE51 1
+RSENSOR51 154a 15	1K
+EOUT51 a551 155a	POLY(2) (5a1,15) (154a,15) 0 0 0 0 0.999/1000
+R251 a551 r1p 0.001
+VSENSE51 155a a1g	0
+*
+* VOLTAGE SUPPLY REQUIREMENT
+S513 r1p 8 51k 15 VON
+S514 51l 51k 51l 15 VON
+Ech515 51l 15 VALUE = { IF((V(3)<=-0.5 & V(3)>=-5.5) & (V(14)<=5.5 & V(14)>=4.5), 5 , 0.01 ) }
+S515 51m 51k 51m 15 VON
+Ech516 51m 15 VALUE = { IF((V(3)>=-0.5 & (V(14)<=5.5 & V(14)>=2.97)), 5 , 0.01 ) }
+
+
+** SWITCH 1 D1 **
+*
+* ESD PROTECTION DIODES
+D113 3 4 DCLAMP
+D114 4 14 DCLAMP
+*
+* OFF ISOLATION
+C111 4 8 0.9e-014
+*
+* CHARGE INJECTION
+C112 8 11n 1.95e-012
+C113 4 11n 1.95e-012
+*
+* CD/CS OFF AND BANDWIDTH
+C114 4 15 1e-015
+*
+* TON/ TOFF/ BBM
+S111 4 a1g 11n 15 VON
+S112 11i 11j 11i 15 VEN
+Ech114 11i 15 VALUE = { IF(V(2)>=2.4 & V(1)<2.4 & V(16)<2.4, 5 , 0.8 ) }
+eV11 11n 15 11j 15 1
+C116 11j 15 8e-013
+*
+
+** SWITCH 2 D1 **
+*
+* ESD PROTECTION DIODES
+D213 3 5 DCLAMP
+D214 5 14 DCLAMP
+*
+* OFF ISOLATION
+C211 5 8 0.9e-014
+*
+* CHARGE INJECTION
+C212 8 21n 1.95e-012
+C213 5 21n 1.95e-012
+*
+* CD/CS OFF AND BANDWIDTH
+C214 5 15 1e-015
+*
+* TON/ TOFF/ BBM
+S211 5 a1g 21n 15 VON
+S212 21i 21j 21i 15 VEN
+Ech214 21i 15 VALUE = { IF(V(2)>=2.4 & V(1)>=2.4 & V(16)<2.4, 5 , 0.8 ) }
+eV21 21n 15 21j 15 1
+C216 21j 15 8e-013
+*
+
+** SWITCH 3 D1 **
+*
+* ESD PROTECTION DIODES
+D313 3 6 DCLAMP
+D314 6 14 DCLAMP
+*
+* OFF ISOLATION
+C311 6 8 0.9e-014
+*
+* CHARGE INJECTION
+C312 8 31n 1.95e-012
+C313 6 31n 1.95e-012
+*
+* CD/CS OFF AND BANDWIDTH
+C314 6 15 1e-015
+*
+* TON/ TOFF/ BBM
+S311 6 a1g 31n 15 VON
+S312 31i 31j 31i 15 VEN
+Ech314 31i 15 VALUE = { IF(V(2)>=2.4 & V(1)<2.4 & V(16)>=2.4, 5 , 0.8 ) }
+eV31 31n 15 31j 15 1
+C316 31j 15 8e-013
+*
+
+** SWITCH 4 D1 **
+*
+* ESD PROTECTION DIODES
+D413 3 7 DCLAMP
+D414 7 14 DCLAMP
+*
+* OFF ISOLATION
+C411 7 8 0.9e-014
+*
+* CHARGE INJECTION
+C412 8 41n 1.95e-012
+C413 7 41n 1.95e-012
+*
+* CD/CS OFF AND BANDWIDTH
+C414 7 15 1e-015
+*
+* TON/ TOFF/ BBM
+S411 7 a1g 41n 15 VON
+S412 41i 41j 41i 15 VEN
+Ech414 41i 15 VALUE = { IF(V(2)>=2.4 & V(1)>=2.4 & V(16)>=2.4, 5 , 0.8 ) }
+eV41 41n 15 41j 15 1
+C416 41j 15 8e-013
+*
+D21 3 9 DCLAMP
+D22 9 14 DCLAMP
+C25 9 15 1e-015
+* ON RESISTANCE
+Ech152 a152 15 VALUE = { IF ((ABS(V(a2g)))>(ABS(V(9))),V(a2g),V(9)) }
+R152 a152 15 1G
+S1a52 5a2 5b2 25a 15 VON
+Ech252 25a 15 VALUE = { IF (V(a152)<-3.5,5,0) }
+Ech352 5b2 15 VALUE = { IF (V(a152)<-3.5,0.5*(V(a152)--3.5)+16,0) }
+S2a52 5a2 2b52 252a 15 VON
+Ech452 252a 15 VALUE = { IF ((V(a152)>=-3.5) & (V(a152)<=4.25),5,0) }
+Ech552 2b52 15 VALUE = { IF ((V(a152)>=-3.5) & (V(a152)<=4.25),((16-14.5)/((-3.5--0.985126551241241)*(-3.5--0.985126551241241)))*(V(a152)--0.985126551241241)*(V(a152)--0.985126551241241) + 14.5,0) }
+S3a52 5a2 3b52 253a 15 VON
+Ech652 253a 15 VALUE = { IF (V(a152)>4.25,5,0) }
+Ech752 3b52 15 VALUE = { IF (V(a152)>4.25,-1.6*(V(a152)-4.25)+21,0) }
+RIN52 5a2 15	1G
+FCOPY52 15 254a VSENSE52 1
+RSENSOR52 254a 15	1K
+EOUT52 a552 255a	POLY(2) (5a2,15) (254a,15) 0 0 0 0 0.999/1000
+R252 a552 r2p 0.001
+VSENSE52 255a a2g	0
+*
+* VOLTAGE SUPPLY REQUIREMENT
+S523 r2p 9 52k 15 VON
+S524 52l 52k 52l 15 VON
+Ech525 52l 15 VALUE = { IF((V(3)<=-0.5 & V(3)>=-5.5) & (V(14)<=5.5 & V(14)>=4.5), 5 , 0.01 ) }
+S525 52m 52k 52m 15 VON
+Ech526 52m 15 VALUE = { IF((V(3)>=-0.5 & (V(14)<=5.5 & V(14)>=2.97)), 5 , 0.01 ) }
+
+
+** SWITCH 1 D2 **
+*
+* ESD PROTECTION DIODES
+D123 3 13 DCLAMP
+D124 13 14 DCLAMP
+*
+* OFF ISOLATION
+C121 13 9 0.9e-014
+*
+* CHARGE INJECTION
+C122 9 12n 1.95e-012
+C123 13 12n 1.95e-012
+*
+* CD/CS OFF AND BANDWIDTH
+C124 13 15 1e-015
+*
+* TON/ TOFF/ BBM
+S121 13 a2g 12n 15 VON
+S122 12i 12j 12i 15 VEN
+Ech124 12i 15 VALUE = { IF(V(2)>=2.4 & V(1)<2.4 & V(16)<2.4, 5 , 0.8 ) }
+eV12 12n 15 12j 15 1
+C126 12j 15 8e-013
+*
+
+** SWITCH 2 D2 **
+*
+* ESD PROTECTION DIODES
+D223 3 12 DCLAMP
+D224 12 14 DCLAMP
+*
+* OFF ISOLATION
+C221 12 9 0.9e-014
+*
+* CHARGE INJECTION
+C222 9 22n 1.95e-012
+C223 12 22n 1.95e-012
+*
+* CD/CS OFF AND BANDWIDTH
+C224 12 15 1e-015
+*
+* TON/ TOFF/ BBM
+S221 12 a2g 22n 15 VON
+S222 22i 22j 22i 15 VEN
+Ech224 22i 15 VALUE = { IF(V(2)>=2.4 & V(1)>=2.4 & V(16)<2.4, 5 , 0.8 ) }
+eV22 22n 15 22j 15 1
+C226 22j 15 8e-013
+*
+
+** SWITCH 3 D2 **
+*
+* ESD PROTECTION DIODES
+D323 3 11 DCLAMP
+D324 11 14 DCLAMP
+*
+* OFF ISOLATION
+C321 11 9 0.9e-014
+*
+* CHARGE INJECTION
+C322 9 32n 1.95e-012
+C323 11 32n 1.95e-012
+*
+* CD/CS OFF AND BANDWIDTH
+C324 11 15 1e-015
+*
+* TON/ TOFF/ BBM
+S321 11 a2g 32n 15 VON
+S322 32i 32j 32i 15 VEN
+Ech324 32i 15 VALUE = { IF(V(2)>=2.4 & V(1)<2.4 & V(16)>=2.4, 5 , 0.8 ) }
+eV32 32n 15 32j 15 1
+C326 32j 15 8e-013
+*
+
+** SWITCH 4 D2 **
+*
+* ESD PROTECTION DIODES
+D423 3 10 DCLAMP
+D424 10 14 DCLAMP
+*
+* OFF ISOLATION
+C421 10 9 0.9e-014
+*
+* CHARGE INJECTION
+C422 9 42n 1.95e-012
+C423 10 42n 1.95e-012
+*
+* CD/CS OFF AND BANDWIDTH
+C424 10 15 1e-015
+*
+* TON/ TOFF/ BBM
+S421 10 a2g 42n 15 VON
+S422 42i 42j 42i 15 VEN
+Ech424 42i 15 VALUE = { IF(V(2)>=2.4 & V(1)>=2.4 & V(16)>=2.4, 5 , 0.8 ) }
+eV42 42n 15 42j 15 1
+C426 42j 15 8e-013
+*
+.ENDS ADG609

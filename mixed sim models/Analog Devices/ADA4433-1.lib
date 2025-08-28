@@ -1,0 +1,138 @@
+* ADA4433-1 SPICE Macro-model  
+* Description: Video Amplifier
+* Generic Desc: Fully Differential SD Video Filter Amplifier with Output Short-To-Battery Protection
+* Developed by: JL
+* Revision History: 03/02/15, Rev. 1.0
+** Copyright 2015 by Analog Devices Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model
+* indicates your acceptance with the terms and provisions in the License Statement.
+*
+* BEGIN Notes:
+
+
+*Parameters Modeled
+*Frequency Response
+*-3dB Bandwidth
+*Input Resistance
+*Input Capacitance
+*Input Bias Current
+*Output Offset Voltage
+*Output Voltage Swing
+*ENABLE
+
+*Not Modeled
+*CMRR
+*STB
+
+
+*Node Assignments
+*                     INVERTING INPUT
+*                     |    SHORT-TO-BATTERY
+*                     |    |    POWER SUPPLY
+*                     |    |    |    NONINVERTING OUTPUT
+*                     |    |    |    |    INVERTING OUTPUT
+*                     |    |    |    |    |    GROUND
+*                     |    |    |    |    |    |    ENABLE
+*                     |    |    |    |    |    |    |    NONINVERTING INPUT
+*                     |    |    |    |    |    |    |    |
+.SUBCKT ADA4433-1     -IN  STB  VS  +OUT -OUT GND  ENA  +IN
+
+********POWER SUPPLIES*******
+Iquies1     12         VS         dc 0.0132  
+DPS         12         VS         D2
+Iquies2     VS         GND        dc 8.02e-005  
+SPS         12   GND   ENA  ENAN  switch1
+
+********ENABLE*******
+Rena1       VS         ENA        1600000000
+E3          14   13    VS   0     1
+VOFF        0          13         dc 0.6  
+Rena2       15         14         1000000
+DENA        0          15         D3
+E4          VS   16    15   0     1
+E5          16   ENAN  5    0     1
+RENA        5          0          1000
+CENA        5          0          1.5e-011
+S1          23   5     ENA  ENAN  switch1
+RENA3       26         23         0.1 
+VENA        26         0          dc 1.8  
+
+********INPUT BUFFER*****
+SI1         +IN  1     ENA  ENAN  switch1
+Rincm1      1          0          400000 
+Cincm1      1          0          1.8e-012
+G1          0    3     1    1111  1
+R1          0          3          1000
+C1          0          3          1.59155e-011
+E1          1111 0     3    0     1
+ 
+SI2         -IN  4     ENA  ENAN  switch1
+Rincm2      4          0          400000 
+Cincm2      4          0          1.8e-012
+G2          0    18    4    2222  1
+R2          0          18         1000 
+C2          0          18         1.59155e-011
+E2          2222 0     18   0     1
+
+********LPF STAGE*********
+Rs1         8          1111       1
+CF1         8          0          9.836e-009
+LF1         8          24         2.57512698e-008
+CF2         24         0          3.1831e-008
+LF2         24         17         2.57512698e-008
+CF3         17         0          9.836e-009
+RL1         17         0          1
+E6          111   0    17    0    2
+
+Rs2         9          2222       1
+CF4         9          0          9.836e-009
+LF3         9          10         2.57512698e-008
+CF5         10         0          7.96e-010
+LF4         10         2          2.57512698e-008
+CF6         2          0          9.836e-009
+RL2         2          0          1
+E7          222   0    2     0    2
+
+**********DIFF AMP*****
+RG1         111        FB1        100000 
+RG2         222        FB2        100000
+G3          0    -OUT  FB2   FB1  1
+G4          0    +OUT  FB1   FB2  1
+RFB1        FB1        -OUT       200000
+RFB2        +OUT       FB2        200000 
+R16         -OUT       19         1000000
+R17         19         +OUT       1000000
+G5          0    27    19    6    2
+R18         6          VS         1000000
+R19         0          6          1000000
+VX1         28         0          dc 0
+F1          0          FB2   VX1  1
+VX2         27         28         dc 0
+F2          0          FB1   VX2  1 
+
+********OUTPUT ENABLE AND CLAMP*****
+SO1         +OUT  0    ENA   ENAN  switch2
+SO2         -OUT  0    ENA   ENAN  switch2
+SCLMP1      -OUT  22   ENA   ENAN  switch1
+DCLMP1      22         20          D1
+V10         20         GND         dc 1.91  
+DCLMP2      21         22          D1
+V12         VS         21          dc 1.92  
+SCLMP2      +OUT  25   ENA   ENAN  switch1
+DCLMP3      25         7           D1
+V2          7          GND         dc 1.91  
+DCLMP4      11         25          D1
+V5          VS         11          dc 1.92  
+
+*********************************
+
+.model D1  d(VJ=0.7)
+.model D2  d(BV=100)
+.model D3  d(BV=3.43)
+.model switch1 vswitch(Von=1.801 Voff=1.799 Ron=0.001 Roff=1000000)
+.model switch2 vswitch(Von=1.799 Voff=1.801 Ron=0.001 Roff=1000000)
+
+.ends ADA4433-1
+
+

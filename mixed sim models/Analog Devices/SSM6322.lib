@@ -1,0 +1,472 @@
+* SSM6322 MACROMODEL
+* Description: High Fidelity Audio Amplifier
+* Developed by: ADI PN
+* Revision History: 3/10/2017 - Rev.1
+* 					5/23/2017 - Rev.1.1 
+* Copyright 2013 by Analog Devices, Inc.
+*
+* Refer to http://www.analog.com/Analog_Root/static/techSupport/designTools/spiceModels/license/spice_general.html for License Statement. Use of this model 
+* indicates your acceptance of the terms and provisions in the License Statement.
+*
+* BEGIN Notes:
+*
+* Not Modeled: 
+*	Temperature
+*	PSRR
+*	CMRR
+* Parameters modeled include: 
+*	Offset Voltage
+*	Bias Current
+*	Voltage Noise
+*	Open-Loop response
+*	Gain vs. Frequency
+*	Slew Rate	
+*	THD
+*	Input Common Mode Voltage Range
+*	Output Current Sink/Source
+*	Output Current vs Supply
+*	Power Down/Shut Down Functionality
+* END Notes
+*
+*
+*
+*
+.subckt SSM6322 VN1 VP1 GND1 GND2 VP2 VN2 GAIN2 FILT2 REF2 GND3 VEE2 VCC2 VOUT2 VNFB2 SD2 SD VNFB1 VOUT1 VCC1 VEE1 GND4 REF1 FILT1 GAIN1
+*
+*
+*
+*Channel 1
+*
+*
+S9 21 VEE1 SD2 0 SW
+
+dD23 38 VCC1 Diode
+
+dD22 37 VCC1 Diode
+
+iI16 VCC1 38 dc 0.0016
+
+S2 38 21 SD 0 SW
+
+S1 37 VEE1 SD2 0 SW
+
+iI15 VCC1 37 dc 0.001385
+
+eV21 0 VEEin1 0 VEE1 1
+
+eV2 VCCin1 0 VCC1 0 1
+
+iI11 VCC1 VEE1 dc 1.5e-005
+
+S12 22 VOUT1 SD2 0 SW
+
+S11 VNFB1 31 SD2 0 SW
+
+S10 FILT1 30 SD2 0 SW
+
+iI18 REF1 0 dc 1.5e-005
+
+rR17 39 20 100 
+
+rR16 0 15 0.13234 
+
+dD7 17 15 DiodeNoise
+
+gI17 0 39 13 0 1
+
+vV36 VCCin1 50 dc 4.2
+
+vV35 51 VEEin1 dc 4.2
+
+dD27 51 44 Diode
+
+dD26 44 50 Diode
+
+vV38 VCCin1 53 dc 4.2
+
+vV37 54 VEEin1 dc 4.2
+
+dD29 54 8 Diode
+
+dD28 8 53 Diode
+
+vV28 VCCin1 46 dc 4.2
+
+vV27 47 VEEin1 dc 4.2
+
+dD25 47 45 Diode
+
+dD24 45 46 Diode
+
+S8 31 44 SD 0 SW
+
+S7 30 45 SD 0 SW
+
+S6 42 22 SD 0 SW
+
+S5 20 GAIN1 SD2 0 SW
+
+S4 VN1 VN1in SD2 0 SW
+
+S3 VP1 VP1in SD2 0 SW
+
+vV26 VCCin1 28 dc 2.3
+
+vV25 18 VEEin1 dc 2.3
+
+dD21 18 25 Diode
+
+dD20 25 28 Diode
+
+rR14 0 23 1000
+
+gI10 0 23 VOUTraw 0 0.001
+
+dD19 35 23 Diode
+
+dD18 23 27 Diode
+
+vV24 29 35 dc 1.25
+
+vV23 27 29 dc 1.75
+
+HV22 29 19 V22 10
+V22 26 19 0 
+
+dD17 VCC1 32 Diode
+
+dD16 36 0 Diode
+
+dD15 36 VEE1 Diode
+
+dD14 0 32 Diode
+
+rR13 36 0 1000000000 
+
+rR12 32 0 1000000000 
+
+FI13 0 36 VI13 1
+VI13 25 24 0
+
+FI12 0 32 VI12 1
+VI12 24 26 0
+
+rR11 25 42 100
+
+eV16 19 0 23 0 1
+
+cC4 VOUTraw 0 2.6526e-009
+
+rR4 VOUTraw 0 1 
+
+gI4 0 VOUTraw 4 0 1
+
+cC3 0 4 6.3662e-009
+
+rR3 0 4 1000000
+
+gI3 0 4 45 44 1
+
+iI14 0 VN1in dc 3.24e-006
+
+cC8 16 0 1e-007
+
+rR10 16 0 1000000000
+
+gI9 0 16 VALUE={LIMIT(1*V(9,16),1.4,-1.4)}
+
+vV13 17 0 dc 0.25
+
+HV12 9 7  V12 10
+V12 0 15 0
+
+vV11 VCCin1 12 dc 2.3
+
+vV10 14 VEEin1 dc 2.3
+
+dD6 14 39 Diode
+
+dD5 39 12 Diode
+
+EV9 13 0 Value = { (V(GAIN1dist)*V(GAIN1dist))+V(GAIN1raw) }
+
+lL1 11 GAIN1dist 1.5
+
+rR9 0 11 10 
+
+gI8 0 GAIN1dist GAIN1raw 0 1e-008
+
+eV8 10 0 REFout1 0 1
+
+iI7 VP1in 0 dc 3.24e-006
+
+cC7 VP1in VN1in 2e-012
+
+vV6 VP1in 7 dc 9e-005
+
+vV5 VCCin1 5 dc 4.2
+
+vV4 6 VEEin1 dc 4.2
+
+dD4 6 VP1in Diode
+
+dD3 VP1in 5 Diode
+
+vV3 VCCin1 1 dc 4.2
+
+vV1 2 VEEin1 dc 4.2
+
+dD2 2 VN1in Diode
+
+dD1 VN1in 1 Diode
+
+rR8 VP1in 10 1250
+
+rR7 VN1in 10 1250
+
+cC6 REFout1 0 2.6526e-009
+
+rR6 REFout1 0 1 
+
+gI6 0 REFout1 8 0 1
+
+cC5 0 8 6.3662e-009
+
+rR5 0 8 1000000
+
+gI5 0 8 REF1 VP1in 1
+
+cC2 GAIN1raw 0 2.6526e-009
+
+rR2 GAIN1raw 0 1
+
+gI2 0 GAIN1raw 3 0 1
+
+cC1 0 3 6.3662e-009
+
+rR1 0 3 1000000
+
+gI1 0 3 16 VN1in 1
+
+.model Diode  D
+
+.model DiodeNoise  D
++ (
++  KF=1.5e-008 AF=1
++ )
+*
+*
+*Channel 2
+*
+S21 58 VEE2 SD2 0 SW
+
+dD39 43 VCC2 Diode
+
+dD38 40 VCC2 Diode
+
+iI34 VCC2 43 dc 0.0016
+
+S14 43 58 SD 0 SW
+
+S13 40 VEE2 SD2 0 SW
+
+iI33 VCC2 40 dc 0.001385
+
+eV34 0 VEEin2 0 VEE2 1
+
+eV33 VCCin2 0 VCC2 0 1
+
+iI26 VCC2 VEE2 dc 1.5e-005
+
+S24 88 VOUT2 SD2 0 SW
+
+S23 VNFB2 90 SD2 0 SW
+
+S22 FILT2 89 SD2 0 SW
+
+iI36 REF2 0 dc 1.5e-005
+
+rR32 61 87 100
+
+rR31 0 64 0.13234
+
+dD46 66 64 DiodeNoise
+
+gI35 0 61 60 0 1
+
+vV50 VCCin2 95 dc 4.2
+
+vV49 96 VEEin2 dc 4.2
+
+dD45 96 68 Diode
+
+dD44 68 95 Diode
+
+vV48 VCCin2 93 dc 4.2
+
+vV47 94 VEEin2 dc 4.2
+
+dD43 94 41 Diode
+
+dD42 41 93 Diode
+
+vV46 VCCin2 91 dc 4.2
+
+vV45 92 VEEin2 dc 4.2
+
+dD41 92 67 Diode
+
+dD40 67 91 Diode
+
+S20 90 68 SD 0 SW
+
+S19 89 67 SD 0 SW
+
+S18 73 88 SD 0 SW
+
+S17 87 GAIN2 SD2 0 SW
+
+S16 VN2 VN1in_1 SD2 0 SW
+
+S15 VP2 VP2in SD2 0 SW
+
+vV44 VCCin2 82 dc 2.3
+
+vV43 83 VEEin2 dc 2.3
+
+dD37 83 74 Diode
+
+dD36 74 82 Diode
+
+rR30 0 71 1000
+
+gI32 0 71 VOUT2raw 0 0.001
+
+dD35 81 71 Diode
+
+dD34 71 80 Diode
+
+vV42 79 81 dc 1.25
+
+vV41 80 79 dc 1.75
+
+HV40 79 72 V40 10
+V40  75 72 0
+
+dD33 VCC2 77 Diode
+
+dD32 78 0 Diode
+
+dD31 78 VEE2 Diode
+
+dD30 0 77 Diode
+
+rR29 78 0 1000000000
+
+rR28 77 0 1000000000
+
+FI31  0 78 VI31 1
+VI31 74 76 0
+
+FI30 0 77 VI30 1
+VI30 76 75 0
+
+rR27 74 73 100
+
+eV39 72 0 71 0 1
+
+cC16 VOUT2raw 0 2.6526e-009
+
+rR26 VOUT2raw 0 1
+
+gI29 0 VOUT2raw 69 0 1
+
+cC15 0 69 6.3662e-009
+
+rR25 0 69 1000000
+
+gI28 0 69 67 68 1
+
+iI27 0 VN1in_1 dc 3.24e-006
+
+cC14 33 0 1e-007
+
+rR24 33 0 1000000000
+
+gI25 0 33 VALUE={LIMIT(1*V(65,33),1.4,-1.4)}
+
+vV32 66 0 dc 0.25
+
+HV31 65 57 V31 10
+V31 0 64 0
+
+vV30 VCCin2 62 dc 2.3
+
+vV29 63 VEEin2 dc 2.3
+
+dD13 63 61 Diode
+
+dD12 61 62 Diode
+
+EV20 60 0 Value = { (V(GAIN2dist)*V(GAIN2dist))+V(GAIN2raw) }
+
+lL2 59 GAIN2dist 1.5
+
+rR23 0 59 10
+
+gI24 0 GAIN2dist GAIN2raw 0 1e-008
+
+eV19 48 0 REFout2 0 1
+
+iI23 VP2in 0 dc 3.24e-006
+
+cC13 VP2in VN1in_1 2e-012
+
+vV18 VP2in 57 dc 9e-005
+
+vV17 VCCin2 55 dc 4.2
+
+vV15 56 VEEin2 dc 4.2
+
+dD11 56 VP2in Diode
+
+dD10 VP2in 55 Diode
+
+vV14 VCCin2 49 dc 4.2
+
+vV7 52 VEEin2 dc 4.2
+
+dD9 52 VN1in_1 Diode
+
+dD8 VN1in_1 49 Diode
+
+rR22 VP2in 48 1250
+
+rR21 VN1in_1 48 1250
+
+cC12 REFout2 0 2.6526e-009
+
+rR20 REFout2 0 1
+
+gI22 0 REFout2 41 0 1
+
+cC11 0 41 6.3662e-009
+
+rR19 0 41 1000000
+
+gI21 0 41 REF2 VP2in 1
+
+cC10 GAIN2raw 0 2.6526e-009
+
+rR18 GAIN2raw 0 1
+
+gI20 0 GAIN2raw 34 0 1
+
+cC9 0 34 6.3662e-009
+
+rR15 0 34 1000000
+
+gI19 0 34 33 VN1in_1 1
+
+.model SW Vswitch(Von=1.5 Voff=0.75 Ron=0.0001 Roff=1000000000)
+.Ends
