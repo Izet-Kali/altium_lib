@@ -89,7 +89,7 @@ VSON
 # Кого стоит посмотреть?
 
 * tdk
-
+* Интересный репозиторий: https://github.com/issus/altium-library
 
 
 # Параметры
