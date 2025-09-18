@@ -19,97 +19,67 @@ LibrarySearchPath=pcb;sch;mixed sim models;..\altium_lib
 OrcadMultiValueDelimiter=,
 SearchSubDirectories=1
 SchemaName=
-LastFocusedTable=transistor
+LastFocusedTable=amplifier
 [Table1]
 SchemaName=
 TableName=Attenuator
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Part_Number0=94|Library Ref0=77|Library Path0=83|Footprint Ref-10=166|Footprint Ref-20=102|Footprint Ref-30=102|Footprint Path-10=108|Footprint Path-20=108|Footprint Path-30=108|Sim Model Name0=109|Sim File0=62|Description0=335|Comment0=94|Manufacturer_Name0=127|Height-20=68|Height-10=68|RefDes0=59|Type0=64|Copyright0=74|body or size0=85|Input voltage min0=114|Input voltage nom0=118|Input voltage max0=115|Maximum Operating Temperature0=196|Minimum Operating Temperature0=195|Junction-to-Case0=110|Junctione-to-Ambient (PCB mount)0=200|Junction-to-Ambient0=129|Junction-to-top0=104|Junction-to-board0=117|Power dissipation0=115|Lead temperature (soldering)0=171|Vapor Phase temperature0=153|Infrared temperature0=130|Purchase0=69|Mounting Style0=102|Supplier Part Number 10=142|Supplier 20=75|Supplier Part Number 20=142|Supplier 30=75|Supplier Part Number 30=142|Supplier 10=75|HelpURL0=205|ComponentLink1Description0=170|ComponentLink1URL0=205|Datasheet Link0=169|ComponentLink2Description0=170|ComponentLink2URL0=397|supplier10=71|supplier1-price0=100|supplier1-check-date0=131|Frequency max0=99|Frequency nom0=102|Frequency min0=98|ATTENUATION Range0=133|ATTENUATION Step Size0=146|Return Loss0=83
 [Table2]
 SchemaName=
 TableName=Filters
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Part_Number0=97|Library Ref0=77|Footprint Ref0=108|Library Path0=83|Description0=206|Footprint Ref-20=102|Footprint Ref-30=102|Footprint Path-10=108|Footprint Path-20=108|Footprint Path-30=108|Sim File0=113|Sim Model Name0=174|Manufacturer_Name0=127|Height0=58|RefDes0=59|Type0=97|Value0=251|Copyright0=74|body or size0=191|Tolerance0=73|Voltage0=63|Current0=62|Maximum Operating Temperature0=196|Minimum Operating Temperature0=195|Supplier 10=75|Supplier Part Number 10=142|Supplier 20=75|Supplier Part Number 20=142|HelpURL0=266|ComponentLink1Description0=170|ComponentLink1URL0=266|Datasheet Link0=230
 [Table3]
 SchemaName=
 TableName=Fuses
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Part_Number0=104|Library Ref0=77|Footprint Ref0=95|Library Path0=83|Footprint Path0=98|Manufacturer_Name0=127|Height0=58|RefDes0=59|Datasheet Link0=136|Type0=47|Value0=52|Purchase0=69|Copyright0=74|body or size0=85|Tolerance0=73|Voltage0=63|Maximum Operating Temperature0=196|Minimum Operating Temperature0=195
 [Table4]
 SchemaName=
 TableName=IC
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Part_Number0=128|Library Ref0=163|Library Path0=83|Footprint Ref-10=164|Footprint Ref-20=102|Footprint Path-10=108|Footprint Path-20=108|Sim Model Name0=109|Sim File0=116|Description0=1120|Footprint Ref-30=102|Footprint Path-30=108|Manufacturer_Name0=245|Height-20=68|Height-10=68|RefDes0=59|Type0=449|Value0=183|Copyright0=74|body or size0=172|Voltage0=140|Minimum Operating Temperature0=195|Maximum Operating Temperature0=196|Junction-to-Case0=110|Junctione-to-Ambient (PCB mount)0=200|Junction-to-Ambient0=129|Junction-to-top0=104|Junction-to-board0=117|Power dissipation0=115|Lead temperature (soldering)0=171|Vapor Phase temperature0=153|Infrared temperature0=130|Purchase0=75|Mounting Style0=102|Supplier Part Number 10=142|Supplier 20=75|Supplier Part Number 20=142|Supplier 30=75|Supplier Part Number 30=142|Supplier 10=75|HelpURL0=513|ComponentLink1Description0=170|ComponentLink1URL0=513|Datasheet Link0=477|Comment0=128|ComponentLink2Description0=170|ComponentLink2URL0=424|supplier10=71|supplier1-price0=100|supplier1-check-date0=131
 [Table5]
 SchemaName=
 TableName=Logicals
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Library Ref0=87|Library Path0=85|Footprint Ref-10=102|Footprint Ref-20=102|Footprint Ref-30=102|Footprint Path-10=108|Footprint Path-20=108|Footprint Path-30=108|Sim Model Name0=109|Sim File0=77|Description0=218|Part_Number0=89|Comment0=84|Manufacturer_Name0=127|Height-20=68|Height-10=68|RefDes0=59|Datasheet Link0=108|Type0=323|Value0=52|Copyright0=74|body or size0=85|Voltage0=86|Minimum Operating Temperature0=195|Maximum Operating Temperature0=196|Junction-to-Case0=110|Junctione-to-Ambient (PCB mount)0=200|Junction-to-Ambient0=129|Junction-to-top0=104|Junction-to-board0=117|Power dissipation0=115|Lead temperature (soldering)0=171|Vapor Phase temperature0=153|Infrared temperature0=130|Purchase0=69|Mounting Style0=102|Supplier Part Number 10=142|Supplier 20=75|Supplier Part Number 20=142|Supplier 30=75|Supplier Part Number 30=142|Supplier 10=75|Ibis Model0=77|ibis File0=62
 [Table6]
 SchemaName=
 TableName=MODs
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Part_Number0=99|Library Ref0=99|Library Path0=83|Footprint Path0=98|Footprint Ref-20=102|Footprint Ref-10=102|Description0=1287|Manufacturer_Name0=152|Height0=58|RefDes0=59|Datasheet Link0=313|Type0=193|Value0=52|Purchase0=69|body or size0=103|Tolerance0=73|Voltage0=66|Maximum Operating Temperature0=196|Minimum Operating Temperature0=195
 [Table7]
 SchemaName=
 TableName=Oscillator
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Part_Number0=135|Library Ref0=87|Footprint Ref0=92|Library Path0=83|Footprint Path0=98|Manufacturer_Name0=127|Height0=58|RefDes0=59|Datasheet Link0=99|Type0=103|Purchase0=69|Copyright0=74|body or size0=85|Tolerance0=95|Frequency0=76|Maximum Operating Temperature0=196|Minimum Operating Temperature0=195|F00=36|Q0=31|R0=30|C_stray0=59|C_L0=40
 [Table8]
 SchemaName=
 TableName=Radiometr
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Part Number0=135|Library Ref0=135|Library Path0=146|Description0=890|Footprint Path0=116|Footprint Ref0=109|body or size0=191|C_L0=40|C_stray0=59|Comment0=90|Component Kind0=110|Component Type0=111|Copyright0=74|Designator0=135|F00=36|Footprint0=109|Frequency0=76|Height0=58|Library Reference0=135|Manufacturer_Name0=127|Maximum Operating Temperature0=196|Minimum Operating Temperature0=195|Part_Number0=135|Pin Count0=74|Q0=31|R0=30|RefDes0=59|Simulation0=174|Type0=399|ComponentLink1Description0=170|ComponentLink1URL0=268|Datasheet Link0=414|HelpURL0=268|Mounting Style0=102|Purchase0=69|Voltage0=93|ANYANGLE0=77|CORNER0=67|LAYERKIND0=78|NAME0=206|NETSCOPE0=77|Rule0=89|RULEKIND0=88|SIDE0=46|UNIT0=48|Value0=247|Current0=62|PERCENT0=69|Supplier 10=100|Supplier Part Number 10=142|Tolerance0=73|Manufacturer_Part_Number0=164|Contact resistanse0=117|Current rating0=96|Port 10=53|Voltage rating0=97|Port 20=53|Height-10=68|RPAR0=50|Input voltage0=92|Junction-to-Ambient0=129|Junction-to-Case0=110|noise_0,1Hz-10Hz0=113|Output voltage max0=125|Output voltage min0=124|Output voltage nom0=128|Power dissipation0=115|CPAR0=50
 [Table9]
 SchemaName=
 TableName=Relay
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Library Ref0=111|Footprint Ref0=111|Library Path0=83|Footprint Path0=98|Description0=252|Part_Number0=89|Manufacturer_Name0=127|Height0=58|RefDes0=59|Datasheet Link0=169|Type0=47|Rated coil voltage0=115|Voltage rating0=97|Current rating0=96|Purchase0=69|Copyright0=74|body or size0=94|supplier10=71|supplier1-link0=322|supplier1-price0=100|supplier1-check-date0=131|HelpURL0=205|ComponentLink1Description0=170|ComponentLink1URL0=205|Minimum Operating Temperature0=195|Maximum Operating Temperature0=196|Component Kind0=110|Component Type0=111|ANYANGLE0=77|CORNER0=67|LAYERKIND0=78|NETSCOPE0=77|Rule0=89|RULEKIND0=74|SIDE0=46|UNIT0=48
 [Table10]
 SchemaName=
 TableName=Switches
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Part_Number0=95|Library Ref0=79|Footprint Ref0=95|Library Path0=85|Footprint Path0=98|Manufacturer_Name0=172|Height0=58|RefDes0=59|Datasheet Link0=235|Type0=136|Value0=52|Purchase0=136|Copyright0=74|body or size0=85|Voltage0=63
 [Table11]
 SchemaName=
 TableName=amplifier
@@ -122,63 +92,42 @@ TableName=capacitor
 Enabled=True
 UserWhere=0
 UserWhereText=[Part_Number] = '{Part_Number}'
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Part_Number0=129|Library Ref0=108|Footprint Ref0=137|Library Path0=83|Footprint Path0=98|Description0=220|Manufacturer_Name0=127|Height0=58|RefDes0=59|Datasheet Link0=366|Type0=57|Value0=52|Copyright0=74|body or size0=97|Tolerance0=73|Voltage0=63|Maximum Operating Temperature0=196|Minimum Operating Temperature0=195|Supplier 10=100|Supplier Part Number 10=142|Supplier 20=100|Supplier Part Number 20=142|RPAR0=50|CPAR0=50|LPAR0=48|Dielectric0=74|HelpURL0=402|ComponentLink1Description0=170|ComponentLink1URL0=402
 [Table13]
 SchemaName=
 TableName=connector
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Part_Number0=147|Library Ref0=95|Library Path0=96|Footprint Ref-10=129|Footprint Ref-20=102|Footprint Path-10=118|Footprint Path-20=108|Sim Model Name0=109|Sim File0=62|Description0=1522|Manufacturer_Name0=173|Height0=58|RefDes0=59|Type0=274|Copyright0=74|body or size0=113|Voltage rating0=99|Maximum Operating Temperature0=196|Minimum Operating Temperature0=195|Current rating0=96|Contact resistanse0=117|HelpURL0=419|ComponentLink1Description0=170|ComponentLink1URL0=419|ComponentLink2Description0=170|ComponentLink2URL0=891|supplier10=71|supplier1-price0=100|supplier1-check-date0=131|Comment0=147
 [Table14]
 SchemaName=
 TableName=diode
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Part_Number0=136|Library Ref0=141|Library Path0=83|Sim Model Name0=109|Sim File0=163|Footprint Ref-10=108|Footprint Ref-20=102|Footprint Ref-30=102|Footprint Ref-40=102|Footprint Path-10=108|Footprint Path-20=108|Footprint Path-30=108|Footprint Path-40=108|Manufacturer_Name0=127|Height-10=68|Height-20=68|Height-30=68|Height-40=68|RefDes0=59|Datasheet Link0=318|Type0=147|Value0=100|Purchase0=69|Copyright0=74|body or size0=90|Tolerance0=73|Voltage0=63|Maximum Operating Temperature0=196|Minimum Operating Temperature0=195|IBV0=39|EG0=37|BV0=36|BV_MAX0=64|BR0=36|CJO0=43
 [Table15]
 SchemaName=
 TableName=inductance
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Part_Number0=113|Library Ref0=77|Footprint Ref-10=125|Footprint Ref-20=102|Footprint Path-20=108|Library Path0=83|Sim File0=62|Sim Model Name0=109|Footprint Path-10=108|Manufacturer_Name0=127|Height-20=68|Height-10=68|RefDes0=59|Type0=47|Value0=52|Purchase0=69|Copyright0=94|body or size0=103|RPAR0=50|Current0=62|Tolerance0=73|Maximum Operating Temperature0=196|Minimum Operating Temperature0=195|Frequency0=97|CPAR0=50|LPAR0=48|HelpURL0=165|ComponentLink1Description0=170|ComponentLink1URL0=165|Datasheet Link0=129
 [Table16]
 SchemaName=
 TableName=reff-source
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Library Ref0=122|Library Path0=96|Footprint Ref-10=102|Footprint Ref-20=102|Footprint Ref-30=102|Footprint Path-10=108|Footprint Path-20=108|Footprint Path-30=108|Sim Model Name0=109|Sim File0=62|Description0=578|Part_Number0=125|Manufacturer_Name0=127|Height-20=68|Height-10=68|RefDes0=59|Type0=360|Copyright0=74|body or size0=85|Input voltage0=92|Output voltage min0=124|Output voltage nom0=128|Output voltage max0=125|noise_0,1Hz-10Hz0=113|Spectral density, 100 Hz0=144|noise_10Hz-1kHz0=110|noise_10Hz-10kHz0=116|Maximum Operating Temperature0=196|Minimum Operating Temperature0=195|Junction-to-Case0=110|Junctione-to-Ambient (PCB mount)0=200|Junction-to-Ambient0=129|Junction-to-top0=104|Junction-to-board0=117|Purchase0=69|Mounting Style0=102|Supplier Part Number 10=142|Supplier 20=75|Supplier Part Number 20=142|Supplier 30=75|Supplier Part Number 30=142|Supplier 10=75|HelpURL0=279|ComponentLink1Description0=170|ComponentLink1URL0=279|Datasheet Link0=243
 [Table17]
 SchemaName=
 TableName=resistor
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Part_Number0=118|Library Ref0=81|Footprint Ref0=144|Library Path0=83|Footprint Path0=98|Description0=158|Manufacturer_Name0=168|Height0=58|RefDes0=59|Datasheet Link0=491|Type0=49|Value0=52|Purchase0=69|Copyright0=74|body or size0=97|Tolerance0=73|Voltage0=63|Maximum Operating Temperature0=196|Minimum Operating Temperature0=195|Supplier 10=100|Supplier Part Number 10=142|Comment0=72
 [Table18]
 SchemaName=
 TableName=transistor
 Enabled=True
 UserWhere=0
 UserWhereText=
-BrowserOrder_Sorting=
-BrowserOrder_Grouping=
-BrowserOrder_Visible=Part_Number0=129|Library Ref0=110|Footprint Ref-10=139|Footprint Path-20=108|Library Path0=93|Footprint Ref-20=102|Footprint Path-10=108|Sim Model Name0=109|Sim File0=112|Manufacturer_Name0=163|Height0=58|RefDes0=59|Type0=109|Purchase0=69|body or size0=100|Tolerance0=73|Voltage0=63|Maximum Operating Temperature0=196|Minimum Operating Temperature0=195|Source-drain current0=129|Source-drain current (pulsed)0=173|Collector current0=109|Collector peak current0=137|Junction-to-Case0=110|Junctione-to-Ambient (PCB mount)0=200|Junction-to-Ambient0=129|HelpURL0=476|ComponentLink1Description0=170|ComponentLink1URL0=476|Datasheet Link0=476
 [FieldMap1]
 Options=FieldName=Attenuator.Part_Number|TableNameOnly=Attenuator|FieldNameOnly=Part_Number|FieldType=0|ParameterName=Part_Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap2]
@@ -484,30 +433,34 @@ Options=FieldName=resistor.Part_Number|TableNameOnly=resistor|FieldNameOnly=Part
 [FieldMap152]
 Options=FieldName=resistor.Library Ref|TableNameOnly=resistor|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap153]
-Options=FieldName=resistor.Footprint Ref|TableNameOnly=resistor|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
-[FieldMap154]
 Options=FieldName=resistor.Library Path|TableNameOnly=resistor|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
-[FieldMap155]
-Options=FieldName=resistor.Footprint Path|TableNameOnly=resistor|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
-[FieldMap156]
+[FieldMap154]
 Options=FieldName=resistor.Description|TableNameOnly=resistor|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
-[FieldMap157]
+[FieldMap155]
 Options=FieldName=resistor.Comment|TableNameOnly=resistor|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap156]
+Options=FieldName=resistor.Footprint Ref-1|TableNameOnly=resistor|FieldNameOnly=Footprint Ref-1|FieldType=1|ParameterName=[Footprint Ref-1]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap157]
+Options=FieldName=resistor.Footprint Path-1|TableNameOnly=resistor|FieldNameOnly=Footprint Path-1|FieldType=1|ParameterName=[Footprint Path-1]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap158]
-Options=FieldName=transistor.Part_Number|TableNameOnly=transistor|FieldNameOnly=Part_Number|FieldType=0|ParameterName=Part_Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=resistor.Footprint Ref-2|TableNameOnly=resistor|FieldNameOnly=Footprint Ref-2|FieldType=1|ParameterName=[Footprint Ref-2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap159]
-Options=FieldName=transistor.Library Ref|TableNameOnly=transistor|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=resistor.Footprint Path-2|TableNameOnly=resistor|FieldNameOnly=Footprint Path-2|FieldType=1|ParameterName=[Footprint Path-2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap160]
-Options=FieldName=transistor.Footprint Ref-1|TableNameOnly=transistor|FieldNameOnly=Footprint Ref-1|FieldType=1|ParameterName=[Footprint Ref-1]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=transistor.Part_Number|TableNameOnly=transistor|FieldNameOnly=Part_Number|FieldType=0|ParameterName=Part_Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap161]
-Options=FieldName=transistor.Footprint Path-2|TableNameOnly=transistor|FieldNameOnly=Footprint Path-2|FieldType=1|ParameterName=[Footprint Path-2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=transistor.Library Ref|TableNameOnly=transistor|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap162]
-Options=FieldName=transistor.Library Path|TableNameOnly=transistor|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=transistor.Footprint Ref-1|TableNameOnly=transistor|FieldNameOnly=Footprint Ref-1|FieldType=1|ParameterName=[Footprint Ref-1]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap163]
-Options=FieldName=transistor.Footprint Ref-2|TableNameOnly=transistor|FieldNameOnly=Footprint Ref-2|FieldType=1|ParameterName=[Footprint Ref-2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=transistor.Footprint Path-2|TableNameOnly=transistor|FieldNameOnly=Footprint Path-2|FieldType=1|ParameterName=[Footprint Path-2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap164]
-Options=FieldName=transistor.Footprint Path-1|TableNameOnly=transistor|FieldNameOnly=Footprint Path-1|FieldType=1|ParameterName=[Footprint Path-1]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=transistor.Library Path|TableNameOnly=transistor|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap165]
-Options=FieldName=transistor.Sim Model Name|TableNameOnly=transistor|FieldNameOnly=Sim Model Name|FieldType=1|ParameterName=[Sim Model Name]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=transistor.Footprint Ref-2|TableNameOnly=transistor|FieldNameOnly=Footprint Ref-2|FieldType=1|ParameterName=[Footprint Ref-2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap166]
+Options=FieldName=transistor.Footprint Path-1|TableNameOnly=transistor|FieldNameOnly=Footprint Path-1|FieldType=1|ParameterName=[Footprint Path-1]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap167]
+Options=FieldName=transistor.Sim Model Name|TableNameOnly=transistor|FieldNameOnly=Sim Model Name|FieldType=1|ParameterName=[Sim Model Name]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap168]
 Options=FieldName=transistor.Sim File|TableNameOnly=transistor|FieldNameOnly=Sim File|FieldType=1|ParameterName=[Sim File]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
